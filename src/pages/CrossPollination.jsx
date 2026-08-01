@@ -1,33 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import PunnettSquare from "../components/PunnettSquare";
 import IVBreeder from "../components/IVBreeder";
 import TheorycraftingFAQ from "../components/TheorycraftingFAQ";
+import { fetchPokemon } from "../api/pokeapi";
+import { loadManuscripts } from "../data/manuscriptsLoader";
 import { gameMechanics, STRENGTH_META } from "../data/gameMechanics";
 import theorycrafting from "../data/theorycrafting";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 
+function spriteUrl(id) {
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+}
+
+// Both traits are grounded in a real specimen's own field note (see
+// public/field-notes.txt) rather than invented placeholders — this is
+// explicitly "what if that specimen's real biology followed simple
+// Mendelian rules," not a claim about how the trait actually inherits.
+// Each case's supporting citation is fetched live from manuscripts.txt
+// (see manuscriptId below) rather than duplicated here as hardcoded text.
 const TRAITS = {
   pigment: {
-    label: "Petal Pigment",
+    label: "Roselia's Flower Pigment",
+    caseNumber: "01",
+    specimenName: "roselia",
+    manuscriptId: "lu-2021-rose-anthocyanin",
     mode: "complete",
-    alleleUpper: "V",
-    alleleLower: "v",
-    dominantLabel: "Vivid crimson",
-    recessiveLabel: "Pale ivory",
+    alleleUpper: "A",
+    alleleLower: "a",
+    dominantLabel: "Red-shifted bloom",
+    recessiveLabel: "Blue-shifted bloom",
     blendLabel: "",
     explainer:
-      "Complete dominance: one allele fully masks the other in the heterozygote. This is the classic Mendelian pattern from his pea plant crosses \u2014 a single copy of the dominant pigment-producing allele is enough to turn petals crimson, regardless of what the second allele is.",
+      "Roselia's own field note credits its red-and-blue flower combo to anthocyanin pathway genetics \u2014 the same pigment system real roses use, shiftable red-to-blue by modifying genes and soil pH. Treat that pigment-shifting gene as simple Mendelian dominance, and one copy of the red-shifting allele is enough to pull a bloom toward red, regardless of the second allele.",
   },
   waxiness: {
-    label: "Leaf Cuticle Wax",
+    label: "Cacnea's Water-Storage Tissue",
+    caseNumber: "02",
+    specimenName: "cacnea",
+    manuscriptId: "fraderasoler-2022-succulent-cell-walls",
     mode: "incomplete",
     alleleUpper: "W",
     alleleLower: "w",
-    dominantLabel: "Heavy wax bloom",
-    recessiveLabel: "Matte leaf",
-    blendLabel: "Light sheen (blended)",
+    dominantLabel: "Heavy succulence",
+    recessiveLabel: "Minimal water storage",
+    blendLabel: "Moderate succulence (blended)",
     explainer:
-      "Incomplete dominance: the heterozygote doesn't resemble either parent, it blends between them. Real cuticle-wax thickness often behaves this way \u2014 wax output scales roughly with allele dosage, so one working copy of the gene produces about half the wax of two.",
+      "Cacnea's own field note ties its desert survival to succulent parenchyma cells built for water retention. Real succulence often behaves as a dosage-dependent trait: a heterozygote produces roughly half the water-storage tissue of a homozygous-heavy individual, showing up as an intermediate build rather than a simple present/absent trait.",
   },
 };
 
@@ -44,8 +63,33 @@ export default function CrossPollination() {
   const [traitKey, setTraitKey] = useState("pigment");
   const [parentAChoice, setParentAChoice] = useState("heterozygous");
   const [parentBChoice, setParentBChoice] = useState("homozygous recessive");
+  const [specimenIds, setSpecimenIds] = useState({});
+  const [manuscripts, setManuscripts] = useState({});
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all(
+      Object.values(TRAITS).map((t) =>
+        fetchPokemon(t.specimenName).then((data) => [t.specimenName, data.id])
+      )
+    ).then((pairs) => {
+      if (!cancelled) setSpecimenIds(Object.fromEntries(pairs));
+    });
+    loadManuscripts().then((list) => {
+      if (cancelled) return;
+      const byId = {};
+      list.forEach((m) => {
+        byId[m.id] = m;
+      });
+      setManuscripts(byId);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const trait = TRAITS[traitKey];
+  const citation = manuscripts[trait.manuscriptId];
   const parentA = genotypeString(parentAChoice, trait.alleleUpper, trait.alleleLower);
   const parentB = genotypeString(parentBChoice, trait.alleleUpper, trait.alleleLower);
 
@@ -66,24 +110,65 @@ export default function CrossPollination() {
 
       <section style={{ maxWidth: "720px", marginBottom: "36px" }}>
         <p className="eyebrow">The Rootstock &mdash; Real Botany</p>
-        <h2 style={{ fontSize: "var(--step3)" }}>The Real Cross</h2>
+        <h2 style={{ fontSize: "var(--step3)" }}>Case Files</h2>
         <p style={{ color: "var(--ink-soft)" }}>
-          A simplified monohybrid cross calculator, using real plant genetics &mdash; this section
-          isn't about how Pok&eacute;mon breeding actually works in the games, just the biology
-          underneath any real cross. Everything else on this page grafts onto this.
+          Two open case files, each built on a real specimen already in the Herbarium and a real,
+          open-access paper on that exact trait &mdash; what would happen if a detail from each
+          one's own field note actually followed simple Mendelian inheritance? Everything else on
+          this page grafts onto this.
         </p>
       </section>
 
-      <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: "40px", alignItems: "start" }}>
-        <div className="plate-frame" style={{ padding: "20px", display: "grid", gap: "18px" }}>
+      <div style={{ display: "flex", gap: "8px", marginBottom: "-1px", position: "relative", zIndex: 1 }}>
+        {Object.entries(TRAITS).map(([key, t]) => {
+          const active = traitKey === key;
+          return (
+            <button
+              key={key}
+              onClick={() => setTraitKey(key)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "10px 16px",
+                background: active ? "var(--paper-light)" : "var(--paper)",
+                border: "1px solid var(--paper-shadow)",
+                borderBottom: active ? "1px solid var(--paper-light)" : "1px solid var(--paper-shadow)",
+                borderRadius: "10px 10px 0 0",
+                cursor: "pointer",
+                fontFamily: "var(--font-body)",
+                fontWeight: active ? 700 : 500,
+                color: active ? "var(--botanical-green-deep)" : "var(--ink-soft)",
+              }}
+            >
+              {specimenIds[t.specimenName] && (
+                <img src={spriteUrl(specimenIds[t.specimenName])} alt={t.specimenName} width={22} height={22} />
+              )}
+              <span className="mono" style={{ fontSize: "0.65rem", color: "var(--specimen-red)" }}>
+                Case {t.caseNumber}
+              </span>
+              <span style={{ fontSize: "0.85rem" }}>{t.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div
+        className="plate-frame"
+        style={{ borderTopLeftRadius: 0, padding: "28px", display: "grid", gridTemplateColumns: "280px 1fr", gap: "40px", alignItems: "start" }}
+      >
+        <div style={{ display: "grid", gap: "18px" }}>
           <div>
-            <p className="eyebrow" style={{ marginBottom: "8px" }}>Trait</p>
-            {Object.entries(TRAITS).map(([key, t]) => (
-              <label key={key} style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "0.85rem", marginBottom: "6px" }}>
-                <input type="radio" name="trait" checked={traitKey === key} onChange={() => setTraitKey(key)} />
-                {t.label}
-              </label>
-            ))}
+            <p className="eyebrow" style={{ marginBottom: "4px" }}>
+              Case {trait.caseNumber} &mdash; {trait.label}
+            </p>
+            <Link
+              to={`/specimen/${trait.specimenName}`}
+              className="mono"
+              style={{ fontSize: "0.7rem", color: "var(--specimen-red)", textDecoration: "none" }}
+            >
+              &rarr; see {trait.specimenName}'s full field note
+            </Link>
           </div>
 
           <div>
@@ -118,7 +203,42 @@ export default function CrossPollination() {
             blendLabel={trait.blendLabel}
           />
 
-          <div className="plate-frame" style={{ padding: "18px 20px", marginTop: "28px" }}>
+          <div style={{ marginTop: "24px", padding: "16px 18px", background: "var(--paper)", borderRadius: "10px", border: "1px solid var(--paper-shadow)" }}>
+            <p className="eyebrow" style={{ marginBottom: "8px" }}>Supporting Literature</p>
+            {citation ? (
+              <>
+                <p style={{ margin: "0 0 4px", fontWeight: 600, fontSize: "0.9rem" }}>{citation.title}</p>
+                <p className="mono" style={{ fontSize: "0.72rem", color: "var(--ink-soft)", margin: "0 0 10px" }}>
+                  {[citation.authors, citation.year, citation.journal].filter(Boolean).join(" \u00b7 ")}
+                </p>
+                <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
+                  <a
+                    href={citation.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mono"
+                    style={{
+                      fontSize: "0.72rem",
+                      color: "var(--botanical-green-deep)",
+                      textDecoration: "none",
+                      border: "1px solid var(--botanical-green)",
+                      borderRadius: "999px",
+                      padding: "4px 12px",
+                    }}
+                  >
+                    Read the paper &#8599;
+                  </a>
+                  <Link to="/manuscripts" className="mono" style={{ fontSize: "0.72rem", color: "var(--specimen-red)", textDecoration: "none" }}>
+                    &rarr; full entry in the Reading Room
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <p className="mono" style={{ fontSize: "0.8rem", color: "var(--ink-soft)", margin: 0 }}>Loading citation&hellip;</p>
+            )}
+          </div>
+
+          <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid var(--paper-line)" }}>
             <p className="eyebrow" style={{ marginBottom: "8px" }}>From the Field Journal</p>
             <p style={{ margin: 0 }}>
               Genotype is the pair of alleles a specimen carries; phenotype is what you can actually

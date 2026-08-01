@@ -106,6 +106,28 @@ journal: PeerJ, 11:e16118
 doi: 10.7717/peerj.16118
 open_access: yes
 related_specimen:
-connection: Not tied to a Grass-type specimen — this one's the real-world grounding for "The Ditto Problem" over on the Cross-Pollination page. The Amazon molly needs sperm from a related species to trigger reproduction, but discards that sperm's genes entirely, producing clones of the mother alone. It's the closest real biology gets to how Ditto breeding actually works — and this paper's finding that even that compatibility is limited to certain related genera is exactly what makes Ditto's near-universal compatibility look so extreme by comparison.
+connection: Not tied to a Grass-type specimen — this one's the real-world grounding for "The Ditto Problem" over on the Grafting Bench page. The Amazon molly needs sperm from a related species to trigger reproduction, but discards that sperm's genes entirely, producing clones of the mother alone. It's the closest real biology gets to how Ditto breeding actually works — and this paper's finding that even that compatibility is limited to certain related genera is exactly what makes Ditto's near-universal compatibility look so extreme by comparison.
+### END
+
+### lu-2021-rose-anthocyanin   [DRAFT — please review]
+title: Integrated metabolome and transcriptome analysis of the anthocyanin biosynthetic pathway in relation to color mutation in miniature roses
+authors: Lu J, Zhang Q, Lang L, Jiang C, Wang X, Sun H
+year: 2021
+journal: BMC Plant Biology, 21:257
+doi: 10.1186/s12870-021-03063-w
+open_access: yes
+related_specimen: roselia
+connection: The actual genetics behind Roselia's Case File on the Grafting Bench page. This study compares two rose cultivars differing only in petal shade and finds the difference traces to expression levels of specific anthocyanin-pathway genes — real evidence that a rose's bloom color really can hinge on a small number of gene-expression differences, the same premise the Case File's Punnett square runs with.
+### END
+
+### fraderasoler-2022-succulent-cell-walls   [DRAFT — please review]
+title: Elastic and collapsible: current understanding of cell walls in succulent plants
+authors: Fradera-Soler M, Grace OM, Jørgensen B, Mravec J
+year: 2022
+journal: Journal of Experimental Botany, 73(8):2290-2307
+doi: 10.1093/jxb/erac054
+open_access: yes
+related_specimen: cacnea
+connection: The actual genetics behind Cacnea's Case File on the Grafting Bench page. This review covers how succulent tissue's water-storage capacity depends on regulated cell wall remodeling, with real gene-expression differences behind how much a given plant's parenchyma can swell and collapse — the biological basis this Case File's incomplete-dominance example is built on.
 ### END
 
