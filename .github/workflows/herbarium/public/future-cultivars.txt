@@ -1,0 +1,49 @@
+=====================================================
+FOLIA CODEX — FUTURE CULTIVARS (PROSPECTIVE SPECIES)
+=====================================================
+This is a plain text file. Open and edit it with Notepad, TextEdit, or
+any text editor — no coding required.
+
+This file is for entirely speculative, not-yet-real species — your own
+hypothetical "what might exist someday" ideas, grounded in a real
+research trend or theory (climate adaptation, gene editing, newly
+discovered extremophile plants, whatever). Unlike field-notes.txt, this
+isn't describing an existing Pokémon — you're proposing something new.
+
+Every entry below is a DUMMY PLACEHOLDER until you replace it. Cards with
+no real content render as a "?" mystery card in the app automatically —
+you don't need to delete unfinished entries, just leave fields as "???"
+and they'll display as unrevealed.
+
+HOW TO ADD ONE:
+1. Copy the TEMPLATE block below and paste it anywhere in this file.
+2. Change "template" on the first line to a short unique id (lowercase,
+   no spaces — e.g. "cultivar-001").
+3. Fill in whatever fields you have. Leave any field as "???" if you
+   haven't decided yet — that's expected, not an error.
+4. Save the file. Refresh the app in your browser to see it appear.
+=====================================================
+
+### TEMPLATE   [PLACEHOLDER]
+working_title: ???
+concept: ???
+research_basis: ???
+status: Hypothesis stage
+notes: ???
+### END
+
+### cultivar-001   [PLACEHOLDER]
+working_title: ???
+concept: ???
+research_basis: ???
+status: Hypothesis stage
+notes: Dummy example entry — replace with a real concept whenever you have one, or leave as-is as a placeholder slot.
+### END
+
+### cultivar-002   [PLACEHOLDER]
+working_title: ???
+concept: ???
+research_basis: ???
+status: Awaiting field data
+notes: Another dummy example — the "status" field is free text, so use whatever labels make sense to you (Hypothesis stage, Concept sketch, Awaiting field data, In trial, etc.).
+### END

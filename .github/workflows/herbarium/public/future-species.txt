@@ -1,0 +1,58 @@
+=====================================================
+FOLIA CODEX — THE PROPAGATION BENCH (FUTURE CULTIVARS)
+=====================================================
+This is a plain text file. Open and edit it with Notepad, TextEdit, or
+any text editor — no coding required.
+
+This file is for speculative Grass-type concepts of your own — Pokémon
+that don't exist yet, imagined as a plausible next step from real,
+current plant science or genetics research. Think of it as a nursery:
+cuttings and ideas waiting to grow into a full concept, not finished
+specimens.
+
+Unlike field-notes.txt, there's no PokéAPI data backing these — no dex
+number, no real sprite, no stats. Every entry renders as a "?" placeholder
+card until you replace it with your own idea (and, eventually, maybe
+actual artwork).
+
+HOW TO ADD ONE:
+1. Copy the TEMPLATE block below and paste it anywhere in this file.
+2. Change "template" on the first line to a short unique id (lowercase,
+   no spaces — e.g. "crispr-drought-cultivar").
+3. Fill in what fields you can. "name" can just be "???" if you haven't
+   named it yet — that's fine, it's meant to support half-formed ideas.
+4. Set "types" to whatever type(s) you're designing for — this is a real
+   creative decision here, not pulled from any database like it is for
+   actual specimens. One type or two (e.g. "Grass" or "Bug / Ghost").
+5. Optional: set "related_manuscript" to the id of an entry in
+   manuscripts.txt (see public/manuscripts.txt) to link this concept back
+   to the real paper that inspired it.
+6. Save the file. Refresh the app in your browser to see it appear.
+=====================================================
+
+### TEMPLATE   [DRAFT — please review]
+name: ??? (working title, or literally "???" if unnamed)
+types: Grass (or e.g. "Bug / Ghost" for a two-type concept)
+inspired_by: The real research area or phenomenon this riffs on
+concept: What it would look like, what it would do, why it's typed this way
+real_basis: The actual science grounding this idea — as specific as you can be
+related_manuscript: (optional — an id from manuscripts.txt)
+### END
+
+### zombie-fungus-host-concept   [DRAFT — please review]
+name: ??? (working title: a Camponotus-style carpenter-ant Bug-type)
+types: Bug / Ghost
+inspired_by: Camponotus carpenter ants — the near-exclusive natural host of Ophiocordyceps unilateralis, the real "zombie-ant fungus"
+concept: A normal, healthy colony-forming Bug-type on its own — Ghost typing only becomes relevant once paired with the Grass-type partner below, representing the moment the host's own behavior is no longer its own: body still moving, will no longer in charge. A Tatsugiri/Dondozo-style two-species relationship rather than a single fused creature (which Paras/Parasect already cover).
+real_basis: Ophiocordyceps unilateralis infects Camponotus ants with striking host-species specificity — it isn't a generalist parasite, it's coevolved to this one ant genus specifically. The manipulated ant's body keeps functioning (legs twitching, mandibles biting) well after its own agency is gone, which is the real basis for reading this as Ghost-adjacent rather than just "infected."
+related_manuscript: debekker-2015-zombie-ant-genomics
+### END
+
+### zombie-fungus-partner-concept   [DRAFT — please review]
+name: ??? (working title: the zombie-fungus Grass-type partner)
+types: Grass
+inspired_by: Ophiocordyceps unilateralis's behavioral manipulation of its ant host, gene-expression level and all
+concept: Doesn't battle alone — sent out together with the Bug/Ghost host concept above, the pair triggers a combo move (working name "Death Grip") that boosts the host's Attack and Defense while draining a little of its HP each turn, mechanically dramatizing behavioral hijacking rather than just describing it in flavor text. If the host faints while paired, this partner transforms — the fruiting body finally sprouting once the host is dead, same as the real fungus's actual lifecycle. Kept single-typed on purpose so the pairing stays legible: Grass is the agent doing the manipulating, Bug/Ghost is what manipulation looks like from the other side.
+real_basis: Documented down to the gene-expression level: O. unilateralis secretes alkaloids and enterotoxins that hijack the ant's motor behavior, forcing a "death grip" bite at a specific height and humidity before killing the host and fruiting from its head to release spores.
+related_manuscript: debekker-2015-zombie-ant-genomics
+### END
