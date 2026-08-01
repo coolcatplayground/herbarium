@@ -1,0 +1,111 @@
+=====================================================
+FOLIA CODEX — THE READING ROOM
+=====================================================
+This is a plain text file. Open and edit it with Notepad, TextEdit, or
+any text editor — no coding required.
+
+Each block below is one real agriculture/plant-science manuscript, linked
+to a Pokémon specimen through your own commentary. This is meant for real
+papers you've actually read — nothing here should be a fabricated
+citation. Always link to the real DOI, journal page, or a Google Scholar
+search for the title so a reader can go verify the source themselves.
+
+OPEN ACCESS ONLY, PLEASE:
+The people reading this aren't all scientists — some are just Pokémon
+fans who followed a link. A paper locked behind a paywall is a dead end
+for them, so only add papers that are actually free to read in full.
+Quick ways to check before adding one:
+  - Published in a fully open-access journal (Frontiers, MDPI, PLOS,
+    Scientific Reports, etc.) — usually free by default.
+  - Hosted on PMC (a link containing "ncbi.nlm.nih.gov/pmc" is free).
+  - Check unpaywall.org or the "OA" icon on Google Scholar's search
+    results before linking a DOI you're not sure about.
+If a great paper you want to feature is paywalled, look for an open
+preprint version (bioRxiv, SSRN) instead of skipping it entirely — just
+note in "connection" that it's a preprint rather than the final version.
+
+HOW TO ADD ONE:
+1. Copy the TEMPLATE block below (between the ### TEMPLATE and ### END
+   lines) and paste it right above this instructions block ends, anywhere
+   in the file.
+2. Change "template" on the first line to a short unique id (lowercase,
+   no spaces — e.g. "khamare-2022-allelopathy").
+3. Fill in each field. Leave "related_specimen" blank if the paper isn't
+   tied to one specific Pokémon. Leave "open_access: yes" as-is if the
+   paper is free to read in full — only change it to "no" for the rare
+   preprint-instead-of-paywalled-final-version case mentioned above.
+4. Save the file. Refresh the app in your browser to see it appear.
+
+Do NOT summarize or copy-paste the paper's actual abstract into
+"connection" — copyright reasons aside, the "connection" field is meant
+to be YOUR idea for how it maps onto the Pokémon world, not a restatement
+of the paper.
+=====================================================
+
+### TEMPLATE   [DRAFT — please review]
+title: Full title of the paper, exactly as published
+authors: Last F, Last F, Last F
+year: 2024
+journal: Journal Name, volume(issue), pages
+doi: 10.xxxx/xxxxxxx
+url: https://scholar.google.com/scholar?q=paper+title+here
+open_access: yes
+related_specimen: bulbasaur
+connection: Your own idea for how this research connects to the Pokémon world — what it would mean if this mechanism were real, which specimen it explains, or what question it raises.
+### END
+
+### bamisile-2021-entomopathogenic   [DRAFT — please review]
+title: Model Application of Entomopathogenic Fungi as Alternatives to Chemical Pesticides: Prospects, Challenges, and Insights for Next-Generation Sustainable Agriculture
+authors: Bamisile BS, Akutse KS, Siddiqui JA, Xu Y
+year: 2021
+journal: Frontiers in Plant Science, 12:741804
+doi: 10.3389/fpls.2021.741804
+open_access: yes
+related_specimen: parasect
+connection: This review covers exactly the real-world version of what Paras and Parasect dramatize: fungi that infect insect hosts and are increasingly farmed as a genuine, commercially viable alternative to chemical pesticides. The paper's discussion of scaling these fungi up for field use is basically the "what would it take to actually deploy a Parasect-style biocontrol agent" question, answered for real.
+### END
+
+### tan-chen-2023-cam-transition   [DRAFT — please review]
+title: Defining Mechanisms of C3 to CAM Photosynthesis Transition toward Enhancing Crop Stress Resilience
+authors: Tan B, Chen S
+year: 2023
+journal: International Journal of Molecular Sciences, 24(17):13072
+doi: 10.3390/ijms241713072
+open_access: yes
+related_specimen: cacturne
+connection: Cacturne's whole gimmick — dormant by day, active at night — is a fair cartoon of facultative CAM photosynthesis, which this paper reviews as an active engineering target for drought-resistant crops. It made me wonder how close we actually are to giving a C3 crop plant a switchable, on-demand CAM mode the way Cacturne "switches on" after dark.
+### END
+
+### khamare-2022-allelopathy   [DRAFT — please review]
+title: Allelopathy and its application as a weed management tool: A review
+authors: Khamare Y, Chen J, Marble SC
+year: 2022
+journal: Frontiers in Plant Science, 13:1034649
+doi: 10.3389/fpls.2022.1034649
+open_access: yes
+related_specimen: wo-chien
+connection: Wo-Chien's design — a rusted relic dragging poisoned roots that drain the land — is basically allelopathy turned into a villain origin story. This review's coverage of allelopathic cover crops as an alternative to synthetic herbicides is the real, benevolent version of the same mechanism: using root chemistry to suppress unwanted neighbors instead of pulling weeds by hand.
+### END
+
+### debekker-2015-zombie-ant-genomics   [DRAFT — please review]
+title: Gene expression during zombie ant biting behavior reflects the complexity underlying fungal parasitic behavioral manipulation
+authors: de Bekker C, Ohm RA, Loreto RG, Sebastian A, Albert I, Merrow M, Brachmann A, Hughes DP
+year: 2015
+journal: BMC Genomics, 16:620
+doi: 10.1186/s12864-015-1812-x
+open_access: yes
+related_specimen: parasect
+connection: This is the actual genomics behind what Paras and Parasect dramatize as a fully-formed creature — but the more striking parallel is what it suggests for a Tatsugiri/Dondozo-style two-species pairing instead. Ophiocordyceps doesn't just live inside its ant host, it actively hijacks the ant's motor behavior with secreted alkaloids before killing it and fruiting from the corpse. That's a relationship between two distinct organisms, not one fused body — see the paired concept in The Propagation Bench (public/future-species.txt) for where I took this.
+### END
+
+### cerepaka-schlupp-2023-gynogenesis   [DRAFT — please review]
+title: Sperm specificity and potential paternal effects in gynogenesis in the Amazon Molly (Poecilia formosa)
+authors: Cerepaka C, Schlupp I
+year: 2023
+journal: PeerJ, 11:e16118
+doi: 10.7717/peerj.16118
+open_access: yes
+related_specimen:
+connection: Not tied to a Grass-type specimen — this one's the real-world grounding for "The Ditto Problem" over on the Cross-Pollination page. The Amazon molly needs sperm from a related species to trigger reproduction, but discards that sperm's genes entirely, producing clones of the mother alone. It's the closest real biology gets to how Ditto breeding actually works — and this paper's finding that even that compatibility is limited to certain related genera is exactly what makes Ditto's near-universal compatibility look so extreme by comparison.
+### END
+

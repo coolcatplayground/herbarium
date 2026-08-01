@@ -1,0 +1,40 @@
+=====================================================
+FOLIA CODEX — HABITAT OVERRIDES
+=====================================================
+This is a plain text file. Open and edit it with Notepad, TextEdit, or
+any text editor — no coding required.
+
+By default, every specimen's "Likely Habitat" is guessed automatically
+from its secondary type (see src/data/habitatMap.js for that baseline —
+e.g. Grass/Water defaults to "Wetland & Aquatic"). This file lets you
+OVERRIDE that guess for one specific specimen when its actual morphology
+says something different than its type pairing would suggest — the same
+way Cacnea (Grass/Dark) is really a desert cactus.
+
+HOW TO ADD ONE:
+1. Copy the TEMPLATE block below and paste it anywhere in this file.
+2. Change "template" on the first line to the specimen's exact name (same
+   spelling PokéAPI uses — lowercase, hyphens for spaces, e.g. "cacnea",
+   "exeggutor-alola").
+3. Fill in "habitat_name" and "description". Both are required — a
+   partial override isn't supported, so write the whole replacement.
+4. Save the file. Refresh the app in your browser to see it appear.
+
+Leave a specimen out of this file entirely if the automatic type-based
+guess is fine as-is — most specimens won't need an entry here.
+=====================================================
+
+### TEMPLATE   [DRAFT — please review]
+habitat_name: Your replacement habitat name
+description: Your replacement description, written the same way as the ones in habitatMap.js — a real ecological reading of this specimen's actual morphology, not just its type pairing.
+### END
+
+### cacnea   [DRAFT — please review]
+habitat_name: Nocturnal-Function Flora (Desert Cactus)
+description: Grass/Dark by typing, but unambiguously a desert cactus by design — round, spine-covered, built for extreme drought. Its real habitat match is arid desert, and its nocturnal-function typing lines up with CAM photosynthesis: stomata that only open at night to avoid daytime water loss, the same mechanism covered in this specimen's own field note.
+### END
+
+### cacturne   [DRAFT — please review]
+habitat_name: Nocturnal-Function Flora (Desert Cactus)
+description: The same desert-cactus read as Cacnea, more literally so — described as only active after dark, which is CAM photosynthesis' night-time stomatal opening acted out as behavior rather than just biochemistry.
+### END
