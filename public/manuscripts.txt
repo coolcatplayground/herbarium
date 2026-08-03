@@ -117,7 +117,7 @@ journal: BMC Plant Biology, 21:257
 doi: 10.1186/s12870-021-03063-w
 open_access: yes
 related_specimen: roselia
-connection: The actual genetics behind Roselia's Case File on the Grafting Bench page. This study compares two rose cultivars differing only in petal shade and finds the difference traces to expression levels of specific anthocyanin-pathway genes — real evidence that a rose's bloom color really can hinge on a small number of gene-expression differences, the same premise the Case File's Punnett square runs with.
+connection: The actual genetics behind Roselia's Case File on the Grafting Bench page. This is a gene-expression study, not an inheritance study — it compares a light-pink rose to its natural deep-pink mutant and finds the difference traces to coordinated upregulation across three separate pathway stages (biosynthesis, stabilization, vacuolar transport), not one gene switching on or off. The Case File's interactive models exactly this, using Roselia as the worked example.
 ### END
 
 ### fraderasoler-2022-succulent-cell-walls   [DRAFT — please review]
@@ -130,4 +130,16 @@ open_access: yes
 related_specimen: cacnea
 connection: The actual genetics behind Cacnea's Case File on the Grafting Bench page. This review covers how succulent tissue's water-storage capacity depends on regulated cell wall remodeling, with real gene-expression differences behind how much a given plant's parenchyma can swell and collapse — the biological basis this Case File's incomplete-dominance example is built on.
 ### END
+
+### lee-2025-rose-f3-5-h-nhx   [DRAFT — please review]
+title: Overexpression of VtF3'5'H and RhNHX Genes Alters Flower Color and Plant Morphology in Transgenic Rose 'Red Farm'
+authors: Lee KY, Lee SY, Kim YJ, Choi YJ, Lim SH, Kang YI
+year: 2025
+journal: Plants, 14(20):3185
+doi: 10.3390/plants14203185
+open_access: yes
+related_specimen: roselia
+connection: Real roses genetically lack F3'5'H, the enzyme needed to make delphinidin (the blue-shifting anthocyanin) — this is why no natural rose has ever been blue. This paper is the real grounding for the speculative "blue arm" theory on Roselia's Case File: getting an actual blue shift took inserting a foreign F3'5'H gene AND raising vacuolar pH via NHX genes together, not one change alone. Worth being clear this paper doesn't study Roselia or anything like it — it's cited here only for the real mechanism the theory borrows.
+### END
+
 
