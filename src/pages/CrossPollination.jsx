@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PunnettSquare from "../components/PunnettSquare";
+import GeneExpressionConsole from "../components/GeneExpressionConsole";
 import IVBreeder from "../components/IVBreeder";
 import TheorycraftingFAQ from "../components/TheorycraftingFAQ";
 import { fetchPokemon } from "../api/pokeapi";
@@ -25,20 +26,16 @@ const TRAITS = {
     caseNumber: "01",
     specimenName: "roselia",
     manuscriptId: "lu-2021-rose-anthocyanin",
-    mode: "complete",
-    alleleUpper: "A",
-    alleleLower: "a",
-    dominantLabel: "Red-shifted bloom",
-    recessiveLabel: "Blue-shifted bloom",
-    blendLabel: "",
+    interactionType: "expression",
     explainer:
-      "Roselia's own field note credits its red-and-blue flower combo to anthocyanin pathway genetics \u2014 the same pigment system real roses use, shiftable red-to-blue by modifying genes and soil pH. Treat that pigment-shifting gene as simple Mendelian dominance, and one copy of the red-shifting allele is enough to pull a bloom toward red, regardless of the second allele.",
+      "The real study behind this case isn't about inheritance at all \u2014 it's a gene-expression comparison between a light-pink rose and its natural deep-pink mutant. Pigment intensity turned out to depend on three coordinated pathway stages, not one gene switching on or off. That's a better real-world model for Roselia than a Punnett square: a Punnett square explains variation between different individuals, but Roselia's actual detail \u2014 one plant, two different-colored flowers at once \u2014 needs a same-individual explanation. Gene expression, not allele segregation, is what does that.",
   },
   waxiness: {
     label: "Cacnea's Water-Storage Tissue",
     caseNumber: "02",
     specimenName: "cacnea",
     manuscriptId: "fraderasoler-2022-succulent-cell-walls",
+    interactionType: "punnett",
     mode: "incomplete",
     alleleUpper: "W",
     alleleLower: "w",
@@ -153,93 +150,104 @@ export default function CrossPollination() {
         })}
       </div>
 
-      <div
-        className="plate-frame"
-        style={{ borderTopLeftRadius: 0, padding: "28px", display: "grid", gridTemplateColumns: "280px 1fr", gap: "40px", alignItems: "start" }}
-      >
-        <div style={{ display: "grid", gap: "18px" }}>
-          <div>
-            <p className="eyebrow" style={{ marginBottom: "4px" }}>
-              Case {trait.caseNumber} &mdash; {trait.label}
-            </p>
-            <Link
-              to={`/specimen/${trait.specimenName}`}
-              className="mono"
-              style={{ fontSize: "0.7rem", color: "var(--specimen-red)", textDecoration: "none" }}
-            >
-              &rarr; see {trait.specimenName}'s full field note
-            </Link>
-          </div>
-
-          <div>
-            <p className="eyebrow" style={{ marginBottom: "8px" }}>Parent A ({trait.alleleUpper}{trait.alleleLower})</p>
-            <select value={parentAChoice} onChange={(e) => setParentAChoice(e.target.value)} style={{ width: "100%", padding: "8px", fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}>
-              {GENOTYPES.map((g) => (
-                <option key={g} value={g}>{g}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <p className="eyebrow" style={{ marginBottom: "8px" }}>Parent B ({trait.alleleUpper}{trait.alleleLower})</p>
-            <select value={parentBChoice} onChange={(e) => setParentBChoice(e.target.value)} style={{ width: "100%", padding: "8px", fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}>
-              {GENOTYPES.map((g) => (
-                <option key={g} value={g}>{g}</option>
-              ))}
-            </select>
-          </div>
-
-          <hr className="hairline" />
-          <p style={{ fontSize: "0.82rem", color: "var(--ink-soft)", margin: 0 }}>{trait.explainer}</p>
+      <div className="plate-frame" style={{ borderTopLeftRadius: 0, padding: "28px" }}>
+        <div style={{ marginBottom: "20px" }}>
+          <p className="eyebrow" style={{ marginBottom: "4px" }}>
+            Case {trait.caseNumber} &mdash; {trait.label}
+          </p>
+          <Link
+            to={`/specimen/${trait.specimenName}`}
+            className="mono"
+            style={{ fontSize: "0.7rem", color: "var(--specimen-red)", textDecoration: "none" }}
+          >
+            &rarr; see {trait.specimenName}'s full field note
+          </Link>
         </div>
 
-        <div>
-          <PunnettSquare
-            parentA={parentA}
-            parentB={parentB}
-            mode={trait.mode}
-            dominantLabel={trait.dominantLabel}
-            recessiveLabel={trait.recessiveLabel}
-            blendLabel={trait.blendLabel}
-          />
+        <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", marginBottom: "24px", maxWidth: "680px" }}>{trait.explainer}</p>
 
-          <div style={{ marginTop: "24px", padding: "16px 18px", background: "var(--paper)", borderRadius: "10px", border: "1px solid var(--paper-shadow)" }}>
-            <p className="eyebrow" style={{ marginBottom: "8px" }}>Supporting Literature</p>
-            {citation ? (
-              <>
-                <p style={{ margin: "0 0 4px", fontWeight: 600, fontSize: "0.9rem" }}>{citation.title}</p>
-                <p className="mono" style={{ fontSize: "0.72rem", color: "var(--ink-soft)", margin: "0 0 10px" }}>
-                  {[citation.authors, citation.year, citation.journal].filter(Boolean).join(" \u00b7 ")}
-                </p>
-                <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
-                  <a
-                    href={citation.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mono"
-                    style={{
-                      fontSize: "0.72rem",
-                      color: "var(--botanical-green-deep)",
-                      textDecoration: "none",
-                      border: "1px solid var(--botanical-green)",
-                      borderRadius: "999px",
-                      padding: "4px 12px",
-                    }}
-                  >
-                    Read the paper &#8599;
-                  </a>
-                  <Link to="/manuscripts" className="mono" style={{ fontSize: "0.72rem", color: "var(--specimen-red)", textDecoration: "none" }}>
-                    &rarr; full entry in the Reading Room
-                  </Link>
-                </div>
-              </>
-            ) : (
-              <p className="mono" style={{ fontSize: "0.8rem", color: "var(--ink-soft)", margin: 0 }}>Loading citation&hellip;</p>
-            )}
+        {trait.interactionType === "expression" ? (
+          <GeneExpressionConsole />
+        ) : (
+          <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: "40px", alignItems: "start" }}>
+            <div style={{ display: "grid", gap: "18px" }}>
+              <div>
+                <p className="eyebrow" style={{ marginBottom: "8px" }}>Parent A ({trait.alleleUpper}{trait.alleleLower})</p>
+                <select value={parentAChoice} onChange={(e) => setParentAChoice(e.target.value)} style={{ width: "100%", padding: "8px", fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}>
+                  {GENOTYPES.map((g) => (
+                    <option key={g} value={g}>{g}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <p className="eyebrow" style={{ marginBottom: "8px" }}>Parent B ({trait.alleleUpper}{trait.alleleLower})</p>
+                <select value={parentBChoice} onChange={(e) => setParentBChoice(e.target.value)} style={{ width: "100%", padding: "8px", fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}>
+                  {GENOTYPES.map((g) => (
+                    <option key={g} value={g}>{g}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <PunnettSquare
+              parentA={parentA}
+              parentB={parentB}
+              mode={trait.mode}
+              dominantLabel={trait.dominantLabel}
+              recessiveLabel={trait.recessiveLabel}
+              blendLabel={trait.blendLabel}
+            />
           </div>
+        )}
 
-          <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid var(--paper-line)" }}>
-            <p className="eyebrow" style={{ marginBottom: "8px" }}>From the Field Journal</p>
+        <div style={{ marginTop: "24px", padding: "16px 18px", background: "var(--paper)", borderRadius: "10px", border: "1px solid var(--paper-shadow)" }}>
+          <p className="eyebrow" style={{ marginBottom: "8px" }}>Supporting Literature</p>
+          {citation ? (
+            <>
+              <p style={{ margin: "0 0 4px", fontWeight: 600, fontSize: "0.9rem" }}>{citation.title}</p>
+              <p className="mono" style={{ fontSize: "0.72rem", color: "var(--ink-soft)", margin: "0 0 10px" }}>
+                {[citation.authors, citation.year, citation.journal].filter(Boolean).join(" \u00b7 ")}
+              </p>
+              <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
+                <a
+                  href={citation.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mono"
+                  style={{
+                    fontSize: "0.72rem",
+                    color: "var(--botanical-green-deep)",
+                    textDecoration: "none",
+                    border: "1px solid var(--botanical-green)",
+                    borderRadius: "999px",
+                    padding: "4px 12px",
+                  }}
+                >
+                  Read the paper &#8599;
+                </a>
+                <Link to="/manuscripts" className="mono" style={{ fontSize: "0.72rem", color: "var(--specimen-red)", textDecoration: "none" }}>
+                  &rarr; full entry in the Reading Room
+                </Link>
+              </div>
+            </>
+          ) : (
+            <p className="mono" style={{ fontSize: "0.8rem", color: "var(--ink-soft)", margin: 0 }}>Loading citation&hellip;</p>
+          )}
+        </div>
+
+        <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid var(--paper-line)" }}>
+          <p className="eyebrow" style={{ marginBottom: "8px" }}>From the Field Journal</p>
+          {trait.interactionType === "expression" ? (
+            <p style={{ margin: 0 }}>
+              Notice that pushing any single slider to 100 doesn't guarantee a deep color if the
+              other two stay low &mdash; the bottleneck label tracks whichever stage is currently
+              most limiting. That's how real biosynthetic pathways behave: output is capped by the
+              most restrictive step, not the average of all of them, which is exactly why the real
+              paper singles out CHS as "the primary rate-limiting enzyme" rather than treating all
+              fifteen differentially expressed genes as equally important.
+            </p>
+          ) : (
             <p style={{ margin: 0 }}>
               Genotype is the pair of alleles a specimen carries; phenotype is what you can actually
               observe. Two specimens can look identical yet carry different genotypes &mdash; a heterozygote
@@ -248,7 +256,7 @@ export default function CrossPollination() {
               constant and vary the other to see which offspring ratios would reveal a hidden
               recessive allele.
             </p>
-          </div>
+          )}
         </div>
       </div>
 
