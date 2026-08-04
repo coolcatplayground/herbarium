@@ -56,7 +56,6 @@ export default function GeneExpressionConsole() {
   const [delphinidin, setDelphinidin] = useState(0);
   const [phShift, setPhShift] = useState(0);
   const [decomposition, setDecomposition] = useState(0);
-  const [shinyMode, setShinyMode] = useState(false);
   const [flavoneSuppression, setFlavoneSuppression] = useState(0);
 
   // Bottleneck model: overall pigment output can't exceed whatever stage is
@@ -160,19 +159,29 @@ export default function GeneExpressionConsole() {
         </p>
 
         <div style={{ marginTop: "16px", padding: "22px 24px", border: "1.5px dashed var(--paper-shadow)", borderRadius: "12px" }}>
-          <p style={{ fontSize: "0.88rem", color: "var(--ink-soft)", marginBottom: "16px" }}>
-            No manuscript here studies Roselia's actual blue arm &mdash; this is theorizing, built on
-            real, separate facts. Real roses genetically lack <em>F3'5'H</em>, the enzyme needed to
-            make delphinidin, the anthocyanin most responsible for blue/violet color; engineering a
-            blue-ish rose took inserting a foreign F3'5'H gene <em>and</em> separately raising
-            vacuolar pH via NHX genes, neither alone being enough. But even that real result reads as
-            muddy lavender, not clean blue, because residual red pigment stays mixed in. There's a
-            third lever no real rose paper tests, because no breeder wants it: real roses actively
-            suppress an anthocyanin-degrading enzyme via high tannin content, which is part of why
-            cut roses hold color so long. Reversing that &mdash; actively clearing the competing red
-            pigment &mdash; is the one thing a breeding program would never try, since it fights the
-            entire goal of keeping color, not losing it.
-          </p>
+          <div style={{ display: "grid", gap: "10px", marginBottom: "16px" }}>
+            <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
+              <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>Constraint</span>
+              Real roses genetically lack <em>F3'5'H</em>, the enzyme needed to make delphinidin, the
+              anthocyanin most responsible for blue/violet color. No natural rose has ever been blue
+              because of it.
+            </p>
+            <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
+              <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>Precedent</span>
+              Engineering a blue-ish rose took inserting a foreign F3'5'H gene <em>and</em>{" "}
+              separately raising vacuolar pH via NHX genes &mdash; neither alone was enough, and even
+              that real result reads as muddy lavender, not clean blue, because residual red pigment
+              stays mixed in.
+            </p>
+            <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
+              <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>The Missing Lever</span>
+              No real rose paper tests actively clearing the competing red pigment, because no
+              breeder wants it: real roses already suppress an anthocyanin-degrading enzyme via high
+              tannin content, part of why cut roses hold color so long. Reversing that fights the
+              entire goal of rose breeding, which is exactly why it's untested rather than
+              disproven.
+            </p>
+          </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 200px", gap: "32px", alignItems: "start" }}>
             <div style={{ display: "grid", gap: "20px" }}>
@@ -285,84 +294,87 @@ export default function GeneExpressionConsole() {
         </p>
 
         <div style={{ marginTop: "16px", padding: "22px 24px", border: "1.5px dashed var(--paper-shadow)", borderRadius: "12px" }}>
-          <p style={{ fontSize: "0.88rem", color: "var(--ink-soft)", marginBottom: "16px" }}>
-            Shiny Roselia shifts its left arm from pink to deep purple and its right arm from blue
-            to black. The purple side needs no new mechanism at all: a real rose study found
-            "black-red" petals carry nearly double the anthocyanin concentration of pink ones (1400
-            vs 800 &micro;g/g), same pigment types throughout &mdash; it's the same real pathway
-            modeled above, just pushed further. Black is a genuine extension of the blue theory: a
-            review of black-pigmented plants confirms true black pigment doesn't exist in nature at
-            all &mdash; every studied case turns out to be extremely dense anthocyanin read as black
-            by the eye, sometimes paired with suppression of a second, competing pathway
-            (flavone biosynthesis) to darken it further. That's the same two-lever shape as the
-            decomposition slider above, extended one step past it.
-          </p>
+          <div style={{ display: "grid", gap: "10px", marginBottom: "20px" }}>
+            <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
+              <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>Observation</span>
+              Shiny Roselia shifts its left arm from pink to deep purple and its right arm from blue
+              to black.
+            </p>
+            <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
+              <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>Purple</span>
+              No new mechanism required. A real rose cultivar, "Black Magic," carries nearly double
+              the anthocyanin concentration of a pink rose (1400 vs 800 &micro;g/g) using the exact
+              same pigment types &mdash; deep purple is the same real pathway above, pushed further,
+              not a separate system.
+            </p>
+            <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
+              <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>Black</span>
+              True black pigment doesn't exist in flowers at all &mdash; every studied case is
+              extremely dense anthocyanin read as black by the eye, sometimes paired with suppression
+              of a second, competing pathway (flavone biosynthesis) to darken it further. That's the
+              same two-lever shape as the decomposition slider in the blue theory, extended one step
+              past it.
+            </p>
+          </div>
 
-          <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "0.88rem", marginBottom: "20px" }}>
-            <input type="checkbox" checked={shinyMode} onChange={(e) => setShinyMode(e.target.checked)} />
-            Preview the Shiny variant
-          </label>
-
-          {shinyMode && (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
-                <div
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    borderRadius: "50%",
-                    background: shinyRedSwatch,
-                    border: "1px solid var(--paper-shadow)",
-                    boxShadow: "inset 0 2px 6px rgba(0,0,0,0.08)",
-                  }}
-                  aria-label="Shiny left arm color"
-                />
-                <p className="mono" style={{ fontSize: "0.72rem", textAlign: "center", margin: 0 }}>
-                  Left arm &mdash; driven by the same real sliders above
-                </p>
-              </div>
-
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
-                <div
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    borderRadius: "50%",
-                    background: shinyBlueSwatch,
-                    border: "1px solid var(--paper-shadow)",
-                    boxShadow: "inset 0 2px 6px rgba(0,0,0,0.08)",
-                  }}
-                  aria-label="Shiny right arm color"
-                />
-                <p className="mono" style={{ fontSize: "0.72rem", textAlign: "center", margin: 0 }}>
-                  Right arm &mdash; add flavone suppression below
-                </p>
-              </div>
-
-              <div style={{ gridColumn: "1 / -1" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                  <label htmlFor="flavone" style={{ fontWeight: 600, fontSize: "0.9rem" }}>
-                    Hypothetical Flavone Pathway Suppression <span className="mono" style={{ fontWeight: 400, fontSize: "0.72rem", color: "var(--ink-soft)" }}>(a second, real mechanism found alongside high anthocyanin in black-pigmented species)</span>
-                  </label>
-                  <span className="mono" style={{ fontSize: "0.8rem", color: "var(--specimen-red)" }}>{flavoneSuppression}%</span>
-                </div>
-                <input
-                  id="flavone"
-                  type="range"
-                  min={0}
-                  max={100}
-                  value={flavoneSuppression}
-                  onChange={(e) => setFlavoneSuppression(Number(e.target.value))}
-                  style={{ width: "100%" }}
-                />
-                <p style={{ fontSize: "0.76rem", color: "var(--ink-soft)", margin: "6px 0 0" }}>
-                  Needs the delphinidin and decomposition levers from the blue theory above already
-                  turned up &mdash; suppressing a competing pathway only darkens pigment that's
-                  already there to darken.
-                </p>
-              </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
+              <div
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  borderRadius: "50%",
+                  background: shinyRedSwatch,
+                  border: "1px solid var(--paper-shadow)",
+                  boxShadow: "inset 0 2px 6px rgba(0,0,0,0.08)",
+                }}
+                aria-label="Shiny left arm color"
+              />
+              <p className="mono" style={{ fontSize: "0.72rem", textAlign: "center", margin: 0 }}>
+                Left arm &mdash; driven by the biosynthesis, stabilization, and transport sliders above
+              </p>
             </div>
-          )}
+
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
+              <div
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  borderRadius: "50%",
+                  background: shinyBlueSwatch,
+                  border: "1px solid var(--paper-shadow)",
+                  boxShadow: "inset 0 2px 6px rgba(0,0,0,0.08)",
+                }}
+                aria-label="Shiny right arm color"
+              />
+              <p className="mono" style={{ fontSize: "0.72rem", textAlign: "center", margin: 0 }}>
+                Right arm &mdash; driven by delphinidin, decomposition, and flavone suppression
+              </p>
+            </div>
+
+            <div style={{ gridColumn: "1 / -1" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                <label htmlFor="flavone" style={{ fontWeight: 600, fontSize: "0.9rem" }}>
+                  Hypothetical Flavone Pathway Suppression <span className="mono" style={{ fontWeight: 400, fontSize: "0.72rem", color: "var(--ink-soft)" }}>(a second, real mechanism found alongside high anthocyanin in black-pigmented species)</span>
+                </label>
+                <span className="mono" style={{ fontSize: "0.8rem", color: "var(--specimen-red)" }}>{flavoneSuppression}%</span>
+              </div>
+              <input
+                id="flavone"
+                type="range"
+                min={0}
+                max={100}
+                value={flavoneSuppression}
+                onChange={(e) => setFlavoneSuppression(Number(e.target.value))}
+                style={{ width: "100%" }}
+              />
+              <p style={{ fontSize: "0.76rem", color: "var(--ink-soft)", margin: "6px 0 0" }}>
+                Needs the delphinidin and decomposition levers from the blue theory already turned up
+                &mdash; suppressing a competing pathway only darkens pigment that's already there to
+                darken.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
