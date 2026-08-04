@@ -41,7 +41,7 @@ export default function NavHeader() {
         <nav style={{ display: "flex", gap: "22px" }}>
           {[
             { to: "/", label: "Specimens" },
-            { to: "/cross-pollination", label: "Grafting Bench" },
+            { to: "/grafting-bench", label: "Grafting Bench" },
             { to: "/manuscripts", label: "Reading Room" },
             { to: "/future-species", label: "Propagation Bench" },
             { to: "/about", label: "Field Notes" },

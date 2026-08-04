@@ -3,7 +3,7 @@ import NavHeader from "./components/NavHeader";
 import ScrollToTop from "./components/ScrollToTop";
 import Herbarium from "./pages/Herbarium";
 import Specimen from "./pages/Specimen";
-import CrossPollination from "./pages/CrossPollination";
+import GraftingBench from "./pages/GraftingBench";
 import Manuscripts from "./pages/Manuscripts";
 import FutureSpecies from "./pages/FutureSpecies";
 import About from "./pages/About";
@@ -18,7 +18,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Herbarium />} />
           <Route path="/specimen/:name" element={<Specimen />} />
-          <Route path="/cross-pollination" element={<CrossPollination />} />
+          <Route path="/grafting-bench" element={<GraftingBench />} />
           <Route path="/manuscripts" element={<Manuscripts />} />
           <Route path="/future-species" element={<FutureSpecies />} />
           <Route path="/about" element={<About />} />
