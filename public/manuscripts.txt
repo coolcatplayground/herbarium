@@ -153,5 +153,28 @@ related_specimen: roselia
 connection: The third slider in Roselia's "theorizing the blue arm" section. Real rose petals actively suppress an anthocyanin-degrading peroxidase via high tannin content (specifically ECG and GCG) — part of why cut roses hold their color so long. Real breeders have only ever tried to ADD pigment or shift pH, never to REMOVE the competing red pigment, because that runs directly against the entire goal of rose breeding. Worth being clear the paper shows general degradation exists and is naturally suppressed — it does NOT show this degradation is selective for red-type anthocyanins over blue-type ones. Treating it as selectively clearing red while sparing delphinidin is this theory's own extra reach past what's actually demonstrated.
 ### END
 
+### cheng-2024-rose-black-red-pigmentation   [DRAFT — please review]
+title: Novel Insights into Pigment Composition and Molecular Mechanisms Governing Flower Coloration in Rose Cultivars Exhibiting Diverse Petal Hues
+authors: Cheng Y, Tian Y, Guo P, Luo J, Xu C, Zhang Y, Chen G, Xie Q, Hu Z
+year: 2024
+journal: Plants, 13(23):3353
+doi: 10.3390/plants13233353
+open_access: yes
+related_specimen: roselia
+connection: Grounds Shiny Roselia's pink-to-deep-purple shift. This is a real rose study comparing pink petals to "black-red" petals (a real cultivar, "Black Magic") and finds the black-red variety has nearly double the anthocyanin concentration (1400 vs 800 micrograms per gram), using the SAME pigment types as pink roses, not an exotic new one. Deep purple isn't a separate mechanism from the base Case File's pink-intensity model — it's the same real pathway pushed further, which is exactly what the concentration-based interactive already models.
+### END
+
+### wolff-pucker-2025-black-pigmentation   [DRAFT — please review]
+title: Dark side of anthocyanin pigmentation
+authors: Wolff K, Pucker B
+year: 2025
+journal: Plant Biology, 27(6):935-947
+doi: 10.1111/plb.70047
+open_access: yes
+related_specimen: roselia
+connection: Grounds Shiny Roselia's blue-to-black shift. This review confirms true black pigment doesn't exist in flowers at all — "black" plant organs are, in every studied case, extremely dense anthocyanin read as black by the eye. Critically, high anthocyanin alone isn't sufficient in every species studied; some also require repressing a competing pathway (flavone biosynthesis) at the same time. That two-part structure (add pigment AND suppress a competitor) is the same shape as the third slider already theorized for the blue arm, extended one step further for black.
+### END
+
+
 
 

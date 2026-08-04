@@ -27,8 +27,20 @@ const TRAITS = {
     specimenName: "roselia",
     manuscriptId: "lu-2021-rose-anthocyanin",
     interactionType: "expression",
-    explainer:
-      "The real study behind this case isn't about inheritance at all \u2014 it's a gene-expression comparison between a light-pink rose and its natural deep-pink mutant. Pigment intensity turned out to depend on three coordinated pathway stages, not one gene switching on or off. That's a better real-world model for Roselia than a Punnett square: a Punnett square explains variation between different individuals, but Roselia's actual detail \u2014 one plant, two different-colored flowers at once \u2014 needs a same-individual explanation. Gene expression, not allele segregation, is what does that.",
+    summary: [
+      {
+        tag: "Abstract",
+        text: "Lu et al. (2021) compared a light-pink miniature rose to its natural deep-pink mutant using paired metabolomics and transcriptomics. Deeper pigmentation tracked coordinated upregulation across three pathway stages \u2014 biosynthesis, stabilization, and vacuolar transport \u2014 rather than a single gene switching on or off.",
+      },
+      {
+        tag: "Hypothesis",
+        text: "If Roselia's bloom intensity runs on the same real mechanism, tuning expression across these same three stages should reproduce the same pale-to-deep gradient.",
+      },
+      {
+        tag: "Result",
+        text: "A gene-expression model explains variation within one individual \u2014 exactly what Roselia's own two-flower, two-color design calls for. A Punnett square only explains variation between separate individuals from a cross, which makes it the wrong tool here.",
+      },
+    ],
   },
   waxiness: {
     label: "Cacnea's Water-Storage Tissue",
@@ -164,7 +176,18 @@ export default function CrossPollination() {
           </Link>
         </div>
 
-        <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", marginBottom: "24px", maxWidth: "680px" }}>{trait.explainer}</p>
+        {trait.summary ? (
+          <div style={{ display: "grid", gap: "10px", marginBottom: "24px", maxWidth: "680px" }}>
+            {trait.summary.map((s) => (
+              <p key={s.tag} style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
+                <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>{s.tag}</span>
+                {s.text}
+              </p>
+            ))}
+          </div>
+        ) : (
+          <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", marginBottom: "24px", maxWidth: "680px" }}>{trait.explainer}</p>
+        )}
 
         {trait.interactionType === "expression" ? (
           <GeneExpressionConsole />
