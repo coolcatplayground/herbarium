@@ -142,4 +142,16 @@ related_specimen: roselia
 connection: Real roses genetically lack F3'5'H, the enzyme needed to make delphinidin (the blue-shifting anthocyanin) — this is why no natural rose has ever been blue. This paper is the real grounding for the speculative "blue arm" theory on Roselia's Case File: getting an actual blue shift took inserting a foreign F3'5'H gene AND raising vacuolar pH via NHX genes together, not one change alone. Worth being clear this paper doesn't study Roselia or anything like it — it's cited here only for the real mechanism the theory borrows.
 ### END
 
+### luo-2017-rose-anthocyanin-degradation   [DRAFT — please review]
+title: Characterization of Active Anthocyanin Degradation in the Petals of Rosa chinensis and Brunfelsia calycina Reveals the Effect of Gallated Catechins on Pigment Maintenance
+authors: Luo H, Deng S, Fu W, Zhang X, Zhang X, Zhang Z, Pang X
+year: 2017
+journal: International Journal of Molecular Sciences, 18(4):699
+doi: 10.3390/ijms18040699
+open_access: yes
+related_specimen: roselia
+connection: The third slider in Roselia's "theorizing the blue arm" section. Real rose petals actively suppress an anthocyanin-degrading peroxidase via high tannin content (specifically ECG and GCG) — part of why cut roses hold their color so long. Real breeders have only ever tried to ADD pigment or shift pH, never to REMOVE the competing red pigment, because that runs directly against the entire goal of rose breeding. Worth being clear the paper shows general degradation exists and is naturally suppressed — it does NOT show this degradation is selective for red-type anthocyanins over blue-type ones. Treating it as selectively clearing red while sparing delphinidin is this theory's own extra reach past what's actually demonstrated.
+### END
+
+
 

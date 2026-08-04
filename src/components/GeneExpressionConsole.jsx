@@ -37,12 +37,19 @@ const DEEP_RED = "#8c1f3a";
 // being a clean blue. Modeling a fully saturated blue would overstate what
 // the real mechanism actually produces.
 const DEEP_BLUE = "#5b4b8a";
+// A genuinely clean blue, distinct from the muddy DEEP_BLUE above — only
+// reachable in this model by also clearing the competing red pigment via
+// the decomposition slider, since that's the one lever no real rose paper
+// actually tests (real breeders want MORE color, not a degradation pathway
+// that removes it).
+const TRUE_BLUE = "#2f4fa0";
 
 export default function GeneExpressionConsole() {
   const [levels, setLevels] = useState({ biosynthesis: 70, stabilization: 50, transport: 40 });
   const [theoryOpen, setTheoryOpen] = useState(false);
   const [delphinidin, setDelphinidin] = useState(0);
   const [phShift, setPhShift] = useState(0);
+  const [decomposition, setDecomposition] = useState(0);
 
   // Bottleneck model: overall pigment output can't exceed whatever stage is
   // most limiting, softened slightly by the other two stages — a rough
@@ -58,12 +65,17 @@ export default function GeneExpressionConsole() {
 
   // The blue-arm theory reuses the SAME pigment-amount math (intensity) as
   // the real sliders above — the theory isn't a separate system, it's the
-  // same real pathway with two extra, explicitly hypothetical steps bolted
-  // on, matching how Lee et al. 2025 needed to add F3'5'H AND pH-shifting
-  // NHX genes together, not either alone.
-  const hueTarget = lerpColor(DEEP_RED, DEEP_BLUE, delphinidin / 100);
+  // same real pathway with hypothetical steps bolted on, matching how Lee
+  // et al. 2025 needed to add F3'5'H AND pH-shifting NHX genes together,
+  // not either alone.
+  const mutedHue = lerpColor(DEEP_RED, DEEP_BLUE, delphinidin / 100);
+  // Decomposition only matters once there's actual blue pigment to reveal —
+  // clearing red pigment with nothing behind it just gets back to pale, not
+  // blue, so this is gated by delphinidin rather than acting alone.
+  const cleanupFactor = (decomposition / 100) * (delphinidin / 100);
+  const hueTarget = lerpColor(mutedHue, TRUE_BLUE, cleanupFactor);
   const blueSwatchColor = lerpColor(PALE, hueTarget, intensity / 100);
-  const phTooLow = delphinidin > 40 && phShift < 40;
+  const phTooLow = delphinidin > 40 && phShift < 40 && decomposition < 40;
 
   return (
     <div className="plate-frame" style={{ padding: "24px 26px" }}>
@@ -145,13 +157,16 @@ export default function GeneExpressionConsole() {
           <p className="eyebrow" style={{ marginBottom: "8px" }}>Speculation, Clearly Labeled</p>
           <p style={{ fontSize: "0.88rem", color: "var(--ink-soft)", marginBottom: "16px" }}>
             No manuscript here studies Roselia's actual blue arm &mdash; this is theorizing, built on
-            a real, separate fact: real roses genetically lack <em>F3'5'H</em>, the enzyme needed to
-            make delphinidin, the anthocyanin most responsible for blue/violet color. No natural rose
-            has ever been blue because of this single missing gene. Scientists who engineered a
-            blue-ish rose had to insert a foreign F3'5'H gene <em>and</em> separately raise vacuolar
-            pH via NHX genes &mdash; neither change alone was enough. The two sliders below are that
-            same two-part real mechanism, treated as hypothetical additions layered on top of the
-            same real pathway modeled above.
+            real, separate facts. Real roses genetically lack <em>F3'5'H</em>, the enzyme needed to
+            make delphinidin, the anthocyanin most responsible for blue/violet color; engineering a
+            blue-ish rose took inserting a foreign F3'5'H gene <em>and</em> separately raising
+            vacuolar pH via NHX genes, neither alone being enough. But even that real result reads as
+            muddy lavender, not clean blue, because residual red pigment stays mixed in. There's a
+            third lever no real rose paper tests, because no breeder wants it: real roses actively
+            suppress an anthocyanin-degrading enzyme via high tannin content, which is part of why
+            cut roses hold color so long. Reversing that &mdash; actively clearing the competing red
+            pigment &mdash; is the one thing a breeding program would never try, since it fights the
+            entire goal of keeping color, not losing it.
           </p>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 200px", gap: "32px", alignItems: "start" }}>
@@ -190,17 +205,44 @@ export default function GeneExpressionConsole() {
                   onChange={(e) => setPhShift(Number(e.target.value))}
                   style={{ width: "100%" }}
                 />
+              </div>
+
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                  <label htmlFor="decomposition" style={{ fontWeight: 600, fontSize: "0.9rem" }}>
+                    Anthocyanin Decomposition Pathway <span className="mono" style={{ fontWeight: 400, fontSize: "0.72rem", color: "var(--ink-soft)" }}>(ADE/POD activity &mdash; naturally suppressed in real roses)</span>
+                  </label>
+                  <span className="mono" style={{ fontSize: "0.8rem", color: "var(--specimen-red)" }}>{decomposition}%</span>
+                </div>
+                <input
+                  id="decomposition"
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={decomposition}
+                  onChange={(e) => setDecomposition(Number(e.target.value))}
+                  style={{ width: "100%" }}
+                />
+                <p style={{ fontSize: "0.76rem", color: "var(--ink-soft)", margin: "6px 0 0" }}>
+                  Models what happens if Roselia's blue arm had much lower tannin content, freeing
+                  this enzyme to actively clear pigment. The cited paper doesn't show this is
+                  selective for red-type anthocyanins over blue-type &mdash; treating it as clearing
+                  mainly the competing red, leaving delphinidin intact, is this theory's own reach
+                  past what's actually demonstrated.
+                </p>
                 {phTooLow && (
                   <p style={{ fontSize: "0.76rem", color: "var(--specimen-red)", margin: "6px 0 0" }}>
-                    Delphinidin without a matching pH shift reads muddy violet-red, not blue &mdash;
-                    real engineered blue roses needed both changes together.
+                    Delphinidin without a matching pH shift or decomposition reads muddy violet-red,
+                    not blue &mdash; real engineered blue roses needed pH and pigment addition
+                    together, and even then couldn't clear the leftover red the way this third lever
+                    theorizes.
                   </p>
                 )}
               </div>
 
               <p style={{ fontSize: "0.78rem", color: "var(--ink-soft)", margin: 0 }}>
                 Two honest ways this could actually work in Roselia, neither observed in any real
-                rose: (1) tissue-specific activation of a gene no real rose carries, switched on only
+                rose: (1) tissue-specific activation of genes no real rose carries, switched on only
                 in the blue arm, or (2) Roselia isn't one genotype at all but a graft chimera &mdash;
                 two genetically distinct plant lineages fused into one body, each running its own
                 real chemistry. Real botany has a documented example of exactly that: +Laburnocytisus
@@ -223,6 +265,9 @@ export default function GeneExpressionConsole() {
               />
               <p className="mono" style={{ fontSize: "0.78rem", textAlign: "center", margin: 0 }}>
                 Theorized blue arm
+              </p>
+              <p className="mono" style={{ fontSize: "0.68rem", color: "var(--specimen-red)", textAlign: "center", margin: 0 }}>
+                {cleanupFactor > 0.6 ? "Reads as clean blue" : delphinidin > 40 ? "Reads as muddy violet-red" : "Still pink"}
               </p>
             </div>
           </div>
