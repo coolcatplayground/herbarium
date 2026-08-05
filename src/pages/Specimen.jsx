@@ -17,6 +17,7 @@ import { loadHabitatOverrides } from "../data/habitatOverridesLoader";
 import { TypeIcon } from "../components/TypeIcon";
 import PhenologyTimeline from "../components/PhenologyTimeline";
 import EvolutionTree from "../components/EvolutionTree";
+import graftingCases from "../data/graftingCases";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const STAT_LABELS = {
@@ -36,6 +37,7 @@ export default function Specimen() {
   const [notesMap, setNotesMap] = useState({});
   const [habitatOverrides, setHabitatOverrides] = useState({});
   const [error, setError] = useState(null);
+  const [showShiny, setShowShiny] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -93,6 +95,8 @@ export default function Specimen() {
   const habitat = getHabitat(secondaryType, habitatOverrides[pokemon.name]);
   const sprite =
     pokemon.sprites.other?.["official-artwork"]?.front_default || pokemon.sprites.front_default;
+  const shinySprite = pokemon.sprites.other?.["official-artwork"]?.front_shiny;
+  const displaySprite = showShiny && shinySprite ? shinySprite : sprite;
 
   return (
     <div className="container" style={{ padding: "40px 24px 100px" }}>
@@ -125,8 +129,48 @@ export default function Specimen() {
               marginBottom: "14px",
             }}
           >
-            {sprite && <img src={sprite} alt={pokemon.name} width={200} height={200} />}
+            {displaySprite && <img src={displaySprite} alt={pokemon.name} width={200} height={200} />}
           </div>
+          {shinySprite && (
+            <div style={{ display: "flex", gap: "6px", marginBottom: "14px" }}>
+              <button
+                onClick={() => setShowShiny(false)}
+                className="mono"
+                style={{
+                  flex: 1,
+                  padding: "6px 0",
+                  fontSize: "0.7rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.04em",
+                  cursor: "pointer",
+                  border: "1px solid var(--paper-shadow)",
+                  borderRadius: "999px",
+                  background: !showShiny ? "var(--botanical-green-deep)" : "var(--paper-light)",
+                  color: !showShiny ? "var(--paper-light)" : "var(--ink-soft)",
+                }}
+              >
+                Normal
+              </button>
+              <button
+                onClick={() => setShowShiny(true)}
+                className="mono"
+                style={{
+                  flex: 1,
+                  padding: "6px 0",
+                  fontSize: "0.7rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.04em",
+                  cursor: "pointer",
+                  border: "1px solid var(--paper-shadow)",
+                  borderRadius: "999px",
+                  background: showShiny ? "var(--specimen-red)" : "var(--paper-light)",
+                  color: showShiny ? "var(--paper-light)" : "var(--ink-soft)",
+                }}
+              >
+                Shiny
+              </button>
+            </div>
+          )}
           <div style={{ display: "flex", gap: "6px", marginBottom: "8px", flexWrap: "wrap" }}>
             {pokemon.types.map((t) => (
               <span
@@ -184,6 +228,31 @@ export default function Specimen() {
               </p>
             )}
           </div>
+
+          {graftingCases[pokemon.name] && (
+            <div className="plate-frame" style={{ padding: "18px 20px", marginTop: "16px", borderStyle: "dashed" }}>
+              <p className="eyebrow" style={{ marginBottom: "8px" }}>Case Study</p>
+              <p style={{ margin: "0 0 10px" }}>
+                This specimen's {graftingCases[pokemon.name].label.toLowerCase()} is the subject of
+                a full case file on the Grafting Bench &mdash; real research, checked against a
+                worked interactive model.
+              </p>
+              <Link
+                to={`/grafting-bench?case=${graftingCases[pokemon.name].caseKey}`}
+                className="mono"
+                style={{
+                  fontSize: "0.72rem",
+                  color: "var(--specimen-red)",
+                  textDecoration: "none",
+                  border: "1px solid var(--specimen-red)",
+                  borderRadius: "999px",
+                  padding: "4px 12px",
+                }}
+              >
+                &rarr; Case {graftingCases[pokemon.name].caseNumber}: {graftingCases[pokemon.name].label}
+              </Link>
+            </div>
+          )}
 
           <div style={{ marginTop: "26px" }}>
             <p className="eyebrow" style={{ marginBottom: "10px" }}>Measurements</p>

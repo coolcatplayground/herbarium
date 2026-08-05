@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import PunnettSquare from "../components/PunnettSquare";
 import GeneExpressionConsole from "../components/GeneExpressionConsole";
 import { fetchPokemon } from "../api/pokeapi";
@@ -65,7 +65,11 @@ function genotypeString(choice, upper, lower) {
 
 export default function GraftingBench() {
   useDocumentTitle("The Grafting Bench");
-  const [traitKey, setTraitKey] = useState("pigment");
+  const [searchParams] = useSearchParams();
+  const requestedCase = searchParams.get("case");
+  const [traitKey, setTraitKey] = useState(
+    requestedCase && TRAITS[requestedCase] ? requestedCase : "pigment"
+  );
   const [parentAChoice, setParentAChoice] = useState("heterozygous");
   const [parentBChoice, setParentBChoice] = useState("homozygous recessive");
   const [specimenIds, setSpecimenIds] = useState({});
