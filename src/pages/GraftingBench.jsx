@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import PunnettSquare from "../components/PunnettSquare";
 import GeneExpressionConsole from "../components/GeneExpressionConsole";
+import PollinatorResistanceRoster from "../components/PollinatorResistanceRoster";
 import { fetchPokemon } from "../api/pokeapi";
 import { loadManuscripts } from "../data/manuscriptsLoader";
 import useDocumentTitle from "../hooks/useDocumentTitle";
@@ -52,6 +53,27 @@ const TRAITS = {
     blendLabel: "Moderate succulence (blended)",
     explainer:
       "Cacnea's own field note ties its desert survival to succulent parenchyma cells built for water retention. Real succulence often behaves as a dosage-dependent trait: a heterozygote produces roughly half the water-storage tissue of a homozygous-heavy individual, showing up as an intermediate build rather than a simple present/absent trait.",
+  },
+  toxinResistance: {
+    label: "Vileplume's Toxic Pollen",
+    caseNumber: "03",
+    specimenName: "vileplume",
+    manuscriptId: "haas-2023-cyp336-detox",
+    interactionType: "resistance",
+    summary: [
+      {
+        tag: "Premise",
+        text: "Vileplume's pollen is framed, in-universe, as toxic enough to be genuinely dangerous \u2014 not just an allergen. Real plants that weaponize their pollen or nectar this way create a hard problem for anything that regularly has to handle it.",
+      },
+      {
+        tag: "Question",
+        text: "Real biology hasn't settled on one universal fix for that problem \u2014 it's found several independent ones. Which of them would something that regularly handled Vileplume's pollen most plausibly evolve?",
+      },
+      {
+        tag: "Approach",
+        text: "Rather than one theory, this case is a roster: three real, independently-evolved resistance strategies, each grounded in its own real study, laid out side by side below.",
+      },
+    ],
   },
 };
 
@@ -121,9 +143,10 @@ export default function GraftingBench() {
         <p className="eyebrow">The Rootstock &mdash; Real Botany</p>
         <h2 style={{ fontSize: "var(--step3)" }}>Case Files</h2>
         <p style={{ color: "var(--ink-soft)" }}>
-          Two open case files, each built on a real specimen already in the Herbarium and a real,
-          open-access paper on that exact trait &mdash; what would happen if a detail from each
-          one's own field note actually followed simple Mendelian inheritance?
+          Three open case files, each built on a real specimen already in the Herbarium and real,
+          open-access research &mdash; two ask what would happen if a detail from a specimen's own
+          field note actually followed simple Mendelian inheritance, and the third is a roster of
+          real strategies real biology has found for a real problem.
         </p>
       </section>
 
@@ -190,6 +213,8 @@ export default function GraftingBench() {
 
         {trait.interactionType === "expression" ? (
           <GeneExpressionConsole />
+        ) : trait.interactionType === "resistance" ? (
+          <PollinatorResistanceRoster manuscripts={manuscripts} />
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: "40px", alignItems: "start" }}>
             <div style={{ display: "grid", gap: "18px" }}>
@@ -223,6 +248,7 @@ export default function GraftingBench() {
           </div>
         )}
 
+        {trait.interactionType !== "resistance" && (
         <div style={{ marginTop: "24px", padding: "16px 18px", background: "var(--paper)", borderRadius: "10px", border: "1px solid var(--paper-shadow)" }}>
           <p className="eyebrow" style={{ marginBottom: "8px" }}>Supporting Literature</p>
           {citation ? (
@@ -257,6 +283,7 @@ export default function GraftingBench() {
             <p className="mono" style={{ fontSize: "0.8rem", color: "var(--ink-soft)", margin: 0 }}>Loading citation&hellip;</p>
           )}
         </div>
+        )}
 
         <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid var(--paper-line)" }}>
           <p className="eyebrow" style={{ marginBottom: "8px" }}>From the Field Journal</p>
@@ -268,6 +295,15 @@ export default function GraftingBench() {
               most restrictive step, not the average of all of them, which is exactly why the real
               paper singles out CHS as "the primary rate-limiting enzyme" rather than treating all
               fifteen differentially expressed genes as equally important.
+            </p>
+          ) : trait.interactionType === "resistance" ? (
+            <p style={{ margin: 0 }}>
+              None of these three strategies is "the" answer &mdash; they're independent solutions
+              that different insect lineages arrived at separately, sometimes to the very same toxin
+              class. A real community of pollinators and herbivores around one toxic plant can easily
+              contain several of these strategies at once, running side by side in different species,
+              which is closer to how real chemical ecology actually looks than a single universal fix
+              would be.
             </p>
           ) : (
             <p style={{ margin: 0 }}>

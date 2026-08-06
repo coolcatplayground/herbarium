@@ -175,6 +175,39 @@ related_specimen: roselia
 connection: Grounds Shiny Roselia's blue-to-black shift. This review confirms true black pigment doesn't exist in flowers at all — "black" plant organs are, in every studied case, extremely dense anthocyanin read as black by the eye. Critically, high anthocyanin alone isn't sufficient in every species studied; some also require repressing a competing pathway (flavone biosynthesis) at the same time. That two-part structure (add pigment AND suppress a competitor) is the same shape as the third slider already theorized for the blue arm, extended one step further for black.
 ### END
 
+### haas-2023-cyp336-detox   [DRAFT — please review]
+title: A conserved hymenopteran-specific family of cytochrome P450s protects bee pollinators from toxic nectar alkaloids
+authors: Haas J, Beck E, Troczka BJ, Hayward A, Hertlein G, Zaworra M, Lueke B, Buer B, Maiwald F, Kohler M, Bass C, Nauen R
+year: 2023
+journal: Science Advances, 9(15):eadg0885
+doi: 10.1126/sciadv.adg0885
+open_access: yes
+related_specimen: vileplume
+connection: The "Enzymatic Detoxification" strategy on Vileplume's Case File (Grafting Bench). Real bees and other Hymenoptera across 281 million years of divergence independently kept the same family of P450 enzymes (CYP336) for the same job — breaking down toxic alkaloids in nectar and pollen before they can act. Worth being clear this paper studies alkaloids specifically and says nothing about Vileplume or any fictional toxin — it's cited only for the real mechanism the Case File's first strategy borrows.
+### END
+
+### dobler-2012-atpase-convergence   [DRAFT — please review]
+title: Community-wide convergent evolution in insect adaptation to toxic cardenolides by substitutions in the Na,K-ATPase
+authors: Dobler S, Dalla S, Wagschal V, Agrawal AA
+year: 2012
+journal: Proceedings of the National Academy of Sciences, 109(32):13040-13045
+doi: 10.1073/pnas.1202111109
+open_access: yes
+related_specimen: vileplume
+connection: The "Target-Site Insensitivity" strategy on Vileplume's Case File (Grafting Bench). Screening insects across six orders, this paper found the same handful of amino-acid substitution sites in the sodium pump (Na+/K+-ATPase) reused again and again — convergent evolution arriving at the same fix independently rather than through shared ancestry, which is exactly the "redesign the lock" strategy the Case File presents as its second option.
+### END
+
+### agrawal-2021-monarch-sequestration-cost   [DRAFT — please review]
+title: Cardenolides, toxicity, and the costs of sequestration in the coevolutionary interaction between monarchs and milkweeds
+authors: Agrawal AA, Böröczky K, Haribal M, Hastings AP, White RA, Jiang RW, Duplais C
+year: 2021
+journal: Proceedings of the National Academy of Sciences, 118(16):e2024463118
+doi: 10.1073/pnas.2024463118
+open_access: yes
+related_specimen: vileplume
+connection: The "Sequestration" strategy on Vileplume's Case File (Grafting Bench). Monarch caterpillars selectively sequester specific milkweed cardenolides (and convert a more dangerous one, voruscharin, into safer stored forms) rather than breaking every toxin down or blocking it at the target — but this paper's real contribution is showing that strategy isn't free: heavier sequestration directly predicted slower caterpillar growth, a real measured cost the Case File's third strategy is honest about.
+### END
+
 
 
 
