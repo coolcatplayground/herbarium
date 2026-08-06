@@ -46,9 +46,9 @@ const STRATEGIES = [
           "Haas et al.'s real subjects are Hymenoptera \u2014 bees, wasps, and their relatives \u2014 and Beedrill is Kanto's most direct expy of that lineage. Its whole design centers on a stinger built for offensively handling toxins, which fits an active detox profile better than a purely defensive one.",
         cohabitat: {
           location: "Kanto Route 24",
-          games: "Pok\u00e9mon Red & Blue",
+          games: "Pok\u00e9mon Red, Blue & Yellow (1996/1998) \u2014 Generation I",
           companions: ["weedle", "oddish"],
-          note: "Weedle (Beedrill's pre-evolution) and Oddish both appear as wild tall-grass encounters on Route 24, per the games' own encounter tables \u2014 a checkable in-game detail, not a guess.",
+          note: "The very first route in the series where these two appear together: Weedle (Beedrill's pre-evolution) and Oddish are both wild tall-grass encounters on Route 24 in the original Gen I games, per the games' own encounter tables \u2014 a checkable detail, not a guess.",
         },
       },
     ],
@@ -62,15 +62,15 @@ const STRATEGIES = [
     summary: [
       {
         tag: "Mechanism",
-        text: "The toxin's actual binding target \u2014 here, the sodium pump (Na+/K+-ATPase) that cardenolides jam \u2014 accumulates amino acid substitutions that block the toxin from docking, without losing the pump's own normal job.",
+        text: "The toxin works by grabbing onto one specific spot on a protein the insect's cells depend on \u2014 here, the sodium pump that keeps nerve and muscle cells firing correctly. That's a lock-and-key fit: the toxin is shaped to grab that one spot. Insects that happened to have a slightly different shape right at that one spot \u2014 close enough that the pump still does its normal job, different enough that the toxin can't grab on \u2014 survived exposure that would otherwise kill them. Over generations, that slightly-different shape spread. The pump keeps working exactly as before; it's just no longer a lock the toxin's key fits.",
       },
       {
         tag: "Real Evidence",
-        text: "Dobler et al. (2012) screened insects across six orders and found the same handful of substitution sites reused again and again \u2014 convergent evolution converging on the same fix independently, not one shared ancestor's trick.",
+        text: "Dobler et al. (2012) screened insects across six different orders and found the same handful of shape-changing spots reused again and again \u2014 separate insect lineages independently landing on the same fix, not one shared ancestor passing it down.",
       },
       {
         tag: "Trade-off",
-        text: "The toxin is still absorbed and circulating; insensitivity only protects the one target site. Anything toxic through a different mechanism gets straight through.",
+        text: "This only closes off the one lock the toxin was using. The toxin is still absorbed into the body and still circulating \u2014 if it can harm the insect through any other route, insensitivity at this one site does nothing to stop it.",
       },
     ],
     examples: [
@@ -79,7 +79,12 @@ const STRATEGIES = [
         pokemonName: "butterfree",
         rationale:
           "The real animal most associated with target-site insensitivity to plant toxins is, itself, a butterfly \u2014 the monarch. Butterfree is the direct Kanto analogue, and unlike Beedrill or Venomoth it's built around drinking nectar directly rather than stinging or storing, which fits a strategy that lets the toxin circulate rather than breaking it down or hoarding it.",
-        cohabitat: null,
+        cohabitat: {
+          location: "Kanto Route 24",
+          games: "Pok\u00e9mon Red, Blue & Yellow (1996/1998) \u2014 Generation I",
+          companions: ["caterpie", "oddish"],
+          note: "The very first route in the series where these two appear together: Caterpie (Butterfree's pre-evolution) and Oddish are both wild tall-grass encounters on Route 24 in the original Gen I games, per the games' own encounter tables.",
+        },
       },
     ],
   },
@@ -111,9 +116,9 @@ const STRATEGIES = [
           "A poison-type moth that stores toxins defensively is exactly the sequestration shape \u2014 Venomoth's own Pok\u00e9dex flavor text already describes its wing scales as toxic to the touch, which reads as stored, weaponized toxin rather than a detox byproduct.",
         cohabitat: {
           location: "Kanto Route 24",
-          games: "Pok\u00e9mon Red & Blue",
+          games: "Pok\u00e9mon Red, Blue & Yellow (1996/1998) \u2014 Generation I",
           companions: ["venonat", "oddish"],
-          note: "Venonat (Venomoth's pre-evolution) and Oddish both appear as wild tall-grass encounters on Route 24, per the games' own encounter tables.",
+          note: "The very first route in the series where these two appear together: Venonat (Venomoth's pre-evolution) and Oddish are both wild tall-grass encounters on Route 24 in the original Gen I games, per the games' own encounter tables.",
         },
       },
       {
@@ -123,7 +128,7 @@ const STRATEGIES = [
           "A second, independent real-world pattern match rather than a coincidence: Dustox is a separate Bug/Poison moth line from a different region (Hoenn) that converges on the same design logic as Venomoth \u2014 poison-type moth, toxin worn as a defense rather than processed away.",
         cohabitat: {
           location: null,
-          note: "Dustox's own pre-evolution, Wurmple, isn't confirmed to share a route with Oddish in the games \u2014 this one is included for the strategy fit alone, not an in-game distribution claim.",
+          note: "Unlike Beedrill, Butterfree, and Venomoth's pre-evolutions, Dustox's own pre-evolution, Wurmple, doesn't cohabit with Oddish in any generation checked so far \u2014 Wurmple is Hoenn-native (introduced in Ruby & Sapphire) and Oddish's Hoenn routes and Wurmple's don't overlap. No \"first shared route\" exists to point to here, so none is claimed \u2014 Dustox is included for the strategy fit alone.",
         },
       },
     ],

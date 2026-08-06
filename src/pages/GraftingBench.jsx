@@ -13,7 +13,7 @@ import useDocumentTitle from "../hooks/useDocumentTitle";
 // without duplicating fetch/cache logic.
 const RESISTANCE_EXAMPLE_NAMES = [
   "beedrill", "weedle",
-  "butterfree",
+  "butterfree", "caterpie",
   "venomoth", "venonat",
   "dustox",
   "oddish",
