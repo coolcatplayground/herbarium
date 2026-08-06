@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { spriteUrl } from "../api/pokeapi";
 
 // Three real, independently-evolved strategies insects use against toxic
 // plant compounds. None of the three cited papers studies Vileplume or
@@ -9,6 +10,13 @@ import { useState } from "react";
 // other two) — that's honest: these are three real answers to the general
 // problem of "a pollinator needs to survive a plant's toxic chemistry,"
 // not three papers about one toxin.
+//
+// "examples" below are Pokémon-world pattern matches, not the specimen
+// this Case File is built on — Vileplume itself isn't bound to any one
+// strategy. Where a cohabitat claim is made, it's checked directly against
+// the games' own wild-encounter tables (see cohabitat.note on each), not
+// invented. Where no such claim is made, the example is included for
+// strategy fit alone and says so.
 const STRATEGIES = [
   {
     key: "detox",
@@ -28,6 +36,20 @@ const STRATEGIES = [
       {
         tag: "Trade-off",
         text: "Detox enzymes are metabolically expensive to run continuously and only work on toxins the enzyme has evolved to recognize \u2014 a new toxin structure can slip past entirely.",
+      },
+    ],
+    examples: [
+      {
+        name: "Beedrill",
+        pokemonName: "beedrill",
+        rationale:
+          "Haas et al.'s real subjects are Hymenoptera \u2014 bees, wasps, and their relatives \u2014 and Beedrill is Kanto's most direct expy of that lineage. Its whole design centers on a stinger built for offensively handling toxins, which fits an active detox profile better than a purely defensive one.",
+        cohabitat: {
+          location: "Kanto Route 24",
+          games: "Pok\u00e9mon Red & Blue",
+          companions: ["weedle", "oddish"],
+          note: "Weedle (Beedrill's pre-evolution) and Oddish both appear as wild tall-grass encounters on Route 24, per the games' own encounter tables \u2014 a checkable in-game detail, not a guess.",
+        },
       },
     ],
   },
@@ -51,6 +73,15 @@ const STRATEGIES = [
         text: "The toxin is still absorbed and circulating; insensitivity only protects the one target site. Anything toxic through a different mechanism gets straight through.",
       },
     ],
+    examples: [
+      {
+        name: "Butterfree",
+        pokemonName: "butterfree",
+        rationale:
+          "The real animal most associated with target-site insensitivity to plant toxins is, itself, a butterfly \u2014 the monarch. Butterfree is the direct Kanto analogue, and unlike Beedrill or Venomoth it's built around drinking nectar directly rather than stinging or storing, which fits a strategy that lets the toxin circulate rather than breaking it down or hoarding it.",
+        cohabitat: null,
+      },
+    ],
   },
   {
     key: "sequestration",
@@ -70,6 +101,30 @@ const STRATEGIES = [
       {
         tag: "Trade-off",
         text: "Sequestration isn't free \u2014 the 2021 study is explicit that heavier sequestration directly predicted slower caterpillar growth. Carrying the toxin costs something, even successfully stored.",
+      },
+    ],
+    examples: [
+      {
+        name: "Venomoth",
+        pokemonName: "venomoth",
+        rationale:
+          "A poison-type moth that stores toxins defensively is exactly the sequestration shape \u2014 Venomoth's own Pok\u00e9dex flavor text already describes its wing scales as toxic to the touch, which reads as stored, weaponized toxin rather than a detox byproduct.",
+        cohabitat: {
+          location: "Kanto Route 24",
+          games: "Pok\u00e9mon Red & Blue",
+          companions: ["venonat", "oddish"],
+          note: "Venonat (Venomoth's pre-evolution) and Oddish both appear as wild tall-grass encounters on Route 24, per the games' own encounter tables.",
+        },
+      },
+      {
+        name: "Dustox",
+        pokemonName: "dustox",
+        rationale:
+          "A second, independent real-world pattern match rather than a coincidence: Dustox is a separate Bug/Poison moth line from a different region (Hoenn) that converges on the same design logic as Venomoth \u2014 poison-type moth, toxin worn as a defense rather than processed away.",
+        cohabitat: {
+          location: null,
+          note: "Dustox's own pre-evolution, Wurmple, isn't confirmed to share a route with Oddish in the games \u2014 this one is included for the strategy fit alone, not an in-game distribution claim.",
+        },
       },
     ],
   },
@@ -133,7 +188,49 @@ function Diagram({ type }) {
   );
 }
 
-export default function PollinatorResistanceRoster({ manuscripts }) {
+function SpeciesChip({ name, pokemonName, spriteIds }) {
+  const id = spriteIds[pokemonName];
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "2px", width: "64px" }}>
+      {id ? (
+        <img src={spriteUrl(id)} alt={name} width={48} height={48} style={{ objectFit: "contain" }} />
+      ) : (
+        <div style={{ width: 48, height: 48 }} />
+      )}
+      <span className="mono" style={{ fontSize: "0.62rem", color: "var(--ink-soft)", textAlign: "center" }}>{name}</span>
+    </div>
+  );
+}
+
+function CohabitatPanel({ cohabitat, spriteIds }) {
+  if (!cohabitat) return null;
+
+  if (!cohabitat.location) {
+    // No verified shared route — say so plainly instead of implying one.
+    return (
+      <div style={{ marginTop: "12px", padding: "12px 14px", background: "var(--paper)", borderRadius: "10px", border: "1px dashed var(--paper-shadow)" }}>
+        <p className="eyebrow" style={{ fontSize: "0.65rem", marginBottom: "4px" }}>In-Game Distribution</p>
+        <p style={{ fontSize: "0.8rem", color: "var(--ink-soft)", margin: 0 }}>{cohabitat.note}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ marginTop: "12px", padding: "14px 16px", background: "var(--paper)", borderRadius: "10px", border: "1px solid var(--paper-shadow)" }}>
+      <p className="eyebrow" style={{ fontSize: "0.65rem", marginBottom: "8px" }}>
+        In-Game Distribution &mdash; {cohabitat.location} <span style={{ color: "var(--ink-soft)", fontWeight: 400 }}>({cohabitat.games})</span>
+      </p>
+      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginBottom: "8px" }}>
+        {cohabitat.companions.map((n) => (
+          <SpeciesChip key={n} name={n[0].toUpperCase() + n.slice(1)} pokemonName={n} spriteIds={spriteIds} />
+        ))}
+      </div>
+      <p style={{ fontSize: "0.78rem", color: "var(--ink-soft)", margin: 0 }}>{cohabitat.note}</p>
+    </div>
+  );
+}
+
+export default function PollinatorResistanceRoster({ manuscripts, spriteIds = {} }) {
   const [activeKey, setActiveKey] = useState("detox");
   const active = STRATEGIES.find((s) => s.key === activeKey);
   const citation = manuscripts[active.manuscriptId];
@@ -206,6 +303,34 @@ export default function PollinatorResistanceRoster({ manuscripts }) {
         </div>
       </div>
 
+      <div style={{ marginTop: "22px", paddingTop: "18px", borderTop: "1.5px dashed var(--paper-shadow)" }}>
+        <p className="eyebrow" style={{ marginBottom: "10px", color: "var(--specimen-red)" }}>
+          Who Might Actually Use This &mdash; Pok&eacute;mon-World Examples
+        </p>
+        <div style={{ display: "grid", gap: "16px" }}>
+          {active.examples.map((ex) => (
+            <div
+              key={ex.name}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "72px 1fr",
+                gap: "16px",
+                padding: "14px 16px",
+                border: "1.5px dashed var(--paper-shadow)",
+                borderRadius: "12px",
+              }}
+            >
+              <SpeciesChip name={ex.name} pokemonName={ex.pokemonName} spriteIds={spriteIds} />
+              <div>
+                <p style={{ fontWeight: 700, margin: "0 0 4px", fontSize: "0.95rem" }}>{ex.name}</p>
+                <p style={{ fontSize: "0.85rem", color: "var(--ink-soft)", margin: 0 }}>{ex.rationale}</p>
+                <CohabitatPanel cohabitat={ex.cohabitat} spriteIds={spriteIds} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div style={{ marginTop: "22px", padding: "16px 18px", background: "var(--paper)", borderRadius: "10px", border: "1px solid var(--paper-shadow)" }}>
         <p className="eyebrow" style={{ marginBottom: "8px" }}>Citation for This Strategy</p>
         {citation ? (
@@ -238,15 +363,19 @@ export default function PollinatorResistanceRoster({ manuscripts }) {
 
       <div style={{ marginTop: "22px", paddingTop: "18px", borderTop: "1.5px dashed var(--paper-shadow)" }}>
         <p style={{ fontSize: "0.85rem", color: "var(--ink-soft)", margin: 0 }}>
-          <strong style={{ color: "var(--ink)" }}>Worth being honest about:</strong> none of these
-          three papers studies Vileplume, and they aren't even about the same toxin class as each
-          other (alkaloids for the detox case, cardenolides for the other two). They're cited here
-          only for the real mechanism each one demonstrates. Vileplume's own field note already
-          grounds its pollen in real spore-dispersal biology &mdash; this case asks a different,
-          speculative question: given how toxic that pollen is framed in-universe, which of these
-          three real strategies would something that regularly handled it most plausibly evolve?
+          <strong style={{ color: "var(--ink)" }}>Worth being honest about:</strong> none of the three
+          cited papers studies Vileplume, and they aren't even about the same toxin class as each
+          other (alkaloids for the detox case, cardenolides for the other two). They're cited only
+          for the real mechanism each one demonstrates. The Pok&eacute;mon-world examples above are
+          the same kind of speculation, one level further out \u2014 pattern matches on real design and
+          (where noted) real in-game encounter data, not a claim about what these species actually
+          do. Vileplume's own field note already grounds its pollen in real spore-dispersal biology;
+          this case asks a different, speculative question: given how toxic that pollen is framed
+          in-universe, which of these three real strategies would something that regularly handled it
+          most plausibly evolve?
         </p>
       </div>
     </div>
   );
 }
+

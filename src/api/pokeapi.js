@@ -1,6 +1,14 @@
 const BASE = "https://pokeapi.co/api/v2";
 const cache = new Map();
 
+// Official-artwork sprite URL for a given National Dex id. Shared by every
+// page/component that shows a Pokémon sprite, so there's one source of
+// truth for the sprite path.
+export function spriteUrl(id) {
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+}
+
+
 async function getJSON(url) {
   if (cache.has(url)) return cache.get(url);
   const res = await fetch(url);

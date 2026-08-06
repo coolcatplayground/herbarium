@@ -3,13 +3,21 @@ import { Link, useSearchParams } from "react-router-dom";
 import PunnettSquare from "../components/PunnettSquare";
 import GeneExpressionConsole from "../components/GeneExpressionConsole";
 import PollinatorResistanceRoster from "../components/PollinatorResistanceRoster";
-import { fetchPokemon } from "../api/pokeapi";
+import { fetchPokemon, spriteUrl } from "../api/pokeapi";
 import { loadManuscripts } from "../data/manuscriptsLoader";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 
-function spriteUrl(id) {
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
-}
+// Real-world-analogue and in-game-cohabitation species referenced inside
+// Vileplume's Case File (PollinatorResistanceRoster) but not specimens in
+// their own right — fetched here so the roster can show real sprites
+// without duplicating fetch/cache logic.
+const RESISTANCE_EXAMPLE_NAMES = [
+  "beedrill", "weedle",
+  "butterfree",
+  "venomoth", "venonat",
+  "dustox",
+  "oddish",
+];
 
 // Both traits are grounded in a real specimen's own field note (see
 // public/field-notes.txt) rather than invented placeholders — this is
@@ -100,9 +108,10 @@ export default function GraftingBench() {
   useEffect(() => {
     let cancelled = false;
     Promise.all(
-      Object.values(TRAITS).map((t) =>
-        fetchPokemon(t.specimenName).then((data) => [t.specimenName, data.id])
-      )
+      [
+        ...Object.values(TRAITS).map((t) => t.specimenName),
+        ...RESISTANCE_EXAMPLE_NAMES,
+      ].map((name) => fetchPokemon(name).then((data) => [name, data.id]))
     ).then((pairs) => {
       if (!cancelled) setSpecimenIds(Object.fromEntries(pairs));
     });
@@ -214,7 +223,7 @@ export default function GraftingBench() {
         {trait.interactionType === "expression" ? (
           <GeneExpressionConsole />
         ) : trait.interactionType === "resistance" ? (
-          <PollinatorResistanceRoster manuscripts={manuscripts} />
+          <PollinatorResistanceRoster manuscripts={manuscripts} spriteIds={specimenIds} />
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: "40px", alignItems: "start" }}>
             <div style={{ display: "grid", gap: "18px" }}>
