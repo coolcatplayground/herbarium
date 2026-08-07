@@ -365,21 +365,6 @@ export default function PollinatorResistanceRoster({ manuscripts, spriteIds = {}
           <p className="mono" style={{ fontSize: "0.8rem", color: "var(--ink-soft)", margin: 0 }}>Loading citation&hellip;</p>
         )}
       </div>
-
-      <div style={{ marginTop: "22px", paddingTop: "18px", borderTop: "1.5px dashed var(--paper-shadow)" }}>
-        <p style={{ fontSize: "0.85rem", color: "var(--ink-soft)", margin: 0 }}>
-          <strong style={{ color: "var(--ink)" }}>Worth being honest about:</strong> none of the three
-          cited papers studies Vileplume, and they aren't even about the same toxin class as each
-          other (alkaloids for the detox case, cardenolides for the other two). They're cited only
-          for the real mechanism each one demonstrates. The Pok&eacute;mon-world examples above are
-          the same kind of speculation, one level further out \u2014 pattern matches on real design and
-          (where noted) real in-game encounter data, not a claim about what these species actually
-          do. Vileplume's own field note already grounds its pollen in real spore-dispersal biology;
-          this case asks a different, speculative question: given how toxic that pollen is framed
-          in-universe, which of these three real strategies would something that regularly handled it
-          most plausibly evolve?
-        </p>
-      </div>
     </div>
   );
 }

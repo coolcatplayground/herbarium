@@ -307,12 +307,14 @@ export default function GraftingBench() {
             </p>
           ) : trait.interactionType === "resistance" ? (
             <p style={{ margin: 0 }}>
-              None of these three strategies is "the" answer &mdash; they're independent solutions
-              that different insect lineages arrived at separately, sometimes to the very same toxin
-              class. A real community of pollinators and herbivores around one toxic plant can easily
-              contain several of these strategies at once, running side by side in different species,
-              which is closer to how real chemical ecology actually looks than a single universal fix
-              would be.
+              Truth is, nobody's actually run any of these three tests on Vileplume's own pollen
+              &mdash; we don't know which mechanism a real specimen would need, or even how many
+              different toxins are packed into one flower. It's entirely possible it isn't one clean
+              toxin at all, but a cocktail: something an enzymatic-detox insect could shrug off,
+              sitting right next to a compound only a target-site-insensitive insect could survive.
+              A single real flower producing several structurally different defenses at once isn't
+              far-fetched &mdash; plenty of real plants do exactly that. Filing this case as an open
+              research proposal, not a conclusion. The actual test subject is still out in the field.
             </p>
           ) : (
             <p style={{ margin: 0 }}>
