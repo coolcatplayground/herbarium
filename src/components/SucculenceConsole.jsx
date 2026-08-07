@@ -133,7 +133,7 @@ export default function SucculenceConsole({ spriteIds = {} }) {
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", marginBottom: "20px" }}>
         <div>
-          <p className="eyebrow" style={{ fontSize: "0.7rem", marginBottom: "6px" }}>
+          <p className="eyebrow" style={{ fontSize: "0.9rem", marginBottom: "6px" }}>
             Parenchyma Elasticity &mdash; {storageLabel}
           </p>
           <input
@@ -149,7 +149,7 @@ export default function SucculenceConsole({ spriteIds = {} }) {
           </p>
         </div>
         <div>
-          <p className="eyebrow" style={{ fontSize: "0.7rem", marginBottom: "6px" }}>
+          <p className="eyebrow" style={{ fontSize: "0.9rem", marginBottom: "6px" }}>
             CAM Stomatal Timing &mdash; {timingLabel}
           </p>
           <input
@@ -188,13 +188,13 @@ export default function SucculenceConsole({ spriteIds = {} }) {
         <p className="eyebrow" style={{ marginBottom: "10px" }}>Real Evidence Behind Each Slider</p>
         <div style={{ display: "grid", gap: "10px" }}>
           <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
-            <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>Storage</span>
+            <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>Storage</span>
             Fradera-Soler et al. (2022) reviewed how succulent water-storage tissue depends on cell
             walls that can regulate their own elasticity &mdash; swelling as they fill and collapsing
             as they empty, without the tissue tearing itself apart in the process.
           </p>
           <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
-            <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>Timing</span>
+            <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>Timing</span>
             Tan &amp; Chen (2023) reviewed Crassulacean Acid Metabolism (CAM) as an engineering
             target for drought resistance &mdash; plants that shift CO2 uptake to the cooler night
             hours and keep stomata shut during the day lose dramatically less water to transpiration.
@@ -216,14 +216,14 @@ export default function SucculenceConsole({ spriteIds = {} }) {
             name="Cacturne"
             pokemonName="cacturne"
             family="Cacnea's own evolution"
-            blurb="Already the specimen this whole console is built around \u2014 shown here for the side-by-side. Cacturne's day/night dormancy is Cacnea's Case File material for the CAM-timing half of this console specifically."
+            blurb="Already the specimen this whole console is built around — shown here for the side-by-side. Cacturne's day/night dormancy is Cacnea's Case File material for the CAM-timing half of this console specifically."
             spriteIds={spriteIds}
           />
           <AnalogueCard
             name="Maractus"
             pokemonName="maractus"
             family="Different design lineage"
-            blurb="A second, independently-designed cactus Pok\u00e9mon from a different region and generation entirely. If real succulence keeps re-evolving the same storage-plus-timing combination across 80-plus unrelated plant families, two unrelated cactus Pok\u00e9mon converging on the same design isn't a coincidence worth explaining away \u2014 it's the expected pattern."
+            blurb="A second, independently-designed cactus Pokémon from a different region and generation entirely. If real succulence keeps re-evolving the same storage-plus-timing combination across 80-plus unrelated plant families, two unrelated cactus Pokémon converging on the same design isn't a coincidence worth explaining away — it's the expected pattern."
             spriteIds={spriteIds}
           />
         </div>

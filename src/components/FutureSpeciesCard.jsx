@@ -31,7 +31,7 @@ export default function FutureSpeciesCard({ entry, relatedManuscriptTitle }) {
           <span style={{ fontFamily: "var(--font-display)", fontSize: "2rem", color: "var(--paper-shadow)" }}>?</span>
         </div>
         <div>
-          <p className="eyebrow" style={{ fontSize: "0.65rem", marginBottom: "2px" }}>Concept &mdash; not yet a real specimen</p>
+          <p className="eyebrow" style={{ fontSize: "0.85rem", marginBottom: "2px" }}>Concept &mdash; not yet a real specimen</p>
           <h3 style={{ fontSize: "1.05rem", margin: 0, textTransform: "capitalize" }}>{entry.name}</h3>
           {entry.types.length > 0 && (
             <div style={{ display: "flex", gap: "8px", margin: "4px 0 2px" }}>
@@ -59,7 +59,7 @@ export default function FutureSpeciesCard({ entry, relatedManuscriptTitle }) {
 
       {entry.realBasis && entry.realBasis !== "N/A" && (
         <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--ink-soft)" }}>
-          <span className="eyebrow" style={{ fontSize: "0.65rem", display: "block", marginBottom: "2px" }}>Real Basis</span>
+          <span className="eyebrow" style={{ fontSize: "0.85rem", display: "block", marginBottom: "2px" }}>Real Basis</span>
           {entry.realBasis}
         </p>
       )}

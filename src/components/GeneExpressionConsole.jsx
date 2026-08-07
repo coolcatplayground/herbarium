@@ -161,20 +161,20 @@ export default function GeneExpressionConsole() {
         <div style={{ marginTop: "16px", padding: "22px 24px", border: "1.5px dashed var(--paper-shadow)", borderRadius: "12px" }}>
           <div style={{ display: "grid", gap: "10px", marginBottom: "16px" }}>
             <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
-              <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>Constraint</span>
+              <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>Constraint</span>
               Real roses genetically lack <em>F3'5'H</em>, the enzyme needed to make delphinidin, the
               anthocyanin most responsible for blue/violet color. No natural rose has ever been blue
               because of it.
             </p>
             <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
-              <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>Precedent</span>
+              <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>Precedent</span>
               Engineering a blue-ish rose took inserting a foreign F3'5'H gene <em>and</em>{" "}
               separately raising vacuolar pH via NHX genes &mdash; neither alone was enough, and even
               that real result reads as muddy lavender, not clean blue, because residual red pigment
               stays mixed in.
             </p>
             <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
-              <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>The Missing Lever</span>
+              <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>The Missing Lever</span>
               No real rose paper tests actively clearing the competing red pigment, because no
               breeder wants it: real roses already suppress an anthocyanin-degrading enzyme via high
               tannin content, part of why cut roses hold color so long. Reversing that fights the
@@ -296,19 +296,19 @@ export default function GeneExpressionConsole() {
         <div style={{ marginTop: "16px", padding: "22px 24px", border: "1.5px dashed var(--paper-shadow)", borderRadius: "12px" }}>
           <div style={{ display: "grid", gap: "10px", marginBottom: "20px" }}>
             <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
-              <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>Observation</span>
+              <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>Observation</span>
               Shiny Roselia shifts its left arm from pink to deep purple and its right arm from blue
               to black.
             </p>
             <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
-              <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>Purple</span>
+              <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>Purple</span>
               No new mechanism required. A real rose cultivar, "Black Magic," carries nearly double
               the anthocyanin concentration of a pink rose (1400 vs 800 &micro;g/g) using the exact
               same pigment types &mdash; deep purple is the same real pathway above, pushed further,
               not a separate system.
             </p>
             <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
-              <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>Black</span>
+              <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>Black</span>
               True black pigment doesn't exist in flowers at all &mdash; every studied case is
               extremely dense anthocyanin read as black by the eye, sometimes paired with suppression
               of a second, competing pathway (flavone biosynthesis) to darken it further. That's the

@@ -214,7 +214,7 @@ function CohabitatPanel({ cohabitat, spriteIds }) {
     // No verified shared route — say so plainly instead of implying one.
     return (
       <div style={{ marginTop: "12px", padding: "12px 14px", background: "var(--paper)", borderRadius: "10px", border: "1px dashed var(--paper-shadow)" }}>
-        <p className="eyebrow" style={{ fontSize: "0.65rem", marginBottom: "4px" }}>In-Game Distribution</p>
+        <p className="eyebrow" style={{ fontSize: "0.85rem", marginBottom: "4px" }}>In-Game Distribution</p>
         <p style={{ fontSize: "0.8rem", color: "var(--ink-soft)", margin: 0 }}>{cohabitat.note}</p>
       </div>
     );
@@ -222,7 +222,7 @@ function CohabitatPanel({ cohabitat, spriteIds }) {
 
   return (
     <div style={{ marginTop: "12px", padding: "14px 16px", background: "var(--paper)", borderRadius: "10px", border: "1px solid var(--paper-shadow)" }}>
-      <p className="eyebrow" style={{ fontSize: "0.65rem", marginBottom: "8px" }}>
+      <p className="eyebrow" style={{ fontSize: "0.85rem", marginBottom: "8px" }}>
         In-Game Distribution &mdash; {cohabitat.location} <span style={{ color: "var(--ink-soft)", fontWeight: 400 }}>({cohabitat.games})</span>
       </p>
       <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginBottom: "8px" }}>
@@ -301,7 +301,7 @@ export default function PollinatorResistanceRoster({ manuscripts, spriteIds = {}
         <div style={{ display: "grid", gap: "10px" }}>
           {active.summary.map((s) => (
             <p key={s.tag} style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
-              <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>{s.tag}</span>
+              <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>{s.tag}</span>
               {s.text}
             </p>
           ))}

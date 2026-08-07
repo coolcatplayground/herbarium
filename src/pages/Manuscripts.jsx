@@ -70,7 +70,7 @@ export default function Manuscripts() {
             </div>
 
             <p style={{ margin: "0 0 14px" }}>
-              <span className="eyebrow" style={{ fontSize: "0.7rem", display: "block", marginBottom: "2px" }}>
+              <span className="eyebrow" style={{ fontSize: "0.9rem", display: "block", marginBottom: "2px" }}>
                 The Pok&eacute;mon Connection
               </span>
               {m.connection}

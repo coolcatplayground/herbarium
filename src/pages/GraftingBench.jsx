@@ -58,16 +58,16 @@ const TRAITS = {
     interactionType: "succulence",
     summary: [
       {
-        tag: "Premise",
-        text: "Cacnea's own field note already ties its desert survival to succulent parenchyma built for water retention \u2014 but holding water is only half of a real desert plant's problem. The other half is spending what's stored as slowly as possible.",
+        tag: "Abstract",
+        text: "Fradera-Soler et al. (2022) reviewed how a succulent's water-storage capacity depends on cell walls that regulate their own elasticity, while Tan & Chen (2023) reviewed Crassulacean Acid Metabolism (CAM) as a separate mechanism for cutting daytime water loss by shifting stomatal activity to night. Two real, independently-studied mechanisms, not one.",
       },
       {
-        tag: "Question",
-        text: "How much of a real succulent's water economy comes down to how much tissue it can hold, versus how carefully it spends what's already inside \u2014 and does Cacnea have to be a cactus specifically for that logic to hold?",
+        tag: "Hypothesis",
+        text: "If Cacnea's desert survival runs on both real mechanisms at once rather than one blanket \u201csucculence\u201d trait, tuning tissue elasticity and stomatal timing together \u2014 instead of separately \u2014 should show how a real water budget actually gets built.",
       },
       {
-        tag: "Approach",
-        text: "Two real, separately-studied mechanisms, tuned together below: how elastic the water-storage tissue is, and when the stomata actually open to breathe.",
+        tag: "Result",
+        text: "Storage capacity and spending rate turn out to be two separate levers, not one dial \u2014 maxing out either alone still runs the tank dry. It's also why this case doesn't stop at Cacnea: the same two-lever combination shows up independently across 80-plus unrelated real plant families, and in a second, unrelated cactus Pok\u00e9mon.",
       },
     ],
   },
@@ -79,16 +79,16 @@ const TRAITS = {
     interactionType: "resistance",
     summary: [
       {
-        tag: "Premise",
-        text: "Vileplume's pollen is framed, in-universe, as toxic enough to be genuinely dangerous \u2014 not just an allergen. Real plants that weaponize their pollen or nectar this way create a hard problem for anything that regularly has to handle it.",
+        tag: "Abstract",
+        text: "Three real, independently-evolved insect strategies exist for surviving a toxic plant: enzymatic detoxification (Haas et al. 2023), target-site insensitivity (Dobler et al. 2012), and sequestration (Agrawal et al. 2021) \u2014 three separate real answers to the same underlying problem, not three competing theories about one answer.",
       },
       {
-        tag: "Question",
-        text: "Real biology hasn't settled on one universal fix for that problem \u2014 it's found several independent ones. Which of them would something that regularly handled Vileplume's pollen most plausibly evolve?",
+        tag: "Hypothesis",
+        text: "Vileplume's pollen is framed, in-universe, as toxic enough to be genuinely dangerous, not just an allergen. If something regularly handled it, real biology says it would need one of these three strategies (or more than one at once) to survive \u2014 which fits best?",
       },
       {
-        tag: "Approach",
-        text: "Rather than one theory, this case is a roster: three real, independently-evolved resistance strategies, each grounded in its own real study, laid out side by side below.",
+        tag: "Result",
+        text: "There isn't one right answer to test against \u2014 real biology has already solved this problem three separate ways, and a real community around one toxic plant can easily run several of these strategies side by side in different species. The roster below is the case itself, not a verdict.",
       },
     ],
   },
@@ -210,7 +210,7 @@ export default function GraftingBench() {
           <div style={{ display: "grid", gap: "10px", marginBottom: "24px", maxWidth: "680px" }}>
             {trait.summary.map((s) => (
               <p key={s.tag} style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
-                <span className="eyebrow" style={{ fontSize: "0.68rem", marginRight: "8px" }}>{s.tag}</span>
+                <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>{s.tag}</span>
                 {s.text}
               </p>
             ))}
