@@ -4,7 +4,7 @@
 // defined in pages/GraftingBench.jsx.
 const graftingCases = {
   roselia: { caseKey: "pigment", caseNumber: "01", label: "Flower Pigment" },
-  cacnea: { caseKey: "waxiness", caseNumber: "02", label: "Water-Storage Tissue" },
+  cacnea: { caseKey: "succulence", caseNumber: "02", label: "Water Economy" },
   vileplume: { caseKey: "toxinResistance", caseNumber: "03", label: "Toxic Pollen Resistance" },
 };
 

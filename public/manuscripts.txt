@@ -73,7 +73,7 @@ journal: International Journal of Molecular Sciences, 24(17):13072
 doi: 10.3390/ijms241713072
 open_access: yes
 related_specimen: cacturne
-connection: Cacturne's whole gimmick — dormant by day, active at night — is a fair cartoon of facultative CAM photosynthesis, which this paper reviews as an active engineering target for drought-resistant crops. It made me wonder how close we actually are to giving a C3 crop plant a switchable, on-demand CAM mode the way Cacturne "switches on" after dark.
+connection: The "CAM Stomatal Timing" half of Cacnea's Case File on the Grafting Bench page. Cacturne's whole gimmick — dormant by day, active at night — is a fair cartoon of facultative CAM photosynthesis, which this paper reviews as an active engineering target for drought-resistant crops. It made me wonder how close we actually are to giving a C3 crop plant a switchable, on-demand CAM mode the way Cacturne "switches on" after dark.
 ### END
 
 ### khamare-2022-allelopathy   [DRAFT — please review]
@@ -128,7 +128,7 @@ journal: Journal of Experimental Botany, 73(8):2290-2307
 doi: 10.1093/jxb/erac054
 open_access: yes
 related_specimen: cacnea
-connection: The actual genetics behind Cacnea's Case File on the Grafting Bench page. This review covers how succulent tissue's water-storage capacity depends on regulated cell wall remodeling, with real gene-expression differences behind how much a given plant's parenchyma can swell and collapse — the biological basis this Case File's incomplete-dominance example is built on.
+connection: The "Parenchyma Elasticity" half of Cacnea's Case File on the Grafting Bench page. This review covers how succulent tissue's water-storage capacity depends on regulated cell wall remodeling — real gene-expression differences behind how much a given plant's parenchyma can swell and collapse without rupturing — which is the storage side of the Case File's water-economy console.
 ### END
 
 ### lee-2025-rose-f3-5-h-nhx   [DRAFT — please review]

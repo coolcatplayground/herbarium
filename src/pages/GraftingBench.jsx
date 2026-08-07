@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import PunnettSquare from "../components/PunnettSquare";
 import GeneExpressionConsole from "../components/GeneExpressionConsole";
 import PollinatorResistanceRoster from "../components/PollinatorResistanceRoster";
+import SucculenceConsole from "../components/SucculenceConsole";
 import { fetchPokemon, spriteUrl } from "../api/pokeapi";
 import { loadManuscripts } from "../data/manuscriptsLoader";
 import useDocumentTitle from "../hooks/useDocumentTitle";
@@ -19,12 +19,15 @@ const RESISTANCE_EXAMPLE_NAMES = [
   "oddish",
 ];
 
-// Both traits are grounded in a real specimen's own field note (see
-// public/field-notes.txt) rather than invented placeholders — this is
-// explicitly "what if that specimen's real biology followed simple
-// Mendelian rules," not a claim about how the trait actually inherits.
-// Each case's supporting citation is fetched live from manuscripts.txt
-// (see manuscriptId below) rather than duplicated here as hardcoded text.
+// Same idea for Cacnea's Case File (SucculenceConsole) — Cacturne and
+// Maractus aren't the specimen itself, just comparison sprites.
+const SUCCULENCE_EXAMPLE_NAMES = ["cacturne", "maractus"];
+
+// Each case is grounded in a real specimen's own field note (see
+// public/field-notes.txt) and real, open-access research — not invented
+// placeholders. Each case's supporting citation is fetched live from
+// manuscripts.txt (see manuscriptId below) rather than duplicated here
+// as hardcoded text.
 const TRAITS = {
   pigment: {
     label: "Roselia's Flower Pigment",
@@ -47,20 +50,26 @@ const TRAITS = {
       },
     ],
   },
-  waxiness: {
-    label: "Cacnea's Water-Storage Tissue",
+  succulence: {
+    label: "Cacnea's Water Economy",
     caseNumber: "02",
     specimenName: "cacnea",
     manuscriptId: "fraderasoler-2022-succulent-cell-walls",
-    interactionType: "punnett",
-    mode: "incomplete",
-    alleleUpper: "W",
-    alleleLower: "w",
-    dominantLabel: "Heavy succulence",
-    recessiveLabel: "Minimal water storage",
-    blendLabel: "Moderate succulence (blended)",
-    explainer:
-      "Cacnea's own field note ties its desert survival to succulent parenchyma cells built for water retention. Real succulence often behaves as a dosage-dependent trait: a heterozygote produces roughly half the water-storage tissue of a homozygous-heavy individual, showing up as an intermediate build rather than a simple present/absent trait.",
+    interactionType: "succulence",
+    summary: [
+      {
+        tag: "Premise",
+        text: "Cacnea's own field note already ties its desert survival to succulent parenchyma built for water retention \u2014 but holding water is only half of a real desert plant's problem. The other half is spending what's stored as slowly as possible.",
+      },
+      {
+        tag: "Question",
+        text: "How much of a real succulent's water economy comes down to how much tissue it can hold, versus how carefully it spends what's already inside \u2014 and does Cacnea have to be a cactus specifically for that logic to hold?",
+      },
+      {
+        tag: "Approach",
+        text: "Two real, separately-studied mechanisms, tuned together below: how elastic the water-storage tissue is, and when the stomata actually open to breathe.",
+      },
+    ],
   },
   toxinResistance: {
     label: "Vileplume's Toxic Pollen",
@@ -85,14 +94,6 @@ const TRAITS = {
   },
 };
 
-const GENOTYPES = ["homozygous dominant", "heterozygous", "homozygous recessive"];
-
-function genotypeString(choice, upper, lower) {
-  if (choice === "homozygous dominant") return upper + upper;
-  if (choice === "heterozygous") return upper + lower;
-  return lower + lower;
-}
-
 export default function GraftingBench() {
   useDocumentTitle("The Grafting Bench");
   const [searchParams] = useSearchParams();
@@ -100,8 +101,6 @@ export default function GraftingBench() {
   const [traitKey, setTraitKey] = useState(
     requestedCase && TRAITS[requestedCase] ? requestedCase : "pigment"
   );
-  const [parentAChoice, setParentAChoice] = useState("heterozygous");
-  const [parentBChoice, setParentBChoice] = useState("homozygous recessive");
   const [specimenIds, setSpecimenIds] = useState({});
   const [manuscripts, setManuscripts] = useState({});
 
@@ -111,6 +110,7 @@ export default function GraftingBench() {
       [
         ...Object.values(TRAITS).map((t) => t.specimenName),
         ...RESISTANCE_EXAMPLE_NAMES,
+        ...SUCCULENCE_EXAMPLE_NAMES,
       ].map((name) => fetchPokemon(name).then((data) => [name, data.id]))
     ).then((pairs) => {
       if (!cancelled) setSpecimenIds(Object.fromEntries(pairs));
@@ -130,8 +130,6 @@ export default function GraftingBench() {
 
   const trait = TRAITS[traitKey];
   const citation = manuscripts[trait.manuscriptId];
-  const parentA = genotypeString(parentAChoice, trait.alleleUpper, trait.alleleLower);
-  const parentB = genotypeString(parentBChoice, trait.alleleUpper, trait.alleleLower);
 
   return (
     <div className="container" style={{ padding: "40px 24px 100px" }}>
@@ -139,12 +137,12 @@ export default function GraftingBench() {
         <p className="eyebrow">Where Two Things Meet</p>
         <h2 style={{ fontSize: "var(--step3)" }}>The Grafting Bench</h2>
         <p style={{ color: "var(--ink-soft)" }}>
-          A graft only works when two genetically different plants are compatible enough to fuse
-          into one functioning organism &mdash; the rootstock keeps growing, the scion produces the
-          fruit, and where they don't take, the graft fails cleanly rather than pretending to
-          succeed. This page runs the same test on Pok&eacute;mon's world: real plant genetics
-          checked against a specimen already in the Herbarium, case by case, to see where the graft
-          actually holds.
+          A graft only takes when the tissue underneath is actually compatible &mdash; force two
+          incompatible species together and it fails cleanly rather than pretending to succeed.
+          This bench runs the same test on Pok&eacute;mon's world: take a real study, hold it up
+          against a specimen already in the Herbarium, and see how far it actually reaches. Some
+          cases graft clean all the way through &mdash; a real mechanism, applied directly. Others
+          only reach partway, and the case says so rather than forcing the rest.
         </p>
       </section>
 
@@ -152,10 +150,11 @@ export default function GraftingBench() {
         <p className="eyebrow">The Rootstock &mdash; Real Botany</p>
         <h2 style={{ fontSize: "var(--step3)" }}>Case Files</h2>
         <p style={{ color: "var(--ink-soft)" }}>
-          Three open case files, each built on a real specimen already in the Herbarium and real,
-          open-access research &mdash; two ask what would happen if a detail from a specimen's own
-          field note actually followed simple Mendelian inheritance, and the third is a roster of
-          real strategies real biology has found for a real problem.
+          Pull up a stool. Every case starts the same way: a real specimen from the Herbarium and
+          a real, open-access paper. After that, all bets are off. We compare notes, chase odd
+          observations, test ideas, and occasionally discover that the specimen has other plans.
+          Some cases end with satisfying answers. Others end with even better questions. Either
+          way, the journey is half the fun&mdash;and the drawer is always open for the next mystery.
         </p>
       </section>
 
@@ -225,39 +224,10 @@ export default function GraftingBench() {
         ) : trait.interactionType === "resistance" ? (
           <PollinatorResistanceRoster manuscripts={manuscripts} spriteIds={specimenIds} />
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: "40px", alignItems: "start" }}>
-            <div style={{ display: "grid", gap: "18px" }}>
-              <div>
-                <p className="eyebrow" style={{ marginBottom: "8px" }}>Parent A ({trait.alleleUpper}{trait.alleleLower})</p>
-                <select value={parentAChoice} onChange={(e) => setParentAChoice(e.target.value)} style={{ width: "100%", padding: "8px", fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}>
-                  {GENOTYPES.map((g) => (
-                    <option key={g} value={g}>{g}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <p className="eyebrow" style={{ marginBottom: "8px" }}>Parent B ({trait.alleleUpper}{trait.alleleLower})</p>
-                <select value={parentBChoice} onChange={(e) => setParentBChoice(e.target.value)} style={{ width: "100%", padding: "8px", fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}>
-                  {GENOTYPES.map((g) => (
-                    <option key={g} value={g}>{g}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <PunnettSquare
-              parentA={parentA}
-              parentB={parentB}
-              mode={trait.mode}
-              dominantLabel={trait.dominantLabel}
-              recessiveLabel={trait.recessiveLabel}
-              blendLabel={trait.blendLabel}
-            />
-          </div>
+          <SucculenceConsole spriteIds={specimenIds} />
         )}
 
-        {trait.interactionType !== "resistance" && (
+        {trait.interactionType !== "resistance" && trait.interactionType !== "succulence" && (
         <div style={{ marginTop: "24px", padding: "16px 18px", background: "var(--paper)", borderRadius: "10px", border: "1px solid var(--paper-shadow)" }}>
           <p className="eyebrow" style={{ marginBottom: "8px" }}>Supporting Literature</p>
           {citation ? (
@@ -318,12 +288,12 @@ export default function GraftingBench() {
             </p>
           ) : (
             <p style={{ margin: 0 }}>
-              Genotype is the pair of alleles a specimen carries; phenotype is what you can actually
-              observe. Two specimens can look identical yet carry different genotypes &mdash; a heterozygote
-              and a homozygous dominant individual often can't be told apart without a test cross,
-              which is exactly what this bench lets you simulate: hold one parent's genotype
-              constant and vary the other to see which offspring ratios would reveal a hidden
-              recessive allele.
+              Try maxing out one slider while dragging the other to zero &mdash; a deep, elastic
+              reserve spent on a fully diurnal schedule still drains fast, and a perfectly-timed
+              nocturnal schedule with almost no tank to work with still runs dry quickly too. Neither
+              real mechanism substitutes for the other; a real desert succulent needs both working
+              at once, which is the actual point of tuning them together instead of picking whichever
+              one sounds more impressive on its own.
             </p>
           )}
         </div>

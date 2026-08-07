@@ -155,16 +155,9 @@ Originally "Cross-Pollination," went through several rounds of rework:
   (`IVBreeder.jsx`, `TheorycraftingFAQ.jsx`, `gameMechanics.js`,
   `theorycrafting.js`)
 
-**Currently 2 cases:** Roselia (Case 01, gene-expression model) and
-Cacnea (Case 02, still Punnett-square based — not yet revisited).
-
-**In progress:** a third case for Vileplume, on pollinator toxin
-resistance. Real grounding confirmed so far — Haas et al. 2023
-(*Science Advances*, CYP336 detox enzymes in Hymenoptera) and
-Petschenka et al. 2013 (*Evolution*, target-site insensitivity in
-monarch Na+/K+-ATPase) — aiming for a roster-style interactive comparing
-three real resistance strategies (enzymatic detox, target-site
-insensitivity, sequestration). Not yet built.
+**Currently 3 cases:** Roselia (Case 01, gene-expression model), Cacnea
+(Case 02, water-economy console), and Vileplume (Case 03, resistance-
+strategy roster) — see sections 13–15 below.
 
 ### 10. Cross-linking pass
 - Specimen pages now show a "Case Study" callout linking to their
@@ -190,6 +183,86 @@ insensitivity, sequestration). Not yet built.
   differently-shaped draft of `future-species.txt`) — all deleted after
   confirming zero references and identical build output before/after
 
+### 13. Vileplume's Case File (`PollinatorResistanceRoster.jsx`)
+- Built the third case: not a Punnett square or an expression console,
+  but a roster of three real, independently-evolved insect strategies
+  for surviving a toxic plant — enzymatic detoxification, target-site
+  insensitivity, and sequestration — selectable tabs, each with its own
+  small SVG diagram and its own real citation
+- Swapped the originally-planned Petschenka et al. 2013 (*Evolution*)
+  citation for target-site insensitivity after checking it's actually
+  paywalled (24-hour rental wall on the publisher site) — used
+  Dobler et al. 2012 (*PNAS*) instead, genuinely open access and arguably
+  a better fit (convergent evolution across six insect orders rather
+  than one paper on one species)
+- Added a sequestration citation not in the original plan
+  (Agrawal et al. 2021, *PNAS*, monarch cardenolide sequestration) after
+  confirming it's open access and explicit about the real fitness cost
+  of sequestering
+- **Real-world Pokémon examples added per section, each with a live
+  PokéAPI sprite:** Beedrill (detox), Butterfree (insensitivity),
+  Venomoth and Dustox (sequestration) — picked for real design/biology
+  fit, not bound to the case's own specimen
+- **In-game cohabitation, fact-checked against the actual games:**
+  checked Pokémon Database's cross-generation encounter tables directly
+  rather than assuming — found that Weedle, Caterpie, and Venonat (the
+  real pre-evolutions of three of the four example species) all cohabit
+  with Oddish on **Kanto Route 24** in the original Red/Blue/Yellow, the
+  earliest generation in the series. Each cohabitat panel names the exact
+  route and game and shows the sprites side by side. Checked Dustox's
+  line too (Wurmple, Hoenn-native) and found no such overlap — the panel
+  says so plainly instead of forcing a match
+- Iterated the target-site-insensitivity explanation after feedback that
+  the first draft was too jargon-heavy — rewrote around the tagline's own
+  lock-and-key analogy in plain language instead of leading with
+  "amino acid substitutions" and "Na+/K+-ATPase"
+- Closing copy reframed twice: first pass was a dry meta-disclaimer
+  ("none of these papers studies Vileplume..."); removed entirely as
+  redundant with the app's whole premise, and the "From the Field
+  Journal" note rewritten in-voice as an open research question instead
+  ("nobody's actually run these tests on Vileplume's own pollen...")
+
+### 14. Grafting Bench reframe
+- Original intro copy described literal graft mechanics (rootstock,
+  scion, fruit) left over from when the page was closer to one Punnett
+  square per case — no longer matched what the page actually does across
+  three very differently-shaped cases
+- Rewritten around graft *compatibility testing* instead of grafting
+  mechanics specifically: "take a real study, hold it up against a
+  specimen already in the Herbarium, and see how far it actually
+  reaches" — keeps the name and the honest-failure framing, drops the
+  literal anatomy
+- "Case Files" section copy rewritten twice: first pass hardcoded
+  "Three open case files" (won't age well as more get added), replaced
+  with an unnumbered curator's-invitation voice ("Pull up a stool...")
+  that doesn't commit to a count
+
+### 15. Cacnea's Case File rebuilt (`SucculenceConsole.jsx`)
+- Replaced the placeholder incomplete-dominance Punnett square (flagged
+  as an open item since Case 02 was created) with a real two-mechanism
+  model: a "Parenchyma Elasticity" slider (water-storage tissue capacity,
+  Fradera-Soler et al. 2022) and a "CAM Stomatal Timing" slider (nocturnal
+  vs. diurnal stomata schedule, Tan & Chen 2023) — both citations already
+  existed in `manuscripts.txt` from Case 02's creation but the CAM paper
+  had never actually been wired into a component until now
+- Combined into an illustrative "estimated days between waterings"
+  readout with a bottleneck label (storage-limited vs. timing-limited vs.
+  balanced) — explicitly flagged as a simplified stand-in, not a real
+  physiological formula, same honesty pattern as the gene-expression
+  console's bottleneck framing
+- **Broadened past Cacnea specifically:** added a "Real-World Analogues"
+  section with Cacturne (Cacnea's own evolution) and Maractus (a second,
+  unrelated cactus Pokémon) — fact-checked that real succulence has
+  evolved convergently in 80+ separate plant families before writing the
+  "two unrelated cactus Pokémon converging on the same design isn't a
+  coincidence" framing, so the claim underneath it is real
+- `PunnettSquare.jsx` deleted as orphaned once Cacnea's case moved off
+  it — confirmed zero remaining references first, same pattern as the
+  housekeeping passes in section 12
+- Manuscript connection text for both citations updated to point at the
+  specific slider each one now grounds, since the old text described the
+  incomplete-dominance framing that no longer exists
+
 ---
 
 ## File structure (current)
@@ -199,13 +272,14 @@ src/
   pages/        Herbarium, Specimen, GraftingBench, Manuscripts,
                  FutureSpecies, About
   components/    SpecimenCard, TypeIcon, EvolutionTree, PhenologyTimeline,
-                 PunnettSquare, GeneExpressionConsole, FutureSpeciesCard,
-                 NavHeader, ScrollToTop
+                 GeneExpressionConsole, PollinatorResistanceRoster,
+                 SucculenceConsole, FutureSpeciesCard, NavHeader,
+                 ScrollToTop
   data/          habitatMap.js, graftingCases.js, and loaders for each
                  public/*.txt file
   hooks/         useDocumentTitle.js
-  api/           pokeapi.js (all PokéAPI fetching, caching, roster/type
-                 helpers)
+  api/           pokeapi.js (all PokéAPI fetching, caching, sprite URLs,
+                 roster/type helpers)
   styles/        tokens.css (design tokens + global styles)
 
 public/
@@ -217,11 +291,6 @@ public/
 
 ## Known open items
 
-- Cacnea's Grafting Bench case still uses the generic Punnett-square
-  format — hasn't gotten the same real-study rebuild Roselia's case did
-- Vileplume case (pollinator toxin resistance) — research confirmed,
-  interactive design agreed (roster of resistance strategies), not yet
-  built
 - Most field notes are still tagged `[DRAFT — please review]` — ongoing
   review work, not a bug
 - Mobile layout and color-contrast haven't been specifically audited
