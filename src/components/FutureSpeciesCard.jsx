@@ -1,4 +1,4 @@
-import { TypeIcon } from "./TypeIcon";
+import TypeBadge from "./TypeBadge";
 
 export default function FutureSpeciesCard({ entry, relatedManuscriptTitle }) {
   return (
@@ -36,14 +36,7 @@ export default function FutureSpeciesCard({ entry, relatedManuscriptTitle }) {
           {entry.types.length > 0 && (
             <div style={{ display: "flex", gap: "8px", margin: "4px 0 2px" }}>
               {entry.types.map((t) => (
-                <span
-                  key={t}
-                  className="mono"
-                  style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "0.68rem", textTransform: "uppercase", color: "var(--ink-soft)" }}
-                >
-                  <TypeIcon type={t} size={12} />
-                  {t}
-                </span>
+                <TypeBadge key={t} type={t} size="sm" />
               ))}
             </div>
           )}

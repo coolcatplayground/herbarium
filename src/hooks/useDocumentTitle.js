@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
-const SITE_NAME = "Folia Codex";
+const SITE_NAME = "CC Herbarium";
 
-// Sets document.title to "<page> — Folia Codex". Every routed page calls
+// Sets document.title to "<page> — CC Herbarium". Every routed page calls
 // this, so there's no need to restore a previous value on unmount — the
 // next page's own call handles that.
 export default function useDocumentTitle(pageTitle) {

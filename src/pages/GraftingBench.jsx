@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import GeneExpressionConsole from "../components/GeneExpressionConsole";
 import PollinatorResistanceRoster from "../components/PollinatorResistanceRoster";
 import SucculenceConsole from "../components/SucculenceConsole";
-import { fetchPokemon, spriteUrl } from "../api/pokeapi";
+import { fetchPokemon, spriteUrl, onSpriteError } from "../api/pokeapi";
 import { loadManuscripts } from "../data/manuscriptsLoader";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 
@@ -63,11 +63,11 @@ const TRAITS = {
       },
       {
         tag: "Hypothesis",
-        text: "If Cacnea's desert survival runs on both real mechanisms at once rather than one blanket \u201csucculence\u201d trait, tuning tissue elasticity and stomatal timing together \u2014 instead of separately \u2014 should show how a real water budget actually gets built.",
+        text: "A real plant doesn't tune itself mid-drought \u2014 it meets the dry season already built a certain way, and the season does the rest. So the honest test isn't adjusting two mechanisms against each other; it's fixing a specimen's build and running time forward to see which day it fails on, and why.",
       },
       {
         tag: "Result",
-        text: "Storage capacity and spending rate turn out to be two separate levers, not one dial \u2014 maxing out either alone still runs the tank dry. It's also why this case doesn't stop at Cacnea: the same two-lever combination shows up independently across 80-plus unrelated real plant families, and in a second, unrelated cactus Pok\u00e9mon.",
+        text: "Storage and timing fail in genuinely different ways, which only becomes visible once time is running: a rigid-walled specimen ruptures with water still in the tank, while a well-built one survives by entering CAM idling and earning nothing for weeks. Surviving and growing turn out to be separate outcomes \u2014 and the same storage-plus-timing combination shows up independently across 80-plus unrelated real plant families, and in a second, unrelated cactus Pok\u00e9mon.",
       },
     ],
   },
@@ -158,7 +158,7 @@ export default function GraftingBench() {
         </p>
       </section>
 
-      <div style={{ display: "flex", gap: "8px", marginBottom: "-1px", position: "relative", zIndex: 1 }}>
+      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "-1px", position: "relative", zIndex: 1 }}>
         {Object.entries(TRAITS).map(([key, t]) => {
           const active = traitKey === key;
           return (
@@ -181,7 +181,7 @@ export default function GraftingBench() {
               }}
             >
               {specimenIds[t.specimenName] && (
-                <img src={spriteUrl(specimenIds[t.specimenName])} alt={t.specimenName} width={22} height={22} />
+                <img src={spriteUrl(specimenIds[t.specimenName])} alt={t.specimenName} width={22} height={22} onError={onSpriteError} />
               )}
               <span className="mono" style={{ fontSize: "0.65rem", color: "var(--specimen-red)" }}>
                 Case {t.caseNumber}
@@ -288,12 +288,19 @@ export default function GraftingBench() {
             </p>
           ) : (
             <p style={{ margin: 0 }}>
-              Try maxing out one slider while dragging the other to zero &mdash; a deep, elastic
-              reserve spent on a fully diurnal schedule still drains fast, and a perfectly-timed
-              nocturnal schedule with almost no tank to work with still runs dry quickly too. Neither
-              real mechanism substitutes for the other; a real desert succulent needs both working
-              at once, which is the actual point of tuning them together instead of picking whichever
-              one sounds more impressive on its own.
+              Run a rigid cortex on an obligate CAM schedule and watch what actually kills it: it
+              ruptures on day nine with 13% of its water still in the tank. Flawless stomatal timing
+              doesn&rsquo;t save tissue that can&rsquo;t fold as it empties &mdash; the two
+              mechanisms fail in genuinely different ways, and only one of those failures is about
+              running out of water. Then try every combination. Exactly one reaches the rains: deep
+              elastic parenchyma committed to nocturnal uptake from day one. The facultative build
+              misses by three days, which is the honest result rather than a tuned one &mdash; in an
+              unbroken drought, commitment beats flexibility, and the reason real facultative CAM
+              plants exist is that most climates aren&rsquo;t unbroken droughts. They&rsquo;re
+              variable, and switching only pays when there&rsquo;s something to switch back to.
+              Worth noting what the winner actually earned: it survives by spending most of the
+              season sealed shut, gaining nothing. Surviving and growing come apart entirely, and a
+              real desert plant spends most of its life on the wrong side of that gap.
             </p>
           )}
         </div>

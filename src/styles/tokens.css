@@ -131,79 +131,52 @@ button, input, select {
   padding: 0 24px;
 }
 
-/* --- Evolution tree: classic nested-list org-chart pattern --- */
-.evo-tree {
-  overflow-x: auto;
-  padding: 4px 4px 12px;
+/* --- Case File console layouts ---
+   The consoles pair a diagram or swatch with a column of controls and
+   readouts. They're the densest thing in the app and the first layouts to
+   break on a narrow screen, so the two-column split lives here as a class
+   rather than as an inline gridTemplateColumns that can't carry a media
+   query. `--figure-left` puts the fixed-width figure first; `--figure-right`
+   puts it last. Both collapse to one column on small screens. */
+.console-split {
+  display: grid;
+  gap: 28px;
+  align-items: start;
 }
 
-.evo-tree ul {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  padding-top: 28px;
-  margin: 0;
-  list-style: none;
+.console-split--figure-left {
+  grid-template-columns: 230px 1fr;
 }
 
-.evo-tree li {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 28px 12px 0;
-  list-style: none;
+.console-split--figure-right {
+  grid-template-columns: 1fr 200px;
 }
 
-.evo-tree li::before,
-.evo-tree li::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 50%;
-  width: 50%;
-  height: 28px;
-  border-top: 1.5px solid var(--paper-shadow);
+.console-pair {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: 1fr 1fr;
 }
 
-.evo-tree li::after {
-  right: auto;
-  left: 50%;
-  border-left: 1.5px solid var(--paper-shadow);
+/* The specimen sheet: mounted plate on the left, write-up on the right. */
+.specimen-split {
+  display: grid;
+  grid-template-columns: minmax(240px, 340px) 1fr;
+  gap: 40px;
+  margin-top: 24px;
+  align-items: start;
 }
 
-.evo-tree li:only-child {
-  padding-top: 0;
+@media (max-width: 760px) {
+  .console-split--figure-left,
+  .console-split--figure-right,
+  .console-pair,
+  .specimen-split {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
 
-.evo-tree li:only-child::before,
-.evo-tree li:only-child::after {
-  display: none;
-}
-
-.evo-tree li:first-child::before,
-.evo-tree li:last-child::after {
-  border: 0 none;
-}
-
-.evo-tree li:last-child::before {
-  border-right: 1.5px solid var(--paper-shadow);
-  border-radius: 0 6px 0 0;
-}
-
-.evo-tree li:first-child::after {
-  border-radius: 6px 0 0 0;
-}
-
-.evo-tree ul ul::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  border-left: 1.5px solid var(--paper-shadow);
-  width: 0;
-  height: 28px;
-}
 
 .evo-node-wrap {
   display: flex;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { spriteUrl } from "../api/pokeapi";
+import { spriteUrl, onSpriteError } from "../api/pokeapi";
 
 // Three real, independently-evolved strategies insects use against toxic
 // plant compounds. None of the three cited papers studies Vileplume or
@@ -198,7 +198,7 @@ function SpeciesChip({ name, pokemonName, spriteIds }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "2px", width: "64px" }}>
       {id ? (
-        <img src={spriteUrl(id)} alt={name} width={48} height={48} style={{ objectFit: "contain" }} />
+        <img src={spriteUrl(id)} alt={name} width={48} height={48} style={{ objectFit: "contain" }} onError={onSpriteError} />
       ) : (
         <div style={{ width: 48, height: 48 }} />
       )}
@@ -286,7 +286,7 @@ export default function PollinatorResistanceRoster({ manuscripts, spriteIds = {}
         })}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "200px 1fr", gap: "28px", alignItems: "start" }}>
+      <div className="console-split console-split--figure-left">
         <div
           style={{
             background: "var(--paper)",
