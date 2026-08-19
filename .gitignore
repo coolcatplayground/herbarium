@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local dev scaffolding (machine-specific launcher paths)
+run-dev.bat
+.claude/
+
+# Generated preview artifacts (regenerate rather than commit)
+type-icon-proof.html
+specimen-case-proof.html
+nav-proof.html
+
+# Source art (optimized copy lives in public/habitats/)
+habitat-*.png
+
+# Sprites are fetched at build time, not committed (scripts/fetch-sprites.mjs)
+public/sprites/
