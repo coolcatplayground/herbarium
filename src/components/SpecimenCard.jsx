@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { TypeIcon } from "./TypeIcon";
+import TypeBadge from "./TypeBadge";
+import SpecimenCase from "./SpecimenCase";
+import { onSpriteError } from "../api/pokeapi";
 
 export default function SpecimenCard({ id, name, sprite, note, types, habitat }) {
   const [spriteFailed, setSpriteFailed] = useState(false);
@@ -37,56 +39,62 @@ export default function SpecimenCard({ id, name, sprite, note, types, habitat })
               uncat.
             </span>
           )}
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            background: "var(--paper)",
-            border: "1px solid var(--paper-line)",
-            borderRadius: "10px",
-            height: "120px",
-          }}
-        >
-          {sprite && !spriteFailed ? (
-            <img
-              src={sprite}
-              alt={name}
-              width={90}
-              height={90}
-              style={{ imageRendering: "pixelated" }}
-              loading="lazy"
-              onError={() => setSpriteFailed(true)}
-            />
-          ) : (
-            <span className="mono" style={{ fontSize: "0.7rem" }}>no plate</span>
+          {note.inherited && (
+            <span
+              className="mono"
+              style={{ fontSize: "0.65rem", color: "var(--paper-shadow)" }}
+              title={`Shows the field note written for ${note.inheritedFrom} — this form doesn't have one of its own yet`}
+            >
+              base note
+            </span>
           )}
         </div>
+        {sprite && !spriteFailed ? (
+          // The plate carries the specimen's name, so the card doesn't repeat
+          // it underneath — the binomial below is the label instead, which is
+          // how a real herbarium sheet is identified.
+          <SpecimenCase sprite={sprite} name={name} lazy onSpriteError={(e) => {
+            // First failure swaps in the upstream copy; only if that fails too
+            // does the card fall back to its no-sprite layout.
+            if (e.currentTarget.dataset.spriteFallback) setSpriteFailed(true);
+            else onSpriteError(e);
+          }} />
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              background: "var(--paper)",
+              border: "1px solid var(--paper-line)",
+              borderRadius: "10px",
+              height: "120px",
+            }}
+          >
+            <span className="mono" style={{ fontSize: "0.7rem" }}>no plate</span>
+          </div>
+        )}
         <div>
-          <h3 style={{ fontSize: "1rem", textTransform: "capitalize", marginBottom: "2px" }}>{name}</h3>
-          <p className="mono" style={{ fontSize: "0.72rem", fontStyle: "italic", color: "var(--botanical-green)", margin: 0 }}>
+          {/* The binomial is the card's heading now that the plate carries the
+              common name. Kept as an h3 so the catalog still has one heading
+              per specimen for screen readers and document outline. */}
+          <h3
+            className="mono"
+            style={{
+              fontSize: "0.82rem",
+              fontStyle: "italic",
+              fontWeight: 600,
+              color: "var(--botanical-green-deep)",
+              margin: 0,
+              lineHeight: 1.35,
+            }}
+          >
             {note.binomial}
-          </p>
+          </h3>
         </div>
         <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
           {types.map((t) => (
-            <span
-              key={t}
-              className="mono"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "4px",
-                fontSize: "0.62rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-                color: "var(--ink-soft)",
-              }}
-            >
-              <TypeIcon type={t} size={12} />
-              {t}
-            </span>
+            <TypeBadge key={t} type={t} size="sm" />
           ))}
         </div>
         {habitat && (
