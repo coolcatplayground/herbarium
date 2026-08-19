@@ -9,7 +9,7 @@ from its secondary type (see src/data/habitatMap.js for that baseline —
 e.g. Grass/Water defaults to "Wetland & Aquatic"). This file lets you
 OVERRIDE that guess for one specific specimen when its actual morphology
 says something different than its type pairing would suggest — the same
-way Cacnea (Grass/Dark) is really a desert cactus.
+way Cacnea (pure Grass) is really a desert cactus.
 
 HOW TO ADD ONE:
 1. Copy the TEMPLATE block below and paste it anywhere in this file.
@@ -30,11 +30,11 @@ description: Your replacement description, written the same way as the ones in h
 ### END
 
 ### cacnea   [DRAFT — please review]
-habitat_name: Nocturnal-Function Flora (Desert Cactus)
-description: Grass/Dark by typing, but unambiguously a desert cactus by design — round, spine-covered, built for extreme drought. Its real habitat match is arid desert, and its nocturnal-function typing lines up with CAM photosynthesis: stomata that only open at night to avoid daytime water loss, the same mechanism covered in this specimen's own field note.
+habitat_name: Nocturnal-Function Flora
+description: Pure Grass by typing, so the automatic guess would file it as unspecialised — but it is unambiguously a desert cactus by design: round, spine-covered, built for extreme drought. Grouped with the nocturnal-function flora because that is what a real cactus runs on: CAM photosynthesis, stomata that only open at night to avoid daytime water loss, the same mechanism covered in this specimen's own field note. Its evolution, Cacturne, carries the Dark typing that makes the same reading explicit.
 ### END
 
 ### cacturne   [DRAFT — please review]
-habitat_name: Nocturnal-Function Flora (Desert Cactus)
-description: The same desert-cactus read as Cacnea, more literally so — described as only active after dark, which is CAM photosynthesis' night-time stomatal opening acted out as behavior rather than just biochemistry.
+habitat_name: Nocturnal-Function Flora
+description: The same desert-cactus read as Cacnea, more literally so — Grass/Dark by typing and described as only active after dark, which is CAM photosynthesis' night-time stomatal opening acted out as behaviour rather than just biochemistry.
 ### END

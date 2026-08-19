@@ -128,7 +128,7 @@ journal: Journal of Experimental Botany, 73(8):2290-2307
 doi: 10.1093/jxb/erac054
 open_access: yes
 related_specimen: cacnea
-connection: The "Parenchyma Elasticity" half of Cacnea's Case File on the Grafting Bench page. This review covers how succulent tissue's water-storage capacity depends on regulated cell wall remodeling — real gene-expression differences behind how much a given plant's parenchyma can swell and collapse without rupturing — which is the storage side of the Case File's water-economy console.
+connection: The "Parenchyma Elasticity" half of Cacnea's Case File on the Grafting Bench page. This review covers how succulent tissue's water-storage capacity depends on regulated cell wall remodeling — real gene-expression differences behind how much a given plant's dedicated water-storage cells (hydrenchyma, as distinct from the photosynthetic chlorenchyma) can swell and collapse without rupturing — which is the storage side of the Case File's water-economy console.
 ### END
 
 ### lee-2025-rose-f3-5-h-nhx   [DRAFT — please review]
@@ -206,6 +206,17 @@ doi: 10.1073/pnas.2024463118
 open_access: yes
 related_specimen: vileplume
 connection: The "Sequestration" strategy on Vileplume's Case File (Grafting Bench). Monarch caterpillars selectively sequester specific milkweed cardenolides (and convert a more dangerous one, voruscharin, into safer stored forms) rather than breaking every toxin down or blocking it at the target — but this paper's real contribution is showing that strategy isn't free: heavier sequestration directly predicted slower caterpillar growth, a real measured cost the Case File's third strategy is honest about.
+### END
+
+### fraderasoler-2022-succulent-syndrome-convergence   [DRAFT — please review]
+title: Are cell wall traits a component of the succulent syndrome?
+authors: Fradera-Soler M, Leverett A, Mravec J, Jørgensen B, Borland AM, Grace OM
+year: 2022
+journal: Frontiers in Plant Science, 13:1043429
+doi: 10.3389/fpls.2022.1043429
+open_access: yes
+related_specimen: cacnea
+connection: The actual source of the "80-plus plant families" claim in Cacnea's Case File (Grafting Bench) — I'd stated that number without a citation until checking it properly here. This is a companion study to the cell-wall-elasticity paper already cited on the same case, from an overlapping author team, and it's explicit that the succulent syndrome "has evolved convergently in over 80 plant families" — the real number behind why Cacturne and a second, unrelated cactus Pokémon converging on the same design isn't presented as a coincidence.
 ### END
 
 
