@@ -1,18 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
-import { fetchGrassRoster, fetchRosterTypes } from "../api/pokeapi";
+import { Link } from "react-router-dom";
+import { fetchGrassRoster, fetchRosterTypes, spriteUrl } from "../api/pokeapi";
 import { getSpecimenNote } from "../data/specimenNote";
 import { loadFieldNotes } from "../data/fieldNotesLoader";
 import { getHabitat } from "../data/habitatMap";
 import { loadHabitatOverrides } from "../data/habitatOverridesLoader";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import SpecimenCard from "../components/SpecimenCard";
-
-function spriteUrl(id) {
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
-}
+// The nav's own glyph set, reused so the key's entry point here is visually
+// the same object that used to sit in the header.
+import { GLYPHS } from "../components/NavHeader";
 
 export default function Herbarium() {
-  useDocumentTitle("The Glasshouse");
+  useDocumentTitle("The Gallery");
   const [roster, setRoster] = useState(null);
   const [notesMap, setNotesMap] = useState({});
   const [habitatOverrides, setHabitatOverrides] = useState({});
@@ -20,7 +20,6 @@ export default function Herbarium() {
   const [typesProgress, setTypesProgress] = useState(null); // {completed, total} while loading
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
-  const [onlyCurated, setOnlyCurated] = useState(false);
   const [habitatFilter, setHabitatFilter] = useState("all");
 
   useEffect(() => {
@@ -52,8 +51,14 @@ export default function Herbarium() {
   const specimens = useMemo(() => {
     if (!roster) return [];
     return roster.map((r) => {
-      const secondaryType = typesMap[r.name] ?? undefined; // undefined = not fetched yet
-      const habitat = secondaryType !== undefined ? getHabitat(secondaryType, habitatOverrides[r.name]) : null;
+      // A fetched pure-Grass specimen has a secondary type of `null`, which is
+      // a real answer, not a missing one — so presence of the key is what
+      // distinguishes "resolved" from "still loading". Using `??` here instead
+      // collapsed that null into undefined and left all 47 mono-Grass
+      // specimens permanently without a habitat.
+      const resolved = r.name in typesMap;
+      const secondaryType = resolved ? typesMap[r.name] : undefined;
+      const habitat = resolved ? getHabitat(secondaryType, habitatOverrides[r.name]) : null;
       return {
         ...r,
         note: getSpecimenNote(r.name, r.id, notesMap),
@@ -73,7 +78,6 @@ export default function Herbarium() {
 
   const filtered = useMemo(() => {
     return specimens.filter((s) => {
-      if (onlyCurated && !s.note.curated) return false;
       if (habitatFilter !== "all" && s.habitat?.name !== habitatFilter) return false;
       if (!query.trim()) return true;
       const q = query.toLowerCase();
@@ -83,18 +87,25 @@ export default function Herbarium() {
         s.note.plantAnalogue.toLowerCase().includes(q)
       );
     });
-  }, [specimens, query, onlyCurated, habitatFilter]);
+  }, [specimens, query, habitatFilter]);
 
   return (
     <div className="container" style={{ padding: "40px 24px 80px" }}>
       <section style={{ marginBottom: "36px", maxWidth: "720px" }}>
-        <p className="eyebrow">Under Glass &mdash; Grass-Type Order</p>
-        <h2 style={{ fontSize: "var(--step3)" }}>The Glasshouse</h2>
+        {/* Reads "Welcome to The Gallery" top-to-bottom while keeping the
+            eyebrow-over-heading rhythm every other page uses. */}
+        <p className="eyebrow">Welcome to</p>
+        <h2 style={{ fontSize: "var(--step3)" }}>The Gallery</h2>
+        {/* The `base note` and `uncat.` labels still exist and will appear the
+            moment a specimen arrives without a write-up — but every one of the
+            145 currently held has its own, so the copy no longer explains
+            states a visitor can't see. */}
         <p style={{ color: "var(--ink-soft)" }}>
           Every documented Grass-type specimen, grown under glass and catalogued alongside its
-          closest analogue in real plant biology. Entries marked{" "}
-          <span className="mono">uncat.</span> are pulled live from the Pokédex but haven't
-          received a full field write-up yet.
+          closest analogue in real plant biology. Megas and regional forms are held as specimens
+          in their own right rather than as footnotes to the species they came from &mdash; where
+          a form differs in mass, structure or tolerance, the difference is the subject of its
+          entry.
         </p>
       </section>
 
@@ -123,10 +134,6 @@ export default function Herbarium() {
             fontSize: "0.9rem",
           }}
         />
-        <label className="mono" style={{ fontSize: "0.78rem", display: "flex", gap: "6px", alignItems: "center" }}>
-          <input type="checkbox" checked={onlyCurated} onChange={(e) => setOnlyCurated(e.target.checked)} />
-          curated entries only
-        </label>
         <select
           value={habitatFilter}
           onChange={(e) => setHabitatFilter(e.target.value)}
@@ -138,6 +145,42 @@ export default function Herbarium() {
             <option key={h} value={h}>{h}</option>
           ))}
         </select>
+        {/* Third way into the collection, sitting with the other two. Search
+            finds a specimen you can already name and the habitat filter finds
+            one by where it lives; the key finds one you can only describe. */}
+        <Link
+          to="/key"
+          className="mono"
+          title="Identify a specimen by answering one character at a time"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "7px",
+            padding: "9px 13px",
+            fontSize: "0.78rem",
+            textDecoration: "none",
+            color: "var(--botanical-green-deep)",
+            border: "1px solid var(--ink)",
+            background: "var(--paper-light)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            style={{ flexShrink: 0 }}
+          >
+            <path d={GLYPHS.key} />
+          </svg>
+          Key to specimen
+        </Link>
         {typesProgress && (
           <span className="mono" style={{ fontSize: "0.72rem", color: "var(--ink-soft)" }}>
             reading habitat data&hellip; {typesProgress.completed}/{typesProgress.total}
@@ -154,8 +197,9 @@ export default function Herbarium() {
         Habitat is a pattern read off each specimen's real secondary type, not a game fact &mdash;
         Grass/Water tends to mean wetland flora, Grass/Ground tends to mean deep root systems and
         soil interaction, and Grass/Dark reads as nocturnal-function flora: night-active stomata,
-        temperature-sensitive processes, and moth- or bat-pollinated blooms, which is exactly why
-        desert cacti like Cacnea end up here rather than in an odd spot.
+        temperature-sensitive processes, and moth- or bat-pollinated blooms, which is exactly why a
+        desert cactus like Cacturne ends up there rather than in an odd spot. Where the typing
+        genuinely misreads a specimen, the guess is overridden by hand and labelled as such.
       </p>
 
       {error && (
@@ -171,7 +215,18 @@ export default function Herbarium() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))",
+          // Widened from 190px when the specimens moved into glass cases. The
+          // case is 4:3 and its cavity is only 61% of that height, so the
+          // chrome eats vertical room — at 190px a specimen rendered 69px
+          // against the 90px it had in the old flat box.
+          //
+          // Measured against the 1180px container: this yields four cases per
+          // row at 271px each, and a 104px specimen — larger than the old flat
+          // layout managed. The catalog was six across before, so the case
+          // genuinely costs density; five would need tracks under ~214px,
+          // which drops the specimen to ~79px and makes the vitrines cramped.
+          // Bigger-and-fewer is the better trade for a wall of cases.
+          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
           gap: "16px",
         }}
       >
