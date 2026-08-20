@@ -6,7 +6,10 @@ const FIELD_PATTERN = /^(habitat_name|description)\s*:\s*(.*)$/i;
 
 export function parseHabitatOverrides(text) {
   const overrides = {};
-  const chunks = text.split(/\n(?=###\s)/);
+  // Normalize CRLF/CR to LF — `.` doesn't match `\r` in a JS regex, so
+  // FIELD_PATTERN's `(.*)$` fails on every field line of a Notepad-saved
+  // file. See the fuller note in fieldNotesLoader.js.
+  const chunks = text.replace(/\r\n?/g, "\n").split(/\n(?=###\s)/);
 
   for (const chunk of chunks) {
     if (!chunk.trim().startsWith("###")) continue;

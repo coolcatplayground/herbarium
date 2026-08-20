@@ -108,7 +108,7 @@ export default function GeneExpressionConsole() {
         hue is addressed just below.
       </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 200px", gap: "32px", alignItems: "start" }}>
+      <div className="console-split console-split--figure-right">
         <div style={{ display: "grid", gap: "20px" }}>
           {STAGES.map((s) => (
             <div key={s.key}>
@@ -183,7 +183,7 @@ export default function GeneExpressionConsole() {
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 200px", gap: "32px", alignItems: "start" }}>
+          <div className="console-split console-split--figure-right">
             <div style={{ display: "grid", gap: "20px" }}>
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
@@ -317,7 +317,7 @@ export default function GeneExpressionConsole() {
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
+          <div className="console-pair">
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
               <div
                 style={{

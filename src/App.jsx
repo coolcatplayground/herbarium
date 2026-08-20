@@ -3,6 +3,9 @@ import NavHeader from "./components/NavHeader";
 import ScrollToTop from "./components/ScrollToTop";
 import Herbarium from "./pages/Herbarium";
 import Specimen from "./pages/Specimen";
+import DeterminationKey from "./pages/DeterminationKey";
+import HabitatExhibition from "./pages/HabitatExhibition";
+import ExhibitionHall from "./pages/ExhibitionHall";
 import GraftingBench from "./pages/GraftingBench";
 import Manuscripts from "./pages/Manuscripts";
 import FutureSpecies from "./pages/FutureSpecies";
@@ -18,6 +21,9 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Herbarium />} />
           <Route path="/specimen/:name" element={<Specimen />} />
+          <Route path="/key" element={<DeterminationKey />} />
+          <Route path="/exhibition" element={<ExhibitionHall />} />
+          <Route path="/habitat/:slug" element={<HabitatExhibition />} />
           <Route path="/grafting-bench" element={<GraftingBench />} />
           <Route path="/manuscripts" element={<Manuscripts />} />
           <Route path="/future-species" element={<FutureSpecies />} />
@@ -26,7 +32,7 @@ export default function App() {
       </main>
       <footer style={{ borderTop: "1px solid var(--paper-line)", padding: "20px 0", marginTop: "40px" }}>
         <div className="container mono" style={{ fontSize: "0.72rem", color: "var(--ink-soft)" }}>
-          Folia Codex &mdash; a fan-made field guide. Not affiliated with Nintendo, Game Freak, or Creatures Inc.
+          CC Herbarium &mdash; a fan-made field guide. Not affiliated with Nintendo, Game Freak, or Creatures Inc.
         </div>
       </footer>
     </HashRouter>
