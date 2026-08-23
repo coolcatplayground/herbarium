@@ -393,3 +393,117 @@ button, input, select {
 }
 
 
+
+/* --- Vileplume case: three mechanisms, acted out -----------------------
+   A still diagram of sequestration and a still diagram of detoxification
+   look nearly the same — a molecule, a body, some arrows. What separates
+   them is what HAPPENS to the molecule, which is a thing over time. So the
+   motion here is the explanation, not decoration.
+
+   All three run on the same 6s clock so switching strategies reads as three
+   takes on one problem rather than three unrelated widgets. Every rule is
+   disabled at the bottom of this block under prefers-reduced-motion, where
+   each panel still resolves to a correct still frame. */
+
+/* Detox: the toxin travels in whole and is gone by the time it clears the
+   enzyme; the fragments take over exactly where it stops. */
+@keyframes vres-tox-in {
+  0%        { transform: translateX(10px);  opacity: 0; }
+  8%        { opacity: 1; }
+  42%       { transform: translateX(112px); opacity: 1; }
+  52%       { transform: translateX(122px); opacity: 0; }
+  100%      { transform: translateX(122px); opacity: 0; }
+}
+@keyframes vres-frags {
+  0%, 50%   { transform: translateX(150px); opacity: 0; }
+  58%       { opacity: 1; }
+  88%       { transform: translateX(214px); opacity: 1; }
+  100%      { transform: translateX(230px); opacity: 0; }
+}
+/* The clamp shuts while the molecule is inside it — the squeeze is the
+   catalysis, so the timing has to agree with the travel above. */
+@keyframes vres-clamp {
+  0%, 34%   { transform: scaleY(1); }
+  46%       { transform: scaleY(0.84); }
+  58%, 100% { transform: scaleY(1); }
+}
+.vres-tox-in { animation: vres-tox-in 6s linear infinite; }
+.vres-frags  { animation: vres-frags 6s linear infinite; }
+.vres-clamp  { animation: vres-clamp 6s ease-in-out infinite; transform-origin: 122px 84px; }
+
+/* Insensitivity: approach, a refusal at contact, then a rebound away. The
+   little shove at 44-52% is what makes it read as "tried and failed" rather
+   than "wandered past" — without it the molecule just misses, which is a
+   different and wrong idea. */
+@keyframes vres-tox-bounce {
+  0%        { transform: translate(28px, 118px); opacity: 0; }
+  10%       { opacity: 1; }
+  40%       { transform: translate(114px, 84px); }
+  46%       { transform: translate(122px, 84px); }
+  52%       { transform: translate(112px, 84px); }
+  58%       { transform: translate(120px, 84px); }
+  86%       { transform: translate(34px, 26px); opacity: 1; }
+  96%, 100% { transform: translate(24px, 16px); opacity: 0; }
+}
+.vres-tox-bounce { animation: vres-tox-bounce 6s ease-in-out infinite; }
+
+/* Sequestration: three arrivals, staggered, each parking in its own store
+   and staying there. Nothing leaves — that is the mechanism. */
+/* Each keyframe set fades out over the last tenth of the cycle. Without that
+   the stores sit full at 100% and snap back to empty at 0%, which reads as a
+   blink every six seconds — the one place a loop can betray itself. The other
+   two panels get this for free because their molecules have already left. */
+@keyframes vres-seq-1 {
+  0%        { transform: translate(6px, 82px);   opacity: 0; }
+  6%        { opacity: 1; }
+  30%, 88%  { transform: translate(126px, 66px); opacity: 1; }
+  99%, 100% { transform: translate(126px, 66px); opacity: 0; }
+}
+@keyframes vres-seq-2 {
+  0%, 20%   { transform: translate(6px, 82px);   opacity: 0; }
+  26%       { opacity: 1; }
+  50%, 88%  { transform: translate(152px, 92px); opacity: 1; }
+  99%, 100% { transform: translate(152px, 92px); opacity: 0; }
+}
+@keyframes vres-seq-3 {
+  0%, 40%   { transform: translate(6px, 82px);   opacity: 0; }
+  46%       { opacity: 1; }
+  70%, 88%  { transform: translate(174px, 68px); opacity: 1; }
+  99%, 100% { transform: translate(174px, 68px); opacity: 0; }
+}
+/* The body takes on the toxin's own colour as the stores fill. This is the
+   payoff the previous diagram never showed: the animal does not merely
+   survive the poison, it becomes poisonous, and the warning colouration is
+   why the strategy pays for itself. */
+@keyframes vres-body {
+  0%, 20%   { stroke: var(--botanical-green-deep); fill: var(--paper-light); }
+  75%, 88%  { stroke: var(--specimen-red);         fill: var(--rose-wash, #f8ecef); }
+  100%      { stroke: var(--botanical-green-deep); fill: var(--paper-light); }
+}
+.vres-seq--1 { animation: vres-seq-1 6s ease-out infinite; }
+.vres-seq--2 { animation: vres-seq-2 6s ease-out infinite; }
+.vres-seq--3 { animation: vres-seq-3 6s ease-out infinite; }
+.vres-body   { animation: vres-body 6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vres-tox-in,
+  .vres-frags,
+  .vres-clamp,
+  .vres-tox-bounce,
+  .vres-seq--1,
+  .vres-seq--2,
+  .vres-seq--3,
+  .vres-body {
+    animation: none !important;
+  }
+  /* Without motion the moving parts sit at their untranslated origin, which
+     for these is off-panel. Park them where the loop ends so each diagram
+     still reads as a finished statement rather than an empty frame. */
+  .vres-tox-in     { transform: translateX(60px); }
+  .vres-frags      { transform: translateX(190px); }
+  .vres-tox-bounce { transform: translate(114px, 84px); }
+  .vres-seq--1     { transform: translate(126px, 66px); }
+  .vres-seq--2     { transform: translate(152px, 92px); }
+  .vres-seq--3     { transform: translate(174px, 68px); }
+  .vres-body       { stroke: var(--specimen-red); }
+}

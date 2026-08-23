@@ -153,7 +153,6 @@ export default function GraftingBench() {
           better. What survives is the part that carries information: what
           every case is actually made of. */}
       <section style={{ maxWidth: "720px", marginBottom: "28px" }}>
-        <p className="eyebrow">The Rootstock &mdash; Real Botany</p>
         <h2 style={{ fontSize: "var(--step3)" }}>Case Files</h2>
         <p style={{ color: "var(--ink-soft)" }}>
           Pull up a stool. Every case starts the same way: a real specimen from the Herbarium and

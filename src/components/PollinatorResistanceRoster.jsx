@@ -135,60 +135,219 @@ const STRATEGIES = [
   },
 ];
 
+// Each strategy gets a loop that acts out its mechanism rather than labelling
+// it. The three share a palette and a rhythm so they read as one family: the
+// toxin is always specimen-red, the insect's own machinery is always deep
+// green, and every loop runs 6s so switching between strategies feels like
+// three takes on one problem rather than three unrelated widgets.
+//
+// The animation is the explanation. A still diagram of sequestration and a
+// still diagram of detoxification look nearly identical — a molecule, a body,
+// some arrows. What separates them is what HAPPENS to the molecule, and that
+// is a thing over time. Same argument the drought console makes.
+//
+// Motion lives in tokens.css (`vres-*`) because keyframes cannot be expressed
+// inline, and every one of them is disabled under prefers-reduced-motion,
+// where each panel still reads correctly as a still.
+const VB_W = 240;
+const VB_H = 168;
+
+function Arrowhead({ id }) {
+  return (
+    <marker id={id} markerWidth="8" markerHeight="8" refX="5.5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-soft)" />
+    </marker>
+  );
+}
+
 function Diagram({ type }) {
-  // Small, deliberately simple SVGs \u2014 one visual idea each, not a literal
-  // biochemical illustration. Toxin molecule in specimen-red throughout so
-  // its fate is the throughline across all three panels.
   if (type === "detox") {
     return (
-      <svg viewBox="0 0 220 120" width="100%" height="120" role="img" aria-label="Toxin broken down by an enzyme into an inactive fragment">
-        <circle cx="30" cy="60" r="10" fill="var(--specimen-red)" />
-        <path d="M46 60 H90" stroke="var(--ink-soft)" strokeWidth="2" markerEnd="url(#arrow)" />
-        <rect x="92" y="40" width="46" height="40" rx="8" fill="var(--paper)" stroke="var(--botanical-green-deep)" strokeWidth="2" />
-        <text x="115" y="65" textAnchor="middle" fontSize="10" fontFamily="var(--font-mono)" fill="var(--botanical-green-deep)">CYP336</text>
-        <path d="M140 60 H170" stroke="var(--ink-soft)" strokeWidth="2" markerEnd="url(#arrow)" />
-        <circle cx="185" cy="52" r="5" fill="var(--moss)" />
-        <circle cx="196" cy="66" r="4" fill="var(--moss)" />
+      <svg
+        viewBox={`0 0 ${VB_W} ${VB_H}`}
+        width="100%"
+        height="230"
+        role="img"
+        aria-label="A toxin molecule meets an enzyme and leaves as harmless fragments"
+      >
         <defs>
-          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-soft)" />
-          </marker>
+          <Arrowhead id="vres-arrow-detox" />
         </defs>
+
+        {/* The gut, drawn only as the channel the toxin travels along — the
+            organ is not the subject, the interception is. */}
+        <path
+          d="M6 84 H210"
+          stroke="var(--paper-shadow)"
+          strokeWidth="26"
+          strokeLinecap="round"
+        />
+
+        {/* The enzyme sits astride the channel and closes on the toxin as it
+            passes. Its clamp is on the same 6s clock as the toxin's travel, so
+            it shuts exactly when the molecule is inside it. */}
+        <g className="vres-clamp">
+          <rect
+            x="96"
+            y="56"
+            width="52"
+            height="56"
+            rx="12"
+            fill="var(--paper-light)"
+            stroke="var(--botanical-green-deep)"
+            strokeWidth="2.5"
+          />
+          <text
+            x="122"
+            y="88"
+            textAnchor="middle"
+            fontSize="10"
+            fontFamily="var(--font-mono)"
+            fill="var(--botanical-green-deep)"
+          >
+            enzyme
+          </text>
+        </g>
+
+        {/* Whole on the way in. */}
+        <circle className="vres-tox-in" cx="0" cy="84" r="11" fill="var(--specimen-red)" />
+
+        {/* In pieces on the way out. Three fragments rather than two, so it
+            reads as broken up rather than merely halved. */}
+        <g className="vres-frags">
+          <circle cx="0" cy="72" r="5" fill="var(--moss)" />
+          <circle cx="14" cy="88" r="4" fill="var(--moss)" />
+          <circle cx="28" cy="76" r="3.5" fill="var(--moss)" />
+        </g>
+
+        <text
+          x={VB_W / 2}
+          y="146"
+          textAnchor="middle"
+          fontSize="11"
+          fontFamily="var(--font-mono)"
+          fill="var(--ink-soft)"
+        >
+          goes in whole, leaves in pieces
+        </text>
       </svg>
     );
   }
+
   if (type === "insensitivity") {
     return (
-      <svg viewBox="0 0 220 120" width="100%" height="120" role="img" aria-label="Toxin unable to bind a redesigned receptor">
-        <circle cx="40" cy="45" r="10" fill="var(--specimen-red)" />
-        <path d="M40 55 L40 80" stroke="var(--specimen-red)" strokeWidth="2" strokeDasharray="3 3" />
-        <rect x="120" y="30" width="70" height="60" rx="10" fill="var(--paper)" stroke="var(--botanical-green-deep)" strokeWidth="2" />
-        <path d="M148 45 L162 75 M162 45 L148 75" stroke="var(--botanical-green-deep)" strokeWidth="3" strokeLinecap="round" />
-        <text x="155" y="105" textAnchor="middle" fontSize="9" fontFamily="var(--font-mono)" fill="var(--ink-soft)">Na+/K+-ATPase</text>
-        <path d="M50 60 Q80 20 118 45" stroke="var(--ink-soft)" strokeWidth="2" fill="none" markerEnd="url(#arrow2)" />
+      <svg
+        viewBox={`0 0 ${VB_W} ${VB_H}`}
+        width="100%"
+        height="230"
+        role="img"
+        aria-label="A toxin approaches a receptor whose shape has changed, fails to fit, and rebounds away"
+      >
         <defs>
-          <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-soft)" />
-          </marker>
+          <Arrowhead id="vres-arrow-insens" />
         </defs>
+
+        {/* The pump the toxin is trying to jam. The pocket it used to dock in
+            is drawn as a dashed ghost beside the real one: showing the shape
+            that USED to fit is the only way a still frame carries the idea
+            that something changed. Without it this is just a molecule missing
+            a target for no visible reason. */}
+        <rect
+          x="132"
+          y="40"
+          width="82"
+          height="88"
+          rx="14"
+          fill="var(--paper-light)"
+          stroke="var(--botanical-green-deep)"
+          strokeWidth="2.5"
+        />
+        <path
+          d="M132 74 q16 10 0 20"
+          fill="none"
+          stroke="var(--botanical-green-deep)"
+          strokeWidth="2.5"
+        />
+        <path
+          d="M132 74 q-14 10 0 20"
+          fill="none"
+          stroke="var(--ink-soft)"
+          strokeWidth="1.6"
+          strokeDasharray="3 3"
+          opacity="0.75"
+        />
+        <text
+          x="173"
+          y="120"
+          textAnchor="middle"
+          fontSize="9.5"
+          fontFamily="var(--font-mono)"
+          fill="var(--ink-soft)"
+        >
+          binding site
+        </text>
+
+        {/* Approach, refusal, rebound — one molecule, one path, on a loop. */}
+        <circle className="vres-tox-bounce" cx="0" cy="0" r="11" fill="var(--specimen-red)" />
+
+        <text
+          x={VB_W / 2}
+          y="150"
+          textAnchor="middle"
+          fontSize="11"
+          fontFamily="var(--font-mono)"
+          fill="var(--ink-soft)"
+        >
+          the lock changed shape
+        </text>
       </svg>
     );
   }
+
   // sequestration
   return (
-    <svg viewBox="0 0 220 120" width="100%" height="120" role="img" aria-label="Toxin absorbed and stored intact inside the insect's body">
-      <circle cx="30" cy="60" r="10" fill="var(--specimen-red)" />
-      <path d="M46 60 H80" stroke="var(--ink-soft)" strokeWidth="2" markerEnd="url(#arrow3)" />
-      <ellipse cx="150" cy="60" rx="55" ry="38" fill="var(--paper)" stroke="var(--botanical-green-deep)" strokeWidth="2" />
-      <circle cx="130" cy="50" r="6" fill="var(--specimen-red)" />
-      <circle cx="150" cy="68" r="6" fill="var(--specimen-red)" />
-      <circle cx="170" cy="48" r="6" fill="var(--specimen-red)" />
-      <text x="150" y="105" textAnchor="middle" fontSize="9" fontFamily="var(--font-mono)" fill="var(--ink-soft)">stored intact</text>
+    <svg
+      viewBox={`0 0 ${VB_W} ${VB_H}`}
+      width="100%"
+      height="230"
+      role="img"
+      aria-label="Toxin molecules enter an insect, collect in storage, and the insect itself becomes toxic"
+    >
       <defs>
-        <marker id="arrow3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-soft)" />
-        </marker>
+        <Arrowhead id="vres-arrow-seq" />
       </defs>
+
+      {/* The body takes on the toxin's own colour as the stores fill. That
+          shift is the whole point of sequestration and the previous diagram
+          did not show it: the animal does not merely survive the poison, it
+          becomes poisonous. Warning colouration is the reason the strategy
+          pays for itself. */}
+      <ellipse
+        className="vres-body"
+        cx="150"
+        cy="82"
+        rx="62"
+        ry="44"
+        fill="var(--paper-light)"
+        stroke="var(--botanical-green-deep)"
+        strokeWidth="2.5"
+      />
+
+      {/* Three arrivals, staggered, each parking in its own store. */}
+      <circle className="vres-seq vres-seq--1" cx="0" cy="0" r="9" fill="var(--specimen-red)" />
+      <circle className="vres-seq vres-seq--2" cx="0" cy="0" r="9" fill="var(--specimen-red)" />
+      <circle className="vres-seq vres-seq--3" cx="0" cy="0" r="9" fill="var(--specimen-red)" />
+
+      <text
+        x="150"
+        y="140"
+        textAnchor="middle"
+        fontSize="11"
+        fontFamily="var(--font-mono)"
+        fill="var(--ink-soft)"
+      >
+        kept whole, and turned into a defence
+      </text>
     </svg>
   );
 }
