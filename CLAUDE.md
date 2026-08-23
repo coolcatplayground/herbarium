@@ -87,6 +87,41 @@ PMC's open-access index runs about three months behind the wall clock, so a
 window sized to the cadence returns nothing at all; `seen.json` and the queue
 are what make results new, not the date range.
 
+## The weekly routine (read this if the curator asks for "the desk")
+
+The curator triages papers on a phone, and asks for it in plain words. Both
+phrases below require a session **in this folder** — they touch local files, so
+they cannot be done from a phone chat.
+
+**"refresh the desk"** — regenerate the phone page from the current queue and
+republish it to the SAME artifact:
+
+```bash
+npm run artifact
+```
+
+then publish `curation/acquisitions.html` with `capabilities: {artifact: {}}`,
+passing the existing artifact URL as `url` so it updates in place rather than
+creating a second one. Find the URL with the Artifact tool's `list` action — it
+is titled **Acquisitions Desk**. Publishing without `url` from a fresh session
+silently makes a duplicate, which is the failure to avoid here.
+
+**"apply my decisions"** — read the published page (WebFetch its URL). Each card
+carries `data-doi` and `data-decision` of `kept`, `discarded`, or empty, and the
+decision also appears as visible stamp text so it survives plain-text reads.
+Then, for each: kept → append its block via the harvester's `keepPaper`;
+discarded → add its DOI to `curation/seen.json`. Remove both from
+`curation/queue.json` and re-render. Leave undecided ones alone.
+
+After applying, tell them which kept papers still need a `connection:` written —
+that is the only step that is genuinely theirs, and nothing reaches the Reading
+Room until it is done.
+
+The page cannot refresh itself: artifact runtime capabilities are `artifact`,
+`downloads`, `mcp` and `self`, none of which grant network access, and the CSP
+blocks external hosts. The weekly workflow keeps the queue current; the page
+only catches up when someone republishes it.
+
 ## Rules that are easy to break
 
 **Every content parser must normalise `\r\n?` → `\n` before matching.** The
