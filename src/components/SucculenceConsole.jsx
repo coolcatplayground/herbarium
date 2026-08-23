@@ -916,21 +916,21 @@ export default function SucculenceConsole({ spriteIds = {} }) {
       </div>
 
       <div style={{ marginTop: "22px", paddingTop: "18px", borderTop: "1.5px dashed var(--paper-shadow)" }}>
-        <p className="eyebrow" style={{ marginBottom: "10px" }}>Real Evidence Behind Each Mechanism</p>
+        <p className="eyebrow" style={{ marginBottom: "10px" }}>Where each mechanism comes from</p>
         <div style={{ display: "grid", gap: "10px" }}>
           <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
             <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>Storage</span>
-            Fradera-Soler et al. (2022) reviewed how succulent water-storage tissue depends on cell
-            walls that can regulate their own elasticity &mdash; swelling as they fill and collapsing
-            as they empty, without the tissue tearing itself apart in the process. That&rsquo;s the
-            difference between the rigid and elastic builds above: both run dry, but only one of them
-            ruptures on the way down.
+            A succulent&rsquo;s water store depends on cell walls that can fold inward as they empty
+            and swell again as they fill, without the tissue tearing itself apart on the way. That is
+            the whole difference between the rigid and elastic builds above: both run dry, but only
+            one of them ruptures getting there.
           </p>
           <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
             <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>Timing</span>
-            Tan &amp; Chen (2023) reviewed Crassulacean Acid Metabolism as an engineering target for
-            drought resistance &mdash; plants that shift CO2 uptake to the cooler night hours and keep
-            stomata shut during the day lose dramatically less water to transpiration.
+            A plant that opens its pores at night instead of during the day loses far less water,
+            because the night air is cool and damp. It takes in the day&rsquo;s carbon dioxide in the
+            dark, banks it, and spends it the next morning with its pores shut. Growers are actively
+            trying to breed this into crops for drought resistance.
           </p>
           <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
             <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>Idling</span>
@@ -945,13 +945,13 @@ export default function SucculenceConsole({ spriteIds = {} }) {
 
       <div style={{ marginTop: "22px", paddingTop: "18px", borderTop: "1.5px dashed var(--paper-shadow)" }}>
         <p className="eyebrow" style={{ marginBottom: "10px", color: "var(--specimen-red)" }}>
-          Not Just One Cactus &mdash; Real-World Analogues
+          Not just one cactus
         </p>
         <p style={{ fontSize: "0.85rem", color: "var(--ink-soft)", marginTop: 0, marginBottom: "14px" }}>
-          Succulence itself is a heavily convergent trait &mdash; Fradera-Soler et al. (2022), in a
-          companion paper to the cell-wall review cited above, put it plainly: the succulent syndrome
-          &ldquo;has evolved convergently in over 80 plant families.&rdquo; Not just cacti. Two
-          Pok&eacute;mon give this case a second data point beyond Cacnea&rsquo;s own line.
+          Storing water this way is not a cactus invention. More than eighty separate plant families
+          have arrived at it independently, none of them copying the others &mdash; which is what
+          makes it worth taking seriously as a design rather than a quirk. Two Pok&eacute;mon give
+          this case a second look at it, beyond Cacnea&rsquo;s own line.
         </p>
         <div style={{ display: "grid", gap: "12px" }}>
           <AnalogueCard

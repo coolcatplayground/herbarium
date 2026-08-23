@@ -30,8 +30,8 @@ const STRATEGIES = [
         text: "A family of cytochrome P450 enzymes (CYP336) intercepts the toxin in the gut and metabolizes it into an inactive form before it ever reaches its target.",
       },
       {
-        tag: "Real Evidence",
-        text: "Haas et al. (2023) found the CYP336 family conserved across honeybees and other Hymenoptera spanning 281 million years of divergence \u2014 all of them independently kept the same enzyme family for the same job: clearing alkaloids from nectar and pollen.",
+        tag: "What the studies found",
+        text: "Bees, wasps and their relatives have all held on to the same family of detox enzymes across 281 million years of going their separate ways. Each line kept it independently, for the same job: clearing plant poisons out of nectar and pollen.",
       },
       {
         tag: "Trade-off",
@@ -43,7 +43,7 @@ const STRATEGIES = [
         name: "Beedrill",
         pokemonName: "beedrill",
         rationale:
-          "Haas et al.'s real subjects are Hymenoptera \u2014 bees, wasps, and their relatives \u2014 and Beedrill is Kanto's most direct expy of that lineage. Its whole design centers on a stinger built for offensively handling toxins, which fits an active detox profile better than a purely defensive one.",
+          "That work is about bees and wasps, and Beedrill is Kanto's most direct stand-in for them. Its whole design is built around a stinger that handles poison offensively, which suits a body that breaks toxins down rather than one that merely puts up with them.",
         cohabitat: {
           location: "Kanto Route 24",
           games: "Pok\u00e9mon Red, Blue & Yellow (1996/1998) \u2014 Generation I",
@@ -65,8 +65,8 @@ const STRATEGIES = [
         text: "The toxin works by grabbing onto one specific spot on a protein the insect's cells depend on \u2014 here, the sodium pump that keeps nerve and muscle cells firing correctly. That's a lock-and-key fit: the toxin is shaped to grab that one spot. Insects that happened to have a slightly different shape right at that one spot \u2014 close enough that the pump still does its normal job, different enough that the toxin can't grab on \u2014 survived exposure that would otherwise kill them. Over generations, that slightly-different shape spread. The pump keeps working exactly as before; it's just no longer a lock the toxin's key fits.",
       },
       {
-        tag: "Real Evidence",
-        text: "Dobler et al. (2012) screened insects across six different orders and found the same handful of shape-changing spots reused again and again \u2014 separate insect lineages independently landing on the same fix, not one shared ancestor passing it down.",
+        tag: "What the studies found",
+        text: "Insects from six unrelated groups were checked, and the same small handful of changes turned up again and again in the same few spots \u2014 separate lineages each finding the same fix on their own, rather than inheriting it from a shared ancestor.",
       },
       {
         tag: "Trade-off",
@@ -100,8 +100,8 @@ const STRATEGIES = [
         text: "Instead of breaking the toxin down or resisting it, the insect selectively absorbs and stores it unmodified (or lightly converted) in its own tissues, repurposing the plant's weapon as its own defense against predators.",
       },
       {
-        tag: "Real Evidence",
-        text: "Agrawal et al. (2021) showed monarch caterpillars selectively sequester specific milkweed cardenolides while converting a more dangerous one \u2014 voruscharin \u2014 into safer stored forms, but paid a real, measurable cost in growth rate for doing it.",
+        tag: "What the studies found",
+        text: "Monarch caterpillars are choosy about which of milkweed's poisons they keep, and they turn the most dangerous one into a safer form before storing it. It is not free: caterpillars that do this grow measurably more slowly.",
       },
       {
         tag: "Trade-off",

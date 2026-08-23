@@ -38,7 +38,7 @@ const TRAITS = {
     summary: [
       {
         tag: "Abstract",
-        text: "Lu et al. (2021) compared a light-pink miniature rose to its natural deep-pink mutant using paired metabolomics and transcriptomics. Deeper pigmentation tracked coordinated upregulation across three pathway stages \u2014 biosynthesis, stabilization, and vacuolar transport \u2014 rather than a single gene switching on or off.",
+        text: "A light-pink miniature rose was compared with a naturally deep-pink version of itself. The deeper colour did not come from one gene switching on. Three separate stages had all been turned up together: making the pigment, keeping it from breaking down, and moving it into the cell\u2019s storage compartment.",
       },
       {
         tag: "Hypothesis",
@@ -59,7 +59,7 @@ const TRAITS = {
     summary: [
       {
         tag: "Abstract",
-        text: "Fradera-Soler et al. (2022) reviewed how a succulent's water-storage capacity depends on cell walls that regulate their own elasticity, while Tan & Chen (2023) reviewed Crassulacean Acid Metabolism (CAM) as a separate mechanism for cutting daytime water loss by shifting stomatal activity to night. Two real, independently-studied mechanisms, not one.",
+        text: "A succulent holds water in tissue whose cell walls can fold inward and refill without tearing — the plant visibly shrinks as it empties, then swells again when the rain comes. Quite separately, some plants open their pores at night rather than in the heat of the day, taking in carbon dioxide while the air is cool and damp and spending it the next morning behind closed pores. Two different mechanisms, each studied on its own.",
       },
       {
         tag: "Hypothesis",
@@ -80,7 +80,7 @@ const TRAITS = {
     summary: [
       {
         tag: "Abstract",
-        text: "Three real, independently-evolved insect strategies exist for surviving a toxic plant: enzymatic detoxification (Haas et al. 2023), target-site insensitivity (Dobler et al. 2012), and sequestration (Agrawal et al. 2021) \u2014 three separate real answers to the same underlying problem, not three competing theories about one answer.",
+        text: "Insects have arrived at three separate ways of living with a toxic plant, each evolved independently: break the poison down before it does harm, change the part of the body the poison grabs onto so it no longer fits, or swallow the poison and store it for your own use. Three answers to one problem \u2014 not three competing theories about one answer.",
       },
       {
         tag: "Hypothesis",
@@ -243,7 +243,14 @@ export default function GraftingBench() {
           <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", marginTop: "24px", maxWidth: "680px" }}>{trait.explainer}</p>
         )}
 
-        {trait.interactionType !== "resistance" && trait.interactionType !== "succulence" && (
+        {/* Suppressed only for the roster, which prints its own citation for
+            whichever strategy is selected. The succulence case used to be
+            excluded too, because its console named its sources inline — now
+            that the prose is written in plain language without author names,
+            this block is the only route from that case to the papers behind
+            it, and a claim nobody can check is exactly what this project's
+            Reading Room exists to avoid. */}
+        {trait.interactionType !== "resistance" && (
         <div style={{ marginTop: "24px", padding: "16px 18px", background: "var(--paper)", borderRadius: "10px", border: "1px solid var(--paper-shadow)" }}>
           <p className="eyebrow" style={{ marginBottom: "8px" }}>Supporting Literature</p>
           {citation ? (
