@@ -37,15 +37,55 @@ git config --local user.email "chacuttayapongwiluk@gmail.com"
 | | |
 |---|---|
 | `npm run dev` | Vite dev server |
-| `npm test` | Vitest, 462 tests, ~0.5s |
+| `npm test` | Vitest, 475 tests, ~0.5s |
 | `npm run build` | fetches sprites, then builds |
 | `npm run lint` | oxlint |
 | `npm run sprites` | refetch sprites (skips existing) |
 | `npm run roster:refresh` | regenerate the test roster fixture after PokéAPI gains new Grass-types |
+| `npm run harvest` | search Europe PMC for candidate papers into `curation/queue.json` — free, no key |
+| `npm run triage` | local page at :5100 to keep or discard what's queued |
 
 Deploy is automatic: `.github/workflows/deploy.yml` fires on push to `main`.
 
----
+## Acquisitions
+
+Two commands, no account and no cost. `npm run harvest` searches Europe PMC
+along sixteen themes — one per habitat room or case file — skips anything
+already in `manuscripts.txt` or already discarded, and writes the rest with
+abstracts to `curation/queue.json`. `npm run triage` serves those as cards on
+127.0.0.1 with Keep and Discard buttons.
+
+**Keep** appends the block to `public/manuscripts.txt` with `connection:` left
+empty. Deliberate twice over: the file's own header reserves that field for the
+curator's reading rather than a restatement of the abstract, and the loader
+requires a non-empty `connection` — so a kept paper sits as a draft and does not
+reach the Reading Room until it is written. **Discard** records the DOI in
+`curation/seen.json` so it never comes back.
+
+The queue persists between runs: fetching is quick, triage takes attention, and
+the two need not happen in one sitting. It stops growing at 24 unreviewed —
+there are far more matching papers than one run takes, so left alone it would
+otherwise reach a hundred nobody will face.
+
+`curation/QUEUE.md` is the same queue rendered for reading on GitHub from a
+phone. Regenerated on every harvest and on every keep/discard, so it never goes
+stale.
+
+`.github/workflows/harvest.yml` runs the fetch weekly (Mondays 07:00 UTC) and
+commits the queue. Fetch only — it never keeps or discards, since those need a
+person. No API key: Europe PMC is free.
+
+A paper's optional `summary` field is written by hand into `curation/queue.json`
+and shown in place of the abstract, which stays one click away. Unattended
+AI summaries would need a paid key; the weekly fetch deliberately does not.
+
+Nothing in `curation/` or `scripts/triage-ui.mjs` is bundled, imported by
+`src/`, or deployed. The triage server binds to 127.0.0.1 only.
+
+Search window defaults to 120 days, which looks too wide and is not. Europe
+PMC's open-access index runs about three months behind the wall clock, so a
+window sized to the cadence returns nothing at all; `seen.json` and the queue
+are what make results new, not the date range.
 
 ## Rules that are easy to break
 

@@ -3,6 +3,11 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+    # curation/ is the private acquisitions queue written by harvest.yml. It is
+    # never bundled or served, so a commit touching only it has nothing to
+    # redeploy.
+    paths-ignore:
+      - "curation/**"
   workflow_dispatch:
 
 permissions:

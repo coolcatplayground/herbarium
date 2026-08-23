@@ -11,7 +11,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "roster:refresh": "node scripts/refresh-roster.mjs",
-    "sprites": "node scripts/fetch-sprites.mjs"
+    "sprites": "node scripts/fetch-sprites.mjs",
+    "harvest": "node scripts/harvest-manuscripts.mjs",
+    "triage": "node scripts/triage-ui.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",

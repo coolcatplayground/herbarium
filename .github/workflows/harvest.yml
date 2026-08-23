@@ -1,0 +1,60 @@
+name: Weekly acquisitions
+
+# Refills the acquisitions queue once a week and commits it, so
+# curation/QUEUE.md is readable from a phone without anyone running anything.
+#
+# Fetch only. It never keeps or discards — those need a person, and they happen
+# locally via `npm run triage`. It costs nothing: Europe PMC is a free public
+# API and no key is involved.
+#
+# This cannot touch the published site. It writes only under curation/, which is
+# not bundled, not imported by src/, and not copied by `vite build`. deploy.yml
+# also carries `paths-ignore: curation/**`, and a push made with the default
+# GITHUB_TOKEN does not trigger other workflows anyway.
+
+on:
+  schedule:
+    # 07:00 UTC every Monday. Cron here is always UTC.
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# A queued run replaces a pending one rather than stacking up behind it.
+concurrency:
+  group: harvest
+  cancel-in-progress: false
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # queue.json is gitignored for local work, but CI is the one place it has
+      # to be tracked — it is the state the next run reads to avoid re-listing
+      # papers, and the only copy that survives between runs.
+      - name: Harvest
+        run: npm run harvest
+
+      - name: Commit the queue
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # -f because curation/queue.json is gitignored locally by design.
+          # Scoped to curation/ so this job can never touch content or code.
+          git add -f curation/queue.json curation/QUEUE.md curation/seen.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "Queue unchanged."
+          else
+            git commit -m "curation: weekly acquisitions queue"
+            git push
+          fi

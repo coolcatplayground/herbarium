@@ -1,0 +1,282 @@
+[
+  {
+    "theme": {
+      "key": "plant-senses",
+      "label": "Gravitropism & plant sensory biology",
+      "room": "Psychoactive & Sensory-Signaling Flora",
+      "specimens": [
+        "bellsprout",
+        "oddish",
+        "budew"
+      ],
+      "terms": [
+        "\"gravitropism\"",
+        [
+          "\"statolith\"",
+          "\"plant\""
+        ],
+        "\"thigmomorphogenesis\"",
+        [
+          "\"mechanosensing\"",
+          "\"plant\""
+        ]
+      ]
+    },
+    "doi": "10.1038/s41467-026-74994-x",
+    "title": "A sequential MAP kinase cascade regulates mechanical signalling",
+    "authors": "Tran HC, Darwish E, Johansson V, Fernandez-Milmanda G, Zhu T, Fonseca de Lima CF, Van De Cotte B, Colcombet J, Vuylsteke M, De Smet I, Goossens A, Van Aken O.",
+    "year": "2026",
+    "journal": "Nature communications, 17",
+    "date": "2026-07-01",
+    "abstract": "Plants respond to mechanical stimulations like wind, touching or wounding to safeguard their development and survival. Mitogen Activated Protein Kinases (MAPKs) activation by mechanostimuli was reported 26 years ago, but the upstream regulatory mechanism and function remained unknown. We report that mechanostimulation activates a MAPKKK3/4/5-MKK4/5-MPK3/6 cascade within 60 seconds, leading to induction of ~800 genes, encompassing most of the early touch response. Most genes overlap with touch-responsive genes regulated by CAMTA1/2/3, exposing an interplay between MAPKs and CAMTA transcription factors. Furthermore, loss of MKK4/5 leads to global impairment of touch-regulated protein phosphorylation, demonstrating they are crucial regulators. In contrast, phosphorylation does not clearly affect early activation of the touch-induced jasmonic acid (JA) signalling pathway, nor does loss of JA affect the overall early touch-phosphoproteome. Lastly, loss of MAPKKK3/4/5 and MKK4/5 reduces thigmomorphogenesis, underlining the importance of the identified MAPK cascade for steering plant growth during stress. In summary, we have now identified a MAPKKK3/4/5-MKK4/5-MPK3/6 cascade as a key touch- and wounding signalling pathway in plants.",
+    "url": "https://europepmc.org/article/PMC/PMC13324856",
+    "isPreprint": false,
+    "summary": "Touch, wind and wounding switch on a MAPKKK3/4/5–MKK4/5–MPK3/6 cascade within sixty seconds, and that single cascade induces around 800 genes — most of the plant's early touch response. Knock out the middle of it and thigmomorphogenesis weakens: the plant stops rebuilding itself in response to being handled.\n\nFits: the Psychoactive & Sensory-Signaling room, which argues a plant's real senses are stranger than the psychoactive half of its roster. That room currently makes its case on gravitropism and settling starch grains; this is the other sense, with a clock on it.\n\nWeak: Arabidopsis molecular genetics, and the gene names will not survive contact with a placard. What survives is the sixty seconds."
+  },
+  {
+    "theme": {
+      "key": "phenology",
+      "label": "Phenology, photoperiod & vernalization",
+      "room": "Generalist Flora",
+      "specimens": [
+        "deerling",
+        "sawsbuck",
+        "smoliv",
+        "dolliv",
+        "arboliva"
+      ],
+      "terms": [
+        "\"vernalization\"",
+        [
+          "\"photoperiodism\"",
+          "\"flowering\""
+        ],
+        [
+          "\"phenology\"",
+          "\"plant\""
+        ],
+        [
+          "\"degree-day\"",
+          "\"phenology\""
+        ]
+      ]
+    },
+    "doi": "10.1007/s00484-026-03256-8",
+    "title": "Woody plant encroachment alters the vegetative and reproductive phenology of a Vereda palm swamp in Cerrado",
+    "authors": "Alves NF, Costa JP, Morellato P, Oliveira PE.",
+    "year": "2026",
+    "journal": "International journal of biometeorology, 70",
+    "date": "2026-06-30",
+    "abstract": "Woody plant encroachment (WPE) is widespread in savanna and wetland ecosystems, yet its effects on phenological dynamics at fine spatial scales remain poorly quantified. Here, we assessed how woody plant encroachment alters vegetative and reproductive phenology in a Vereda palm swamp ecosystem of the Brazilian Cerrado by integrating high-resolution unmanned aerial vehicle (RPAS; Remotely Piloted Aircraft System) imagery with ground-based phenological monitoring. Ten regions of interest representing WPE and non-invaded native Vereda vegetation were monitored monthly for twelve consecutive months using drone imagery, with 1 × 1 m sampling grids (≈ 260 m² per region). Vegetation greenness was quantified from monthly orthomosaics using the Green Chromatic Coordinate (GCC) and analyzed with linear mixed-effects models including vegetation type, time, and their interaction. Flowering phenology was monitored biweekly from January to December 2023 in transects located in the middle region of the same Vereda area. Three WPE plant species and the native Vereda community occurring in the same area were analyzed using circular statistics and permutation tests. Woody plant encroachment areas exhibited significantly higher GCC values than native Vereda vegetation, indicating greater and more persistent greenness throughout the year. A significant vegetation type × time interaction revealed distinct phenological trajectories, with WPE areas maintaining elevated greenness during dry-wet seasonal transitions and possibly resulting in greater evapotranspiration and water use during the end of the dry season. Flowering phenology of WPE species was highly synchronized (mean angle = 3.45 rad; r = 0.65), whereas native Vereda species showed a more diffuse flowering pattern (mean angle = 1.99 rad; r = 0.27). Although a temporal flowering peak shift of approximately three months was observed between groups, this difference was not statistically significant. Overall, woody plant encroachment substantially modifies vegetative phenological dynamics and tends to homogenize flowering timing in Vereda ecosystems, highlighting the value of integrating RPAS-based monitoring and field observations to detect functional changes in Cerrado wetlands.",
+    "url": "https://europepmc.org/article/PMC/PMC13320010",
+    "isPreprint": false,
+    "summary": "Drone imagery plus twelve months of ground monitoring in a Brazilian Cerrado palm swamp, measuring how woody encroachment shifts the timing of leafing and flowering in the vegetation it invades.\n\nFits: the Generalist room, the phenology room, which answers when rather than where.\n\nWeak: this is land-cover change altering a community's calendar, not a plant reading its own. The room is built on degree-days, night length and vernalization — mechanisms inside one organism. A good paper, probably the wrong shelf."
+  },
+  {
+    "theme": {
+      "key": "pioneer",
+      "label": "Allelopathy, succession & pioneers",
+      "room": "Pioneer & Fast-Colonizing Flora",
+      "specimens": [
+        "breloom",
+        "shroomish",
+        "tangela"
+      ],
+      "terms": [
+        "\"allelopathy\"",
+        [
+          "\"ecological succession\"",
+          "\"pioneer species\""
+        ],
+        [
+          "\"light competition\"",
+          "\"canopy\""
+        ],
+        "\"ruderal\""
+      ]
+    },
+    "doi": "10.1002/ece3.73916",
+    "title": "Onshore Wind Energy Development Causes Localized but Lasting Shifts in Plant Community Composition and Function",
+    "authors": "Seifert L, Sivertsen K, Rugstad A, Graae BJ, May R, Hagen D.",
+    "year": "2026",
+    "journal": "Ecology and evolution, 16",
+    "date": "2026-06-29",
+    "abstract": "Wind power plants are frequently placed in natural ecosystems, but their impacts on plant communities are rarely considered. Therefore, it is unknown how far potential impacts extend into adjacent vegetation and how long they persist. To address this, we surveyed vegetation at different distances to roads at three wind power plants in Norway that were commissioned 4, 12, and 19 years ago. We then used Grime's CSR strategies to document functional shifts in plant community composition and Ellenberg Indicator Values (EIVs) to identify the abiotic gradients driving these shifts. We found that shifts in plant community composition were related to road distance and time since disturbance. At the youngest site, the proportion of plants with ruderal strategies was significantly increased within 10.4 m of roads, effectively expanding the footprint of roads by more than two-fold. At the oldest site, this impact was reduced to 2.8 m, suggesting that the original stress-tolerant communities recovered at a rate of 0.5 m per year. Increased ruderality near roads was associated with plant communities indicating higher nutrient availability and more reactive soils. This study provides novel knowledge regarding the spatial and temporal impact of wind energy development on plant communities. As road construction appears to shift community composition toward ruderal dominance by increasing nutrient availability, we recommend keeping road- and construction areas to a minimum. Overall, this can reduce the footprint of wind power plants and ensure that the transition to renewable energy does not come at the expense of ecosystems.",
+    "url": "https://europepmc.org/article/PMC/PMC13314548",
+    "isPreprint": false,
+    "summary": "Vegetation surveyed at increasing distance from access roads at three Norwegian wind plants commissioned 4, 12 and 19 years ago, scored with Grime's CSR strategies. The disturbance signature is local but has not faded after nineteen years.\n\nFits: the Pioneer & Fast-Colonizing room, which already runs on succession as a sequence of evictions. CSR is the same framework that room uses to take 'pioneer' at its technical value.\n\nWeak: closer to land-use impact assessment than plant strategy. Useful for the nineteen-years figure more than for the mechanism."
+  },
+  {
+    "theme": {
+      "key": "pioneer",
+      "label": "Allelopathy, succession & pioneers",
+      "room": "Pioneer & Fast-Colonizing Flora",
+      "specimens": [
+        "breloom",
+        "shroomish",
+        "tangela"
+      ],
+      "terms": [
+        "\"allelopathy\"",
+        [
+          "\"ecological succession\"",
+          "\"pioneer species\""
+        ],
+        [
+          "\"light competition\"",
+          "\"canopy\""
+        ],
+        "\"ruderal\""
+      ]
+    },
+    "doi": "10.1002/ece3.73911",
+    "title": "Invasive Lupinus polyphyllus Alters Functional Traits and Life Strategies of Native Species",
+    "authors": "Czarniecka-Wiera M, Berki B, Szymura TH, Szymura M.",
+    "year": "2026",
+    "journal": "Ecology and evolution, 16",
+    "date": "2026-06-29",
+    "abstract": "The primary trait of invasive plant species is their enhanced competitive ability compared to native flora. Consequently, in ecosystems they invade, native species diversity often declines. However, some native plants may allocate resources to developing traits that support their coexistence with invasive species. We conducted an observational experiment to assess how the functional traits of native plants are influenced by the invasion of Lupinus polyphyllus, how the Competition-Stress-Ruderal (CSR) strategies of native species shift during this process, as well as whether environmental factors modify these relations. We selected eight species (four herbs and four grasses) commonly found in the grasslands of the Sudety Mountains (Poland). Plants and soil were sampled from grasslands dominated by L. polyphyllus (> 50% cover) and from adjacent patches free of invasive plants. We measured plant height, leaf area (LA), specific leaf area (SLA), and leaf dry matter content (LDMC). Subsequently, we evaluated each species' allocation to a particular life strategy using the CSR framework. Our findings show that native grassland species growing alongside L. polyphyllus tend to be taller, have larger leaves, exhibit higher SLA, and have lower LDMC compared to those in noninvaded areas. Simultaneously, L. polyphyllus presence is associated with reduced impacts of K and moisture on herbs' functional traits; C, N, C/N, and heat exposure on grasses' functional traits; as well as low pH and clay content on both groups' functional traits. These shifts in leaf traits among plants interacting with the invader suggest a reduced investment in stress-tolerance strategies, accompanied by increased investment in competitive or ruderal strategies.",
+    "url": "https://europepmc.org/article/PMC/PMC13314384",
+    "isPreprint": false,
+    "summary": "Eight native herbs and grasses measured where invasive Lupinus polyphyllus has taken hold, asking whether natives shift their CSR strategy to coexist rather than simply losing.\n\nFits: the Pioneer room's central bargain — fast, cheap, light-hungry, short-lived — seen from the losing side. The room says light competition is asymmetric; this is what the shorter plant does about it.\n\nWeak: correlational, one invader, one region. Pairs closely with the wind-energy paper above; you probably want one CSR paper, not two."
+  },
+  {
+    "theme": {
+      "key": "wood-decay",
+      "label": "Wood decay, lignin & saprotrophs",
+      "room": "Deadwood & Decomposer-Associated Flora",
+      "specimens": [
+        "shiinotic",
+        "morelull",
+        "phantump",
+        "trevenant",
+        "sudowoodo"
+      ],
+      "terms": [
+        "\"wood decay fungi\"",
+        "\"white rot fungus\"",
+        [
+          "\"lignin\"",
+          "\"decomposition\""
+        ],
+        [
+          "\"deadwood\"",
+          "\"decomposition\""
+        ],
+        "\"saprotrophic fungi\""
+      ]
+    },
+    "doi": "10.1186/s40694-026-00218-y",
+    "title": "Reintroduction of lignin-modifying enzymes in the brown-rot fungus Gloeophyllum trabeum restores ligninolytic activities but diminishes lignocellulose degradation",
+    "authors": "Ganjoloo N, Li W, Zhang J.",
+    "year": "2026",
+    "journal": "Fungal biology and biotechnology, 13",
+    "date": "2026-06-29",
+    "abstract": "Fungi have evolved two distinct strategies, white-rot and brown-rot, to degrade lignocellulose in plant biomass. White-rot fungi utilize lignin-modifying enzymes (LMEs) to deconstruct lignin and access carbohydrates, whereas brown-rot fungi, which arose from white-rot ancestral lineages, have largely lost LME activities. Instead, brown-rot fungi rely on a small redox metabolite-mediated Fenton system that generates reactive oxygen species (ROS) to rapidly deconstruct lignocellulose and selectively remove carbohydrates. The abandonment of LMEs in brown-rot fungi suggests an intriguing evolutionary strategy to streamline decay machinery, but it remains unclear why fungi evolved this way. Here, we reintroduced LME genes from the white-rot fungus Trametes versicolor into the model brown-rot fungus Gloeophyllum trabeum to create hybrid fungal systems and evaluate LME function within the Fenton-dominant brown-rot context. Analysis of lignocellulose degradation showed that lignin disruption can be partially restored in LME mutants, thereby shifting the typical carbohydrate-selective decay mode of G. trabeum. However, constitutive LME expression also caused pronounced growth defects and reduced the overall rate of lignocellulose degradation, specifically decreasing cellulose and hemicellulose removal. Correlation analysis between genotypes and phenotypes indicates that LMEs, although prevalently used for delignification in fungi, are fundamentally incompatible with the carbohydrate-selective brown-rot system.",
+    "url": "https://europepmc.org/article/PMC/PMC13312777",
+    "isPreprint": false,
+    "summary": "The strongest of this batch. Brown-rot fungi descend from white-rot ancestors and threw away their lignin-modifying enzymes, relying on a Fenton chemistry instead. The authors put those enzymes back into Gloeophyllum trabeum — ligninolytic activity returns, and the fungus gets measurably *worse* at degrading wood.\n\nFits: the Deadwood room, directly. That room runs on 'decay has no single clock' and on a living tree walling off rot rather than healing it. This is hard evidence that abandoning the lignin machinery was an optimisation and not a loss — the sort of correction the room's honesty depends on.\n\nWeak: none obvious. It is a molecular microbiology paper, so the placard has to carry the idea rather than the assay."
+  },
+  {
+    "theme": {
+      "key": "cam-succulence",
+      "label": "CAM photosynthesis & succulence",
+      "room": "Nocturnal-Function Flora",
+      "caseFile": "Cacnea's Water Economy",
+      "specimens": [
+        "cacnea",
+        "cacturne",
+        "maractus"
+      ],
+      "terms": [
+        "\"crassulacean acid metabolism\"",
+        "\"CAM photosynthesis\"",
+        [
+          "\"succulent\"",
+          "\"water storage\""
+        ]
+      ]
+    },
+    "doi": "10.1186/s40529-026-00495-1",
+    "title": "Anatomical drivers of organ size and trait coordinated association between pseudobulbs and roots in Dendrobium",
+    "authors": "Zhang FP, Lǚ DQ, Li HR, Zhang SB.",
+    "year": "2026",
+    "journal": "Botanical studies, 67",
+    "date": "2026-06-24",
+    "abstract": "BackgroundOrgan size is a key phenotypic trait linking plant structure, physiological function, and ecological adaptation. The epiphytic orchid genus Dendrobium comprises highly diversified species adapted to heterogeneous canopy microhabitats, where water and nutrients are scarce and unpredictable. It has evolved two specialized organs, water-storing pseudobulbs and absorptive succulent roots that are critical for epiphytic survival. However, their central role in drought adaptation, interspecific anatomical variation and the drivers of organ size remain poorly understood. Here, we quantified 7 pseudobulb and 13 root traits across 37 Dendrobium species, using phylogenetic independent contrasts to explore the relationships among traits.ResultsAll traits exhibited considerable interspecific variation, with pseudobulbs showing greater trait lability than roots, reflecting diversified water-use strategies under epiphytic pressure. Weak phylogenetic signals across traits indicate environmental selection dominates anatomical diversification. Pseudobulb radius correlated strongly with parenchyma area and vascular bundle traits, regardless of phylogenetic correction, but not with epidermis thickness after phylogenetic correction. Root radius was associated closely with cortex, velamen, and vascular bundle traits across analyses, but not with exodermis thickness after phylogenetic correction. Functionally analogous traits (pseudobulb radius vs. root radius; pseudobulb vascular bundle area vs. root vascular bundle area and root exodermis area; pseudobulb parenchyma area vs. root cortex thickness, velamen area, and velamen cell area) between pseudobulbs and roots were consistently and positively correlated, revealing coordinated water-use strategies across organs.ConclusionDendrobium organ size is determined by tissue-level adaptive architecture. Pseudobulb size depends primarily on water-storage parenchyma, while root size is tightly linked to absorptive velamen. The species-level variation, driven mainly by environmental selection, underscores diversified hydraulic strategies in epiphytic orchids. Coordinated trait association between pseudobulb and root traits reflects adaptive integration of storage and absorption organs, a key evolutionary strategy for epiphytic survival. These findings highlight the fundamental role of cell and tissue dimensions in shaping orchid organ morphology.",
+    "url": "https://europepmc.org/article/PMC/PMC13294433",
+    "isPreprint": false,
+    "summary": "Seven pseudobulb and thirteen root traits across 37 Dendrobium species, on how epiphytic orchids size their water-storing organs for a canopy where water arrives unpredictably.\n\nFits: Nocturnal-Function, and it speaks to Cacnea's Water Economy case file — storage capacity and elasticity are exactly the two dials that case is built on, measured here in a completely unrelated lineage.\n\nWeak: an epiphyte's drought is not a desert's. The link to Cacnea is convergence, not shared strategy, and saying so plainly is the honest version."
+  },
+  {
+    "theme": {
+      "key": "hyperaccumulation",
+      "label": "Metal hyperaccumulation & serpentine soils",
+      "room": "Mineral-Accumulating Flora",
+      "specimens": [
+        "ferrothorn",
+        "gogoat"
+      ],
+      "terms": [
+        "\"hyperaccumulator\"",
+        "\"nickel hyperaccumulation\"",
+        [
+          "\"serpentine soil\"",
+          "\"plant\""
+        ],
+        [
+          "\"phytoremediation\"",
+          "\"metal\""
+        ]
+      ]
+    },
+    "doi": "10.1002/ece3.73785",
+    "title": "Effects of Climate and Water Limitation on Reproductive Traits and Trait Divergence Across Soil Boundaries in a Serpentine-Tolerant Annual Herb",
+    "authors": "Ibañez N, Paul J, Ergastolo A, Suni S.",
+    "year": "2026",
+    "journal": "Ecology and evolution, 16",
+    "date": "2026-06-23",
+    "abstract": "Biodiversity hotspots are often found in areas with high precipitation or diverse microhabitats. For plants, geographic areas with high soil variability tend to have high species richness or functional trait diversity. Serpentine soil has driven the diversification of numerous lineages, and many taxa show phenotypic variability across soil types. Precipitation can increase effects of soil on divergence, but this has been examined only for growth and vegetative traits. Using a greenhouse common garden, we characterized reproductive phenology for the serpentine-tolerant annual herb Antirrhinum vexillocalyculatum along a moisture gradient and evaluated whether trait divergence varies with precipitation. Furthermore, we conducted a water limitation experiment and examined whether water limitation changes trait expression or divergence in trait expression. Finally, through field observations we assessed whether reproductive phenology, divergence in reproductive phenology, or the potential for gene flow differs between wetter and drier areas. We found strong effects of precipitation regime on flowering phenology, and some support for the hypothesis that precipitation enhances divergence across soil types. Experimental water limitation reduced floral displays, caused phenological delays, and increased divergence across soil types for some traits. In the field, the proportion of plants flowering was consistently greater in the wetter area, and the potential for gene flow was higher from non-serpentine to serpentine populations. Despite phenological differences among ecotypes, flowering distributions overlapped to a large extent along the precipitation cline and under water limitation. This suggests that gene flow across soil types is a dominant force in this system but may be lower in wetter areas and under future drought. Shortened flowering durations and floral displays under drought suggest that plant reproductive potential will decrease in the future, with the possibility of lower adaptive gene flow from serpentine to non-serpentine populations should it occur.",
+    "url": "https://europepmc.org/article/PMC/PMC13290394",
+    "isPreprint": false,
+    "summary": "Greenhouse common garden on Antirrhinum vexillocalyculatum, a serpentine-tolerant annual, testing whether reproductive timing diverges across a soil boundary and whether rainfall sharpens that divergence.\n\nFits: the Mineral-Accumulating room, which is carried by serpentine ground rather than by its three exhibits.\n\nWeak: tolerance is not accumulation. That room's real subject is metal ending up inside the leaf — the 1,000 µg/g threshold, Pycnandra bleeding nickel latex. This paper is about surviving the soil, not concentrating it, which is a different claim than the room makes."
+  },
+  {
+    "theme": {
+      "key": "clonal-longevity",
+      "label": "Clonal longevity, grafting & ancient trees",
+      "room": "Ancient & Long-Lived Flora",
+      "specimens": [
+        "trevenant",
+        "exeggutor-alola",
+        "torterra"
+      ],
+      "terms": [
+        [
+          "\"clonal\"",
+          "\"longevity\""
+        ],
+        [
+          "\"tree ring\"",
+          "\"age\""
+        ],
+        [
+          "\"grafting\"",
+          "\"rootstock\""
+        ],
+        "\"ancient tree\"",
+        "\"dendrochronology\""
+      ]
+    },
+    "doi": "10.3390/biology15120954",
+    "title": "Armillaria Species: Biological Complexity, Bioactive Metabolites and Molecular Foundations for Medicinal and Agricultural Applications",
+    "authors": "Duan Y, Huang Z, Yang X, Tian Q, Ye L, Zhang B, Li X.",
+    "year": "2026",
+    "journal": "Biology, 15",
+    "date": "2026-06-18",
+    "abstract": "Armillaria is a genus of macrofungi with high ecological, biological, medicinal, and edible value. As facultative plant pathogens and nutritional symbionts, Armillaria species support the growth of valuable medicinal plants including Gastrodia elata and Polyporus umbellatus. They also exhibit unique traits such as exceptional longevity, widespread clonal expansion, rhizomorph formation, and bioluminescence, making them a valuable model for studying fungal ecology, symbiosis, specialized metabolism, and applied research. This review summarizes recent progress in Armillaria research, covering biological characteristics, nutritional components, bioactive constituents, species identification, genomic resources, and biosynthetic pathways. We discuss advances in artificial cultivation and the regulatory roles of exogenous phytohormones in mycelial and rhizomorph development. The nutritional value of fruiting bodies is highlighted, with a focus on key pharmacologically active metabolites such as protoilludane-type sesquiterpenes and polysaccharides. We also review multilocus phylogenetic analysis, comparative genomics, and the biosynthetic gene clusters of melleolides and bioluminescence, which have improved understanding of Armillaria evolution and functional differentiation.",
+    "url": "https://europepmc.org/article/PMC/PMC13295948",
+    "isPreprint": false,
+    "summary": "A review of Armillaria: the honey fungus that is also the largest and among the oldest clonal organisms known, covering rhizomorph networks, bioluminescence, and its symbioses with medicinal plants.\n\nFits: two rooms at once. Ancient & Long-Lived is built on two routes to age — lignin and structure, versus keeping a genotype alive clonally — and Armillaria is the clearest living case of the second. The bioluminescence also touches the luminous fungi in Ornamental & Pollinator.\n\nWeak: a review, and pointed at medicinal and agricultural applications, so the longevity material may be thinner than the title suggests. Check before citing it for the age claim specifically."
+  }
+]
