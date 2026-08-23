@@ -34,7 +34,7 @@ state library, no CSS framework.
 | Habitat placards (`habitat_note`) | **145 — every specimen** |
 | Pokédex records (`record`) | **145 — every specimen** |
 | Habitat categories | 18 |
-| Habitat rooms illustrated | 8 of 18 (bug, dragon, electric, ghost, ground, ice, normal, rock) |
+| Habitat rooms illustrated | 16 of 18 — all but Wetland & Aquatic and Wind-Dispersed & Aerial |
 | Reading Room papers | 16 |
 | Grafting Bench case files | 3 |
 | Propagation Bench concepts | 3 |
@@ -276,7 +276,7 @@ from the roster actually filed under it**, then give each specimen a placard on
 what it contributes. The categories had originally been glosses on a type pairing
 written before anyone knew who would end up in them.
 
-Rooms completed (**18 of 18**, 8 of them illustrated):
+Rooms completed (**18 of 18**, 16 of them illustrated):
 
 - **Ancient & Long-Lived** (7) — two routes to age: lignin and structure, versus
   the orchard trick of keeping the *genotype* alive by grafting. Anchored on

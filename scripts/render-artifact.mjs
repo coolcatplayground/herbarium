@@ -13,7 +13,7 @@
 // being read back as plain text). Reading the published page is how those
 // decisions get applied to manuscripts.txt later.
 
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { loadQueue } from "./harvest-manuscripts.mjs";
 
@@ -45,7 +45,7 @@ function splitSummary(text) {
   return { body, fits, weak };
 }
 
-function card(p, i) {
+function card(p) {
   const { body, fits, weak } = splitSummary(p.summary);
   return `
       <article class="slip" data-doi="${esc(p.doi)}" data-decision="">
