@@ -30,7 +30,7 @@ export default function FutureSpecies() {
 
   return (
     <div className="container" style={{ padding: "40px 24px 100px" }}>
-      <section style={{ maxWidth: "720px", marginBottom: "36px" }}>
+      <section className="page-intro" style={{ marginBottom: "36px" }}>
         <p className="eyebrow">Nursery &mdash; Not Yet Real</p>
         <h2 style={{ fontSize: "var(--step3)" }}>The Propagation Bench</h2>
         <p style={{ color: "var(--ink-soft)" }}>

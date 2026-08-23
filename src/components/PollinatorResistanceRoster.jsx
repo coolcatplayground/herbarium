@@ -222,7 +222,7 @@ function Diagram({ type }) {
 
         <text
           x={VB_W / 2}
-          y="146"
+          y="150"
           textAnchor="middle"
           fontSize="11"
           fontFamily="var(--font-mono)"
@@ -338,15 +338,21 @@ function Diagram({ type }) {
       <circle className="vres-seq vres-seq--2" cx="0" cy="0" r="9" fill="var(--specimen-red)" />
       <circle className="vres-seq vres-seq--3" cx="0" cy="0" r="9" fill="var(--specimen-red)" />
 
+      {/* Centred on the panel, not on the insect. Centring this at the body's
+          own cx=150 pushed it off the right edge of a 240-wide viewBox and the
+          last word was clipped. Mono runs ~6.8 units per character at this
+          size, so a caption centred here has room for about 31 characters
+          before it reaches the edge — worth counting rather than eyeballing,
+          since SVG text does not wrap and gives no warning when it overruns. */}
       <text
-        x="150"
-        y="140"
+        x={VB_W / 2}
+        y="150"
         textAnchor="middle"
         fontSize="11"
         fontFamily="var(--font-mono)"
         fill="var(--ink-soft)"
       >
-        kept whole, and turned into a defence
+        kept whole, used as a defence
       </text>
     </svg>
   );

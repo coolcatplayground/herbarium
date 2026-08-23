@@ -20,7 +20,7 @@ export default function Manuscripts() {
 
   return (
     <div className="container" style={{ padding: "40px 24px 100px" }}>
-      <section style={{ maxWidth: "720px", marginBottom: "36px" }}>
+      <section className="page-intro" style={{ marginBottom: "36px" }}>
         <p className="eyebrow">The Reading Room</p>
         <h2 style={{ fontSize: "var(--step3)" }}>Real Manuscripts, Grass-Type Ideas</h2>
         <p style={{ color: "var(--ink-soft)" }}>

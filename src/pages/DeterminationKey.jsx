@@ -128,7 +128,7 @@ export default function DeterminationKey() {
       <Link to="/" className="mono" style={{ fontSize: "0.8rem", color: "var(--ink-soft)", textDecoration: "none" }}>
         &larr; Back to the gallery
       </Link>
-      <section style={{ maxWidth: "720px", margin: "18px 0 32px" }}>
+      <section className="page-intro" style={{ margin: "18px 0 32px" }}>
         <p className="eyebrow">Determinavit</p>
         <h2 style={{ fontSize: "var(--step3)" }}>The Determination Key</h2>
         <p style={{ color: "var(--ink-soft)" }}>

@@ -66,7 +66,7 @@ export default function ExhibitionHall() {
 
   return (
     <div className="container" style={{ padding: "40px 24px 90px" }}>
-      <section style={{ maxWidth: "760px", marginBottom: "36px" }}>
+      <section className="page-intro" style={{ marginBottom: "36px" }}>
         <p className="eyebrow">Through the Far Doors</p>
         <h2 style={{ fontSize: "var(--step3)" }}>The Exhibition Hall</h2>
         <p style={{ color: "var(--ink-soft)" }}>

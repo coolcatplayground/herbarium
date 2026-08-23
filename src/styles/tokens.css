@@ -507,3 +507,14 @@ button, input, select {
   .vres-seq--3     { transform: translate(174px, 68px); }
   .vres-body       { stroke: var(--specimen-red); }
 }
+
+/* A page intro holds two things with different needs. Running text wants a
+   readable measure — somewhere near 70 characters a line — while a heading
+   does not, and constraining both to the same width makes a long title wrap
+   early with half the row still empty. "Real Manuscripts, Grass-Type Ideas"
+   broke onto a second line at 720px with a third of the container unused.
+   The measure belongs on the prose, so it sits here rather than on the
+   section that wraps both. */
+.page-intro > p {
+  max-width: 72ch;
+}

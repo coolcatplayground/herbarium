@@ -91,7 +91,7 @@ export default function Herbarium() {
 
   return (
     <div className="container" style={{ padding: "40px 24px 80px" }}>
-      <section style={{ marginBottom: "36px", maxWidth: "720px" }}>
+      <section className="page-intro" style={{ marginBottom: "36px" }}>
         {/* Reads "Welcome to The Gallery" top-to-bottom while keeping the
             eyebrow-over-heading rhythm every other page uses. */}
         <p className="eyebrow">Welcome to</p>
