@@ -223,4 +223,173 @@ button, input, select {
 }
 
 
+/* --- Cacnea's drought console (SucculenceConsole) ---
+   Everything below is driven by one inherited custom property, `--parched`,
+   set on the panel from the specimen's remaining reserve: 0 at a full tank,
+   1 at an empty one. The other two case consoles are instruments, and their
+   chrome should stay neutral. This one is a drought happening TO a specimen,
+   so the drought is allowed to reach the paper — the cream drains toward the
+   warm brown-grey already in the palette and the mint edge greys out with
+   it. Living here rather than inline because `--parched` also has to reach
+   the SVG, and because the reduced-motion rules below cannot be inline.
+
+   The mix ceilings are deliberately low. Read at 1280px and at 375px against
+   the untouched panels either side of it: past roughly 18% brown into the
+   cream the surface stops reading as paper and starts reading as mud, which
+   loses the herbarium rather than dramatising it. The border can take far
+   more (60%) because mint-to-grey is a hue shift the eye reads as ageing
+   rather than as dirt.
+
+   Every rule degrades safely: if `color-mix` is unavailable the declaration
+   is dropped and `.plate-frame`'s own cream shows through unchanged. */
+.drought-frame {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--gold-line) calc(var(--parched) * 14%), transparent) 0%,
+      transparent 44%
+    ),
+    color-mix(in srgb, var(--ink-soft) calc(var(--parched) * 18%), var(--paper-light));
+  border-color: color-mix(in srgb, var(--ink-soft) calc(var(--parched) * 60%), var(--paper-shadow));
+  transition: background 0.45s ease, border-color 0.45s ease;
+}
+
+/* The figure sits on the panel, so it has to dry a step ahead of it or the
+   specimen's own mount reads as a bright patch on a drying wall. */
+.drought-figure {
+  background: color-mix(in srgb, var(--ink-soft) calc(var(--parched) * 11%), var(--paper));
+  border: 1px solid
+    color-mix(in srgb, var(--ink-soft) calc(var(--parched) * 55%), var(--paper-shadow));
+  border-radius: 12px;
+  padding: 8px;
+  transition: background 0.45s ease, border-color 0.45s ease;
+}
+
+/* Stroke colours for the specimen itself. Same `--parched` ramp, pushed
+   harder than the chrome because the tissue is the thing actually losing the
+   water — the panel only reports it. */
+.dsvg-body {
+  stroke: color-mix(in srgb, var(--ink-soft) calc(var(--parched) * 50%), var(--botanical-green-deep));
+  transition: stroke 0.35s ease;
+}
+
+.dsvg-rib {
+  stroke: color-mix(in srgb, var(--ink-soft) calc(var(--parched) * 60%), var(--moss));
+  transition: stroke 0.35s ease;
+}
+
+.dsvg-body.is-dead,
+.dsvg-rib.is-dead {
+  stroke: var(--specimen-red);
+}
+
+/* Sky. The rail's resting position is an inline transform set from the
+   current uptake mode; these animations override it while they run and hand
+   it back untouched when they finish, which is why neither needs to know the
+   other's value. */
+.dsky-night {
+  transition: opacity 340ms ease-in-out;
+}
+
+/* One day-advance moves the rail exactly one strip width, so a luminary
+   always crosses even when the mode is unchanged. 340ms because the
+   auto-play interval is 380ms and a sweep that outlasts its own day would
+   queue up behind itself. */
+@keyframes dsky-sweep {
+  from { transform: translate(188px, 0px); }
+  50%  { transform: translate(94px, 18px); }
+  to   { transform: translate(0px, 0px); }
+}
+
+.dsky-sweep {
+  animation: dsky-sweep 340ms ease-in-out;
+}
+
+/* Day 0 has nothing to report and no reason to be still. Two full phases at
+   16s is slow enough to be scenery rather than a demand, and it stops the
+   moment the first day is advanced. */
+@keyframes dsky-idle {
+  0%   { transform: translate(0px, 0px); }
+  25%  { transform: translate(-94px, 18px); }
+  50%  { transform: translate(-188px, 0px); }
+  75%  { transform: translate(-282px, 18px); }
+  100% { transform: translate(-376px, 0px); }
+}
+
+.dsky-rail--idle {
+  animation: dsky-idle 16s linear infinite;
+}
+
+@keyframes dsky-night-idle {
+  0%   { opacity: 0; }
+  25%  { opacity: 0.5; }
+  50%  { opacity: 1; }
+  75%  { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
+.dsky-night--idle {
+  animation: dsky-night-idle 16s linear infinite;
+}
+
+/* The stoma breathes in phase with the idle sky above it — open in daylight
+   for a C3 schedule, open in the dark for a CAM one. Same 16s period, so the
+   pore and the sun are telling one story rather than two. */
+@keyframes dstoma-day {
+  0%, 12%   { transform: scaleY(1); }
+  38%, 62%  { transform: scaleY(0.1); }
+  88%, 100% { transform: scaleY(1); }
+}
+
+@keyframes dstoma-night {
+  0%, 12%   { transform: scaleY(0.1); }
+  38%, 62%  { transform: scaleY(1); }
+  88%, 100% { transform: scaleY(0.1); }
+}
+
+.dstoma-pore {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  transition: transform 340ms ease-in-out;
+}
+
+.dstoma-pore--idle-day {
+  animation: dstoma-day 16s ease-in-out infinite;
+}
+
+.dstoma-pore--idle-night {
+  animation: dstoma-night 16s ease-in-out infinite;
+}
+
+/* Log entries. `--kind` is set per entry from the entry's own `kind`, so one
+   rule tints the bar and the wash together and the two can never drift. */
+.dlog-entry {
+  border-left: 3px solid var(--kind);
+  background: color-mix(in srgb, var(--kind) 10%, transparent);
+  animation: dlog-in 300ms ease-out;
+}
+
+@keyframes dlog-in {
+  from { opacity: 0; transform: translateY(-7px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* The global reduced-motion rule already collapses durations, but this case
+   leans on ambient motion harder than anything else in the collection, so it
+   says so explicitly rather than relying on a blanket override. */
+@media (prefers-reduced-motion: reduce) {
+  .dsky-sweep,
+  .dsky-rail--idle,
+  .dsky-night--idle,
+  .dstoma-pore--idle-day,
+  .dstoma-pore--idle-night,
+  .dlog-entry {
+    animation: none !important;
+  }
+
+  .dstoma-pore {
+    transition: none;
+  }
+}
+
 

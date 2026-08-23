@@ -133,7 +133,7 @@ export default function GraftingBench() {
 
   return (
     <div className="container" style={{ padding: "40px 24px 100px" }}>
-      <section style={{ maxWidth: "760px", marginBottom: "48px" }}>
+      <section style={{ maxWidth: "760px", marginBottom: "32px" }}>
         <p className="eyebrow">Where Two Things Meet</p>
         <h2 style={{ fontSize: "var(--step3)" }}>The Grafting Bench</h2>
         <p style={{ color: "var(--ink-soft)" }}>
@@ -146,15 +146,19 @@ export default function GraftingBench() {
         </p>
       </section>
 
-      <section style={{ maxWidth: "720px", marginBottom: "36px" }}>
+      {/* Trimmed to keep the console reachable. Two headed sections both
+          explaining the bench put the first control 1467px down the page, and
+          this one's tail — the journey being half the fun, the drawer always
+          open — was saying nothing the paragraph above had not already said
+          better. What survives is the part that carries information: what
+          every case is actually made of. */}
+      <section style={{ maxWidth: "720px", marginBottom: "28px" }}>
         <p className="eyebrow">The Rootstock &mdash; Real Botany</p>
         <h2 style={{ fontSize: "var(--step3)" }}>Case Files</h2>
         <p style={{ color: "var(--ink-soft)" }}>
           Pull up a stool. Every case starts the same way: a real specimen from the Herbarium and
-          a real, open-access paper. After that, all bets are off. We compare notes, chase odd
-          observations, test ideas, and occasionally discover that the specimen has other plans.
-          Some cases end with satisfying answers. Others end with even better questions. Either
-          way, the journey is half the fun&mdash;and the drawer is always open for the next mystery.
+          a real, open-access paper. After that, all bets are off &mdash; some end with satisfying
+          answers, others with better questions.
         </p>
       </section>
 
@@ -206,8 +210,28 @@ export default function GraftingBench() {
           </Link>
         </div>
 
+        {/* The instrument comes before the argument for it.
+            Measured in the browser rather than judged by eye: with the
+            Abstract/Hypothesis/Result block sitting above, the first control on
+            this page was at 1467px and the specimen diagram at 1761px — past
+            two full screens at a 720px viewport, with nothing touchable visible
+            on the first one. A visitor decided whether to stay before reaching
+            anything they could press. Each console carries its own one-line
+            framing, so nothing is orphaned by the move.
+
+            It also stops the case spoiling itself: "Result" describes what the
+            console is about to show you. Read before, it is a spoiler; read
+            after, it is the payoff. */}
+        {trait.interactionType === "expression" ? (
+          <GeneExpressionConsole />
+        ) : trait.interactionType === "resistance" ? (
+          <PollinatorResistanceRoster manuscripts={manuscripts} spriteIds={specimenIds} />
+        ) : (
+          <SucculenceConsole spriteIds={specimenIds} />
+        )}
+
         {trait.summary ? (
-          <div style={{ display: "grid", gap: "10px", marginBottom: "24px", maxWidth: "680px" }}>
+          <div style={{ display: "grid", gap: "10px", marginTop: "24px", maxWidth: "680px" }}>
             {trait.summary.map((s) => (
               <p key={s.tag} style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
                 <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>{s.tag}</span>
@@ -216,15 +240,7 @@ export default function GraftingBench() {
             ))}
           </div>
         ) : (
-          <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", marginBottom: "24px", maxWidth: "680px" }}>{trait.explainer}</p>
-        )}
-
-        {trait.interactionType === "expression" ? (
-          <GeneExpressionConsole />
-        ) : trait.interactionType === "resistance" ? (
-          <PollinatorResistanceRoster manuscripts={manuscripts} spriteIds={specimenIds} />
-        ) : (
-          <SucculenceConsole spriteIds={specimenIds} />
+          <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", marginTop: "24px", maxWidth: "680px" }}>{trait.explainer}</p>
         )}
 
         {trait.interactionType !== "resistance" && trait.interactionType !== "succulence" && (

@@ -210,64 +210,377 @@ function stepSim(sim, build, schedule) {
   return { day, water, carbon, mode, stressDays, dead, cause, log };
 }
 
-function SpecimenDiagram({ pct, mode, dead }) {
+// ---- Diagram geometry -------------------------------------------------
+// The figure used to be 208x150 inside a panel over 2,300px tall, which made
+// the one element in this case that actually moves about 6% of it — an icon
+// beside an essay rather than the subject. It is now a tall column: a
+// 200x340 viewBox that renders at roughly 214x364 in the 230px figure column
+// and 203x345 at 375px where `.console-split--figure-left` collapses. Both
+// land in the 320-400px band where it holds its own against the prose.
+// Portrait rather than landscape because a ribbed columnar succulent is the
+// shape being drawn, and because the height is what gives the ribs room to
+// read as pleats rather than as hatching.
+const VB_W = 200;
+const VB_H = 340;
+const CX = 100;
+
+const SKY_X = 6;
+const SKY_Y = 4;
+const SKY_W = 188;
+const SKY_H = 54;
+const SKY_CY = 24;
+// The rail travels flat rather than arcing a luminary up over the horizon. An
+// arc needs each luminary's y to be a function of its *current* x, which a CSS
+// transform on the shared rail cannot express — it would take an offset-path or
+// a JS-driven animation, and neither earns its weight on a 54-unit strip. Flat
+// travel already reads as sun giving way to moon.
+
+// The rail carries alternating sun and moon exactly one strip-width apart,
+// so travelling the rail by SKY_W is the same motion as advancing the sky by
+// one phase. That equivalence is the whole trick: the day-advance sweep
+// always starts one strip to the RIGHT of wherever the new mode has parked
+// the rail, and one strip right of the new phase is exactly where the old
+// phase was. Sweep and resting position therefore compose into a correct
+// old-state-to-new-state travel without either knowing the other's value —
+// including on the days when the mode does not change at all, which still
+// carry a full night into a full dawn.
+const SKY_PHASES = [-2, -1, 0, 1, 2, 3];
+
+const BODY_TOP = 84;
+const BODY_BOT = 292;
+const CROWN = 30;
+const HALF_W_MAX = 46;
+// Seven crests, six grooves between them. Enough that the spacing visibly
+// closes as the body narrows — half-width runs 46 to 25 across a full drain,
+// so the grooves come 45% closer together — without collapsing into hatching
+// at a 200-unit width.
+const RIBS = 7;
+const GROOVES = RIBS - 1;
+
+// The crown is sampled rather than hand-drawn. Rib count, fold depth and
+// body width all change during a run, so a formula that takes them as
+// arguments stays correct where a tuned `d` string would quietly stop
+// matching the ribs beneath it. The cosine term puts a trough exactly
+// halfway between each pair of crests, which is where the groove lines go.
+function bodyPath(halfW, fold) {
+  // Trough depth. 1.4 at full turgor because a turgid cactus is still
+  // ribbed, not smooth; 6.6 at empty, deep enough that the crown reads as
+  // folded from across the page.
+  const ripple = 1.4 + fold * 5.2;
+  const pts = [];
+  const samples = 54;
+  for (let i = 0; i <= samples; i += 1) {
+    const s = i / samples;
+    const x = CX - halfW + s * halfW * 2;
+    const dome = CROWN * (1 - Math.sin(Math.PI * s) ** 0.75);
+    const trough = (ripple * (1 - Math.cos(2 * Math.PI * GROOVES * s))) / 2;
+    pts.push(`${x.toFixed(2)} ${(BODY_TOP + dome + trough).toFixed(2)}`);
+  }
+  return `M ${(CX - halfW).toFixed(2)} ${BODY_BOT} L ${pts.join(" L ")} L ${(CX + halfW).toFixed(2)} ${BODY_BOT} Z`;
+}
+
+// Crown height at a given position across the body, so grooves and areoles
+// can start at the surface instead of at an assumed flat top.
+function crownY(s, fold) {
+  const ripple = 1.4 + fold * 5.2;
+  const dome = CROWN * (1 - Math.sin(Math.PI * s) ** 0.75);
+  const trough = (ripple * (1 - Math.cos(2 * Math.PI * GROOVES * s))) / 2;
+  return BODY_TOP + dome + trough;
+}
+
+function Sun({ x }) {
+  return (
+    <g transform={`translate(${x} ${SKY_CY})`}>
+      {[0, 45, 90, 135, 180, 225, 270, 315].map((a) => (
+        <line
+          key={a}
+          x1={Math.cos((a * Math.PI) / 180) * 12.5}
+          y1={Math.sin((a * Math.PI) / 180) * 12.5}
+          x2={Math.cos((a * Math.PI) / 180) * 16}
+          y2={Math.sin((a * Math.PI) / 180) * 16}
+          stroke="var(--gold-line)"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+      ))}
+      <circle r="9.5" fill="var(--gold-line)" />
+    </g>
+  );
+}
+
+function Moon({ x, maskId }) {
+  return (
+    <g transform={`translate(${x} ${SKY_CY})`}>
+      <circle r="9.5" fill="var(--paper-light)" mask={`url(#${maskId})`} />
+    </g>
+  );
+}
+
+function SpecimenDiagram({ pct, mode, dead, day, idle }) {
   // The column narrows as the reserve empties — the shrinkage IS the
   // elasticity mechanism, so it's shown rather than described.
   const shrink = 1 - (1 - pct / 100) * 0.45;
-  const halfWidth = 30 * shrink;
-  const fillHeight = Math.max(0, (pct / 100) * 78);
+  const halfW = HALF_W_MAX * shrink;
+  const fold = Math.min(1, Math.max(0, 1 - pct / 100));
   const isNight = MODES[mode].stomata === "night";
   const sealed = MODES[mode].stomata === "none";
 
+  // Resting position of the rail: 0 keeps the sun over the specimen, one
+  // strip-width to the left brings the moon there instead. A sealed specimen
+  // still gets a sun — the drought does not stop being sunny because the
+  // stomata shut — so only genuine nocturnal uptake moves the sky.
+  const railX = isNight ? -SKY_W : 0;
+
+  const fillTop = BODY_BOT - (Math.max(0, pct) / 100) * (BODY_BOT - BODY_TOP - 6);
+  const grooveTone = dead ? "var(--specimen-red)" : undefined;
+
   return (
-    <svg viewBox="0 0 220 150" width="100%" height="150" role="img" aria-label={`Specimen at ${Math.round(pct)} percent water reserve, ${MODES[mode].label}`}>
-      <rect x="20" y="10" width="180" height="14" rx="7" fill="var(--paper-shadow)" opacity="0.35" />
+    <svg
+      viewBox={`0 0 ${VB_W} ${VB_H}`}
+      width="100%"
+      style={{ display: "block", height: "auto" }}
+      role="img"
+      aria-label={`Specimen at ${Math.round(pct)} percent water reserve, ${MODES[mode].label}`}
+    >
+      <defs>
+        <clipPath id="succ-sky-clip">
+          <rect x={SKY_X} y={SKY_Y} width={SKY_W} height={SKY_H} rx="10" />
+        </clipPath>
+        <clipPath id="succ-body-clip">
+          <path d={bodyPath(halfW, fold)} />
+        </clipPath>
+        {/* Crescent by subtraction rather than by arc arithmetic: the two
+            circles are trivially correct, an A-command crescent is not. */}
+        <mask id="succ-moon" maskUnits="userSpaceOnUse" x="-14" y="-14" width="28" height="28">
+          <circle r="9.5" fill="#fff" />
+          <circle cx="4.6" cy="-2.6" r="8.4" fill="#000" />
+        </mask>
+        <linearGradient id="succ-day-sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="var(--gold-line)" stopOpacity="0.34" />
+          <stop offset="58%" stopColor="var(--paper-light)" stopOpacity="1" />
+          <stop offset="100%" stopColor="var(--moss)" stopOpacity="0.4" />
+        </linearGradient>
+        {/* Night is mixed from the two darkest tokens in the palette rather
+            than from an imported indigo. Warm brown over deep green reads as
+            night against cream and keeps the greenhouse palette intact. */}
+        <linearGradient id="succ-night-sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="var(--ink)" />
+          <stop offset="100%" stopColor="var(--botanical-green-deep)" />
+        </linearGradient>
+      </defs>
+
+      <g clipPath="url(#succ-sky-clip)">
+        <rect x={SKY_X} y={SKY_Y} width={SKY_W} height={SKY_H} fill="url(#succ-day-sky)" />
+        <rect
+          x={SKY_X}
+          y={SKY_Y}
+          width={SKY_W}
+          height={SKY_H}
+          fill="url(#succ-night-sky)"
+          className={idle ? "dsky-night dsky-night--idle" : "dsky-night"}
+          style={{ opacity: isNight ? 1 : 0 }}
+        />
+        {/* Remounting on every day is what restarts the sweep animation; the
+            key is doing real work here rather than satisfying a list. */}
+        <g key={day} className={day > 0 ? "dsky-sweep" : undefined}>
+          <g
+            className={idle ? "dsky-rail dsky-rail--idle" : "dsky-rail"}
+            style={{ transform: `translate(${railX}px, 0px)` }}
+          >
+            {SKY_PHASES.map((k) =>
+              k % 2 === 0 ? (
+                <Sun key={k} x={CX + k * SKY_W} />
+              ) : (
+                <Moon key={k} x={CX + k * SKY_W} maskId="succ-moon" />
+              )
+            )}
+          </g>
+        </g>
+      </g>
       <rect
-        x={isNight ? 110 : 20}
-        y="10"
-        width="90"
-        height="14"
-        rx="7"
-        fill={isNight ? "#3a3a5c" : "#f4d35e"}
-        opacity={sealed ? 0.25 : 1}
+        x={SKY_X}
+        y={SKY_Y}
+        width={SKY_W}
+        height={SKY_H}
+        rx="10"
+        fill="none"
+        stroke="var(--paper-shadow)"
+        strokeWidth="1"
       />
-      <text x="34" y="21" fontSize="8" fontFamily="var(--font-mono)" fill="var(--ink-soft)">day</text>
-      <text x="176" y="21" fontSize="8" fontFamily="var(--font-mono)" fill="var(--ink-soft)">night</text>
-      <text x="110" y="38" textAnchor="middle" fontSize="8.5" fontFamily="var(--font-mono)" fill={sealed ? "var(--specimen-red)" : "var(--botanical-green-deep)"}>
+
+      <text
+        x={CX}
+        y="72"
+        textAnchor="middle"
+        fontSize="8.5"
+        fontFamily="var(--font-mono)"
+        fill={sealed ? "var(--specimen-red)" : "var(--botanical-green-deep)"}
+      >
         {sealed ? "stomata sealed" : `stomata open: ${isNight ? "night" : "day"}`}
       </text>
 
-      <rect
-        x={110 - halfWidth}
-        y="48"
-        width={halfWidth * 2}
-        height="88"
-        rx={halfWidth * 0.55}
-        fill="var(--paper)"
-        stroke={dead ? "var(--specimen-red)" : "var(--botanical-green-deep)"}
-        strokeWidth="2"
-        opacity={dead ? 0.55 : 1}
+      {/* Body, then the reserve clipped to it — one shape, so the water line
+          sits inside the folded silhouette instead of inside a rectangle
+          that stops agreeing with it as the ribs close. */}
+      <path d={bodyPath(halfW, fold)} fill="var(--paper-light)" />
+      <g clipPath="url(#succ-body-clip)">
+        <rect
+          x={CX - HALF_W_MAX}
+          y={fillTop}
+          width={HALF_W_MAX * 2}
+          height={Math.max(0, BODY_BOT - fillTop)}
+          fill="var(--botanical-green)"
+          opacity={dead ? 0.3 : 0.55}
+        />
+        {pct > 1 && (
+          <line
+            x1={CX - HALF_W_MAX}
+            y1={fillTop}
+            x2={CX + HALF_W_MAX}
+            y2={fillTop}
+            stroke="var(--botanical-green-deep)"
+            strokeWidth="1.2"
+            opacity="0.5"
+          />
+        )}
+        {/* The grooves run through both the filled and the emptied tissue:
+            the pleats are structure, not a fill effect. */}
+        {Array.from({ length: GROOVES }, (_, i) => {
+          const s = (i + 0.5) / GROOVES;
+          return (
+            <line
+              key={i}
+              x1={CX - halfW + s * halfW * 2}
+              y1={crownY(s, fold) + 2}
+              x2={CX - halfW + s * halfW * 2}
+              y2={BODY_BOT}
+              className={dead ? "dsvg-rib is-dead" : "dsvg-rib"}
+              stroke={grooveTone}
+              strokeWidth={1 + fold * 1.8}
+              strokeLinecap="round"
+              opacity={0.35 + fold * 0.4}
+            />
+          );
+        })}
+        {/* Areoles on the interior crests. Spines are what a rib crest is
+            FOR, so they mark the crests and confirm which lines are folds. */}
+        {[1, 2, 3, 4, 5].map((i) => {
+          const s = i / GROOVES;
+          const x = CX - halfW + s * halfW * 2;
+          const top = crownY(s, fold);
+          return [0.22, 0.46, 0.7, 0.9].map((f) => (
+            <circle
+              key={`${i}-${f}`}
+              cx={x}
+              cy={top + (BODY_BOT - top) * f}
+              r="1.5"
+              fill={dead ? "var(--specimen-red)" : "var(--moss)"}
+              opacity="0.85"
+            />
+          ));
+        })}
+      </g>
+      <path
+        d={bodyPath(halfW, fold)}
+        fill="none"
+        className={dead ? "dsvg-body is-dead" : "dsvg-body"}
+        strokeWidth="2.2"
+        strokeLinejoin="round"
       />
-      <rect
-        x={110 - halfWidth + 3}
-        y={133 - fillHeight}
-        width={Math.max(0, halfWidth * 2 - 6)}
-        height={fillHeight}
-        rx={Math.max(0, halfWidth * 0.4)}
-        fill="var(--botanical-green)"
-        opacity="0.55"
+
+      {/* Magnified stoma. One pore at 21 units across is legible where three
+          at 5 units on the body were decoration — and it is the element the
+          idle cycle breathes, so it has to be large enough to notice
+          without being looked for. */}
+      <line
+        x1={CX + halfW}
+        y1="214"
+        x2="156"
+        y2="232"
+        stroke="var(--paper-shadow)"
+        strokeWidth="1"
+        strokeDasharray="3 3"
       />
-      {[62, 82, 102].map((y) => (
+      <g transform="translate(168 250)">
+        <circle
+          r="21"
+          fill="var(--paper-light)"
+          stroke="var(--paper-shadow)"
+          strokeWidth="1"
+          strokeDasharray="3 3"
+        />
+        <ellipse
+          cx="-5"
+          cy="0"
+          rx="3.4"
+          ry="9"
+          fill="none"
+          stroke={dead ? "var(--specimen-red)" : "var(--botanical-green-deep)"}
+          strokeWidth="1.8"
+        />
+        <ellipse
+          cx="5"
+          cy="0"
+          rx="3.4"
+          ry="9"
+          fill="none"
+          stroke={dead ? "var(--specimen-red)" : "var(--botanical-green-deep)"}
+          strokeWidth="1.8"
+        />
+        <ellipse
+          rx="2.4"
+          ry="8"
+          fill={dead ? "var(--specimen-red)" : "var(--botanical-green-deep)"}
+          opacity="0.75"
+          className={
+            idle
+              ? `dstoma-pore dstoma-pore--idle-${isNight ? "night" : "day"}`
+              : "dstoma-pore"
+          }
+          style={{ transform: `scaleY(${sealed ? 0.1 : 1})` }}
+        />
+      </g>
+      <text
+        x="168"
+        y="282"
+        textAnchor="middle"
+        fontSize="7.5"
+        fontFamily="var(--font-mono)"
+        fill="var(--ink-soft)"
+      >
+        stoma
+      </text>
+
+      {/* Ground. The cracks are the only place the drought is drawn rather
+          than measured, and they stay under half opacity so they read as
+          setting rather than as a second gauge. */}
+      <line
+        x1="14"
+        y1={BODY_BOT}
+        x2="186"
+        y2={BODY_BOT}
+        stroke="var(--paper-shadow)"
+        strokeWidth="1.5"
+      />
+      {[26, 58, 138, 172].map((x, i) => (
         <path
-          key={y}
-          d={`M${110 - halfWidth - 4} ${y} l-7 -4 M${110 + halfWidth + 4} ${y} l7 -4`}
-          stroke={dead ? "var(--specimen-red)" : "var(--moss)"}
-          strokeWidth="1.5"
+          key={x}
+          d={`M${x} ${BODY_BOT + 2} l${i % 2 ? 5 : -5} 7 l${i % 2 ? -3 : 3} 6`}
+          fill="none"
+          stroke="var(--ink-soft)"
+          strokeWidth="0.9"
           strokeLinecap="round"
-          opacity={dead ? 0.4 : 0.8}
+          opacity={fold * 0.45}
         />
       ))}
-      <text x="110" y="147" textAnchor="middle" fontSize="8" fontFamily="var(--font-mono)" fill="var(--ink-soft)">
+      <text
+        x={CX}
+        y="330"
+        textAnchor="middle"
+        fontSize="8"
+        fontFamily="var(--font-mono)"
+        fill="var(--ink-soft)"
+      >
         parenchyma reserve
       </text>
     </svg>
