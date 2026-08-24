@@ -179,7 +179,7 @@ export default function Specimen() {
   return (
     <div className="container" style={{ padding: "40px 24px 100px" }}>
       <RoomBackdrop image="rooms/specimen-room.jpg" />
-      <Link to="/" className="mono" style={{ fontSize: "0.8rem", color: "var(--ink-soft)", textDecoration: "none" }}>
+      <Link to="/" className="mono room-tag" style={{ fontSize: "0.8rem", color: "var(--ink-soft)", textDecoration: "none" }}>
         &larr; Back to the gallery
       </Link>
 

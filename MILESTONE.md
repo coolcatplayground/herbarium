@@ -551,12 +551,14 @@ silent failure of §6.1.
 **Known gaps**
 - ~~No automated tests~~ — done, see §8a. The CRLF fixture test that would have
   caught §6.1 now exists and is mutation-verified.
-- Colour contrast partly audited now, with a number: `--ink-soft` (#8a7a68)
-  measures **3.55-3.99:1** on the paper ground, under the 4.5:1 AA needs for
-  body text. It predates the room backdrops - those cost it a further ~0.5 and
-  were tuned to keep that cost small, but they are not the cause. `--ink`
-  clears AA comfortably at 8.17:1. Fixing the token would lift every page at
-  once; nothing else has been measured.
+- Colour contrast partly audited now, with numbers. Two tokens fail WCAG AA
+  on the plain paper ground, site-wide, and predate the room backdrops:
+  `--ink-soft` (#8a7a68) measures **3.99:1** where body text needs 4.5, and
+  `--specimen-red` (#d98ca3) used as an eyebrow measures **2.35:1** where that
+  size needs 3. `--ink` is fine at 8.17:1 and headings clear AA comfortably.
+  Fixing the two tokens would lift every page at once. The backdrops were
+  measured against this baseline and cost it 0.12, which is why the page
+  intros sit on placards rather than on the wall.
 - Consider `.gitattributes` with `*.txt text eol=lf`; the parsers normalise
   already, so this is belt-and-braces.
 - ~~`greendesk.png` unreferenced~~ — removed in §54, along with `src/assets/`,

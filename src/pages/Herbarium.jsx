@@ -93,7 +93,7 @@ export default function Herbarium() {
   return (
     <div className="container" style={{ padding: "40px 24px 80px" }}>
       <RoomBackdrop image="rooms/herbarium-hall.jpg" />
-      <section className="page-intro" style={{ marginBottom: "36px" }}>
+      <section className="page-intro page-intro--placard" style={{ marginBottom: "36px" }}>
         {/* Reads "Welcome to The Gallery" top-to-bottom while keeping the
             eyebrow-over-heading rhythm every other page uses. */}
         <p className="eyebrow">Welcome to</p>

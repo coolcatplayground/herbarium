@@ -745,56 +745,118 @@ button, input, select {
 
 /* === Room backdrops ===================================================
    The painted hall behind the Gallery, and the case room behind a specimen
-   sheet. Two jobs pull against each other here: the room should be legible
-   as a room, and nothing should get harder to read because of it. Text
-   wins that argument every time, so the image is heavily washed out and
-   masked away before it reaches the middle of the screen.
+   sheet. Shown as painted rather than washed out: these were made for this
+   and hiding them under a scrim wasted them.
 
    Fixed, not scrolled — the hall does not slide off when you look down at a
-   sheet. It lives at z-index -1 inside #root, which puts it above the body's
-   paper gradient and greenhouse mullions but behind every piece of content. */
+   sheet. z-index -1 inside #root puts it above the body's paper gradient and
+   greenhouse mullions but behind every piece of content.
+
+   `--room-strength` is the one dial. Everything else here is geometry, so
+   changing how present the room feels is a single number in one place. */
+:root {
+  --room-strength: 1;
+}
+
 .room {
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
   background-repeat: no-repeat;
-  /* Anchored top-centre: these were painted with the vault and the back wall
-     at the top, and that is the part worth seeing. `cover` on a 3:2 image in a
-     tall viewport crops the sides, which costs only shelving. */
+  /* Anchored top-centre: painted with the vault and the back wall at the top,
+     and that is the part worth seeing. `cover` on a 3:2 image in a tall
+     viewport crops the sides, which costs only shelving. */
   background-position: 50% 0;
   background-size: cover;
-  /* Measured against the real image rather than guessed, by sampling its
-     pixels and computing the composite behind actual text.
-     The counter-intuitive result: a STRONGER paper wash (below) with a higher
-     opacity beats a weaker wash with a lower one. The wash sits inside this
-     opacity group, so it lightens the hall's dark green cabinets before the
-     whole group is composited — and it is those darks, not the overall
-     strength, that were eating the contrast. 0.26 over a heavy wash costs
-     less contrast than 0.16 over a light one, and shows more of the room. */
-  opacity: 0.26;
-  /* Gone by 70% of the viewport. Everything below the first screenful reads
-     against clean paper no matter how far down the page you are. */
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0, 0, 0, .4) 52%, transparent 70%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0, 0, 0, .4) 52%, transparent 70%);
+  opacity: var(--room-strength);
 }
 
-/* A wash of the paper ground back over the image. Without it the room's own
-   whites are brighter than the page's cream and the top of the screen reads
-   as a hole punched in the paper rather than as depth behind it. */
+/* Content still has to be readable over a full-strength room, and the room's
+   own floor is bright enough that warm brown text on it is marginal. So the
+   scrim moves off the image and behind the TEXT instead: the room stays as
+   painted, and the page's own surfaces carry the contrast. */
 .room::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(242, 237, 224, .78), rgba(242, 237, 224, .95));
+  /* Weighted to the lower two-thirds, where page content actually sits. The
+     top of the frame — vault, window, banner — is left alone, because nothing
+     is ever printed over it. */
+  background: linear-gradient(
+    180deg,
+    rgba(248, 245, 236, 0) 0%,
+    rgba(248, 245, 236, .22) 22%,
+    rgba(248, 245, 236, .62) 46%,
+    rgba(248, 245, 236, .82) 68%,
+    rgba(248, 245, 236, .9) 100%
+  );
 }
 
 @media (max-width: 760px) {
-  /* Narrow viewports crop the image hard and put the busiest shelving right
-     behind the heading, so it steps back further still. */
-  .room {
-    opacity: 0.18;
-    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 18%, transparent 56%);
-    mask-image: linear-gradient(180deg, #000 0%, #000 18%, transparent 56%);
+  /* A narrow viewport crops to the middle of the room and puts the busiest
+     shelving directly behind the heading, so the scrim starts earlier. */
+  .room::after {
+    background: linear-gradient(
+      180deg,
+      rgba(248, 245, 236, .1) 0%,
+      rgba(248, 245, 236, .55) 20%,
+      rgba(248, 245, 236, .85) 44%,
+      rgba(248, 245, 236, .92) 100%
+    );
   }
 }
+
+/* A mounted placard, for a page intro that has a room behind it.
+   Measured over the hall at full strength, the heading and intro come out at
+   1.0-1.6:1 — the text is the same tone as the shelving and simply disappears.
+   The fix is not to dim the room. It is to stop printing on the wall.
+   The painted halls are full of framed signs and labelled cards; this is one
+   more, and it lets the room stay exactly as painted while the words sit on
+   something that is theirs. */
+.page-intro--placard {
+  position: relative;
+  padding: 22px 26px 24px;
+  border-radius: 4px 4px 10px 4px;
+  /* Fully opaque, not translucent. At 94% the hall's darkest pixels showed
+     through just enough to pull the intro from 3.99:1 down to 3.45:1, and a
+     placard that costs contrast is not doing its job. The soft look comes from
+     the shadow and the mount, neither of which needs the panel see-through. */
+  background: linear-gradient(180deg, var(--paper-light), #faf7ee);
+  border: 1px solid var(--paper-line);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, .7) inset,
+    0 10px 30px rgba(60, 50, 38, .16);
+}
+/* The mount: a thin brass rule down the binding edge, the way the framed
+   sheets in the room are held. */
+.page-intro--placard::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 12px; bottom: 12px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, transparent, var(--gold-line), transparent);
+  opacity: .7;
+}
+.page-intro--placard > p:last-child { margin-bottom: 0; }
+
+@media (max-width: 760px) {
+  .page-intro--placard { padding: 18px 18px 20px; }
+}
+
+/* A small paper tag, for a lone link sitting over a room.
+   The specimen sheet puts everything else on plate frames, which are opaque
+   and carry their own contrast. The back link is the one thing printed
+   straight onto the wall, so it gets the smallest possible surface of its own
+   rather than the whole page being dimmed for one line of type. */
+.room-tag {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--paper-light);
+  border: 1px solid var(--paper-line);
+  box-shadow: 0 2px 8px rgba(60, 50, 38, .12);
+  transition: background .14s ease, color .14s ease;
+}
+.room-tag:hover { background: var(--paper-light); color: var(--botanical-green-deep); }
