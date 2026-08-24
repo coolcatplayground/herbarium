@@ -34,8 +34,18 @@ type-icon-proof.html
 specimen-case-proof.html
 nav-proof.html
 
-# Source art (optimized copy lives in public/habitats/)
+# Source art. The originals stay on the machine that drew them; the web copies
+# under public/ are what the site serves and what belongs in the repo. Each
+# pattern has an encoder in scripts/ that turns one into the other.
+# NB: gitignore has no trailing comments — a `#` after a pattern becomes part
+# of the pattern, which silently stops it matching anything.
+#   habitat-*.png   -> public/habitats/  via encode-habitat.ps1
 habitat-*.png
+#   *-concept.png   -> public/concepts/  via encode-concept.ps1
+*-concept.png
+#   room art        -> public/rooms/     via encode-room.ps1
+herbarium-hall.png
+specimen-room.png
 
 # Sprites are fetched at build time, not committed (scripts/fetch-sprites.mjs)
 public/sprites/
