@@ -34,7 +34,7 @@ state library, no CSS framework.
 | Habitat placards (`habitat_note`) | **145 — every specimen** |
 | Pokédex records (`record`) | **145 — every specimen** |
 | Habitat categories | 18 |
-| Habitat rooms illustrated | 16 of 18 — all but Wetland & Aquatic and Wind-Dispersed & Aerial |
+| Habitat rooms illustrated | **18 of 18** — the wing is fully illustrated |
 | Reading Room papers | 16 |
 | Grafting Bench case files | 3 |
 | Propagation Bench concepts | 3 |
@@ -276,7 +276,7 @@ from the roster actually filed under it**, then give each specimen a placard on
 what it contributes. The categories had originally been glosses on a type pairing
 written before anyone knew who would end up in them.
 
-Rooms completed (**18 of 18**, 16 of them illustrated):
+Rooms completed (**18 of 18**, all of them illustrated):
 
 - **Ancient & Long-Lived** (7) — two routes to age: lignin and structure, versus
   the orchard trick of keeping the *genotype* alive by grafting. Anchored on
@@ -364,8 +364,10 @@ Rooms completed (**18 of 18**, 16 of them illustrated):
 
 Drop `habitat-<key>.png` in the repo root (gitignored via `habitat-*.png`) and
 re-encode it into `public/habitats/<key>.jpg`, then wire it with `image:` in
-`habitatMap.js`. Illustrated rooms sort first in the hall; the rest show
-"illustration in preparation" rather than an empty frame.
+`habitatMap.js`. All eighteen rooms now carry art, so the hall's
+illustrated-first sort no longer separates anything and it reads alphabetically.
+The sort and the "illustration in preparation" placeholder both stay: a new
+room added later would need them, and they cost nothing while unused.
 
 **There is no ImageMagick or ffmpeg on this machine, and the `convert` on PATH
 is Windows' filesystem utility, not IM.** Encoding runs through System.Drawing

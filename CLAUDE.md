@@ -230,14 +230,14 @@ nothing else.
 - Most field notes still carry `[DRAFT — please review]`. They are now the
   weakest writing on every page — ~200 characters sitting between an ~800-char
   placard and a ~900-char record. Highest-value remaining content work.
-- 2 of 18 rooms unillustrated: Wetland & Aquatic (`water`) and Wind-Dispersed
-  & Aerial (`flying`). Drop `habitat-<key>.png` in the repo root, run
+- ~~Rooms unillustrated~~ — done, all 18 carry art. To add one for a room
+  created later: drop `habitat-<key>.png` in the repo root, run
   `powershell -ExecutionPolicy Bypass -File scripts\encode-habitat.ps1`, then
   wire it with `image:` in `habitatMap.js`. The script caps the long edge at
   1600px without upscaling and steps JPEG quality down until the file is under
-  460 KB, matching the sixteen in place (368-454 KB). System.Drawing rather
-  than a tool: there is no ImageMagick or ffmpeg here, and the `convert` on
-  PATH is Windows' filesystem utility, not IM.
+  460 KB, matching the eighteen in place (368-454 KB, 7.4 MB total).
+  System.Drawing rather than a tool: there is no ImageMagick or ffmpeg here,
+  and the `convert` on PATH is Windows' filesystem utility, not IM.
   **Name the file after the map key, not the type** - the mono-Grass room is
   keyed `none`, so its art is `habitat-none.png`. The script aliases
   `grass` to `none`, because that is the natural mistake to make.
