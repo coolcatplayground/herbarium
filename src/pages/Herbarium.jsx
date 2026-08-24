@@ -93,7 +93,7 @@ export default function Herbarium() {
   return (
     <div className="container" style={{ padding: "40px 24px 80px" }}>
       <RoomBackdrop image="rooms/herbarium-hall.jpg" />
-      <section className="page-intro page-intro--placard" style={{ marginBottom: "36px" }}>
+      <section className="page-intro placard" style={{ marginBottom: "36px" }}>
         {/* Reads "Welcome to The Gallery" top-to-bottom while keeping the
             eyebrow-over-heading rhythm every other page uses. */}
         <p className="eyebrow">Welcome to</p>
@@ -184,18 +184,18 @@ export default function Herbarium() {
           Key to specimen
         </Link>
         {typesProgress && (
-          <span className="mono" style={{ fontSize: "0.72rem", color: "var(--ink-soft)" }}>
+          <span className="mono room-tag" style={{ fontSize: "0.72rem", color: "var(--ink-soft)" }}>
             reading habitat data&hellip; {typesProgress.completed}/{typesProgress.total}
           </span>
         )}
         {roster && (
-          <span className="mono" style={{ fontSize: "0.78rem", color: "var(--ink-soft)" }}>
+          <span className="mono room-tag" style={{ fontSize: "0.78rem", color: "var(--ink-soft)" }}>
             {filtered.length} / {roster.length} specimens
           </span>
         )}
       </div>
 
-      <p style={{ color: "var(--ink-soft)", fontSize: "0.85rem", maxWidth: "720px", marginTop: "-10px", marginBottom: "24px" }}>
+      <p className="placard placard--quiet" style={{ color: "var(--ink-soft)", fontSize: "0.85rem", maxWidth: "720px", marginTop: "-2px", marginBottom: "24px" }}>
         Habitat is a pattern read off each specimen's real secondary type, not a game fact &mdash;
         Grass/Water tends to mean wetland flora, Grass/Ground tends to mean deep root systems and
         soil interaction, and Grass/Dark reads as nocturnal-function flora: night-active stomata,

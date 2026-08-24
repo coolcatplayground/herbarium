@@ -336,12 +336,20 @@ export default function Specimen() {
         </div>
 
         <div>
-          <p className="eyebrow" style={{ marginBottom: "4px" }}>{note.geneticConcept}</p>
-          <h2 style={{ fontSize: "var(--step3)", textTransform: "capitalize" }}>{pokemon.name}</h2>
-          <p className="mono" style={{ fontStyle: "italic", color: "var(--botanical-green)", marginTop: "-6px" }}>
-            {note.binomial}
-          </p>
-          <p style={{ color: "var(--ink-soft)" }}>{flavorText}</p>
+          {/* The heading block is the one part of this column printed straight
+              onto the room — everything below it already sits on a plate frame.
+              Over the case room the name, binomial and flavour text were
+              reading against display cabinets, so they get a mount of their own. */}
+          <div className="placard" style={{ marginBottom: "18px" }}>
+            <p className="eyebrow" style={{ marginBottom: "4px" }}>{note.geneticConcept}</p>
+            <h2 style={{ fontSize: "var(--step3)", textTransform: "capitalize", marginBottom: "0.15em" }}>
+              {pokemon.name}
+            </h2>
+            <p className="mono" style={{ fontStyle: "italic", color: "var(--botanical-green)", margin: "0 0 10px" }}>
+              {note.binomial}
+            </p>
+            <p style={{ color: "var(--ink-soft)", margin: 0 }}>{flavorText}</p>
+          </div>
 
           <div className="plate-frame" style={{ padding: "18px 20px", marginTop: "18px" }}>
             <p className="eyebrow" style={{ marginBottom: "8px" }}>Field Note &mdash; {note.plantAnalogue}</p>
@@ -528,7 +536,12 @@ export default function Specimen() {
             </div>
           )}
 
-          <div style={{ marginTop: "26px" }}>
+          {/* Measurements was the one section on this sheet without a frame,
+              which predates the room but shows up badly against it — the stat
+              labels were the last thing left printed on the wall. Framing it
+              fixes that and makes the column consistent: every section here is
+              now a mounted card. */}
+          <div className="plate-frame" style={{ marginTop: "26px", padding: "18px 20px" }}>
             <p className="eyebrow" style={{ marginBottom: "10px" }}>Measurements</p>
             <div style={{ display: "grid", gap: "8px" }}>
               {pokemon.stats.map((s) => (

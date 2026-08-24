@@ -807,14 +807,14 @@ button, input, select {
   }
 }
 
-/* A mounted placard, for a page intro that has a room behind it.
+/* A mounted placard: any block of text that has to sit over a painted room.
    Measured over the hall at full strength, the heading and intro come out at
    1.0-1.6:1 — the text is the same tone as the shelving and simply disappears.
    The fix is not to dim the room. It is to stop printing on the wall.
    The painted halls are full of framed signs and labelled cards; this is one
    more, and it lets the room stay exactly as painted while the words sit on
    something that is theirs. */
-.page-intro--placard {
+.placard {
   position: relative;
   padding: 22px 26px 24px;
   border-radius: 4px 4px 10px 4px;
@@ -830,7 +830,7 @@ button, input, select {
 }
 /* The mount: a thin brass rule down the binding edge, the way the framed
    sheets in the room are held. */
-.page-intro--placard::before {
+.placard::before {
   content: "";
   position: absolute;
   left: 0; top: 12px; bottom: 12px;
@@ -839,11 +839,22 @@ button, input, select {
   background: linear-gradient(180deg, transparent, var(--gold-line), transparent);
   opacity: .7;
 }
-.page-intro--placard > p:last-child { margin-bottom: 0; }
+.placard > p:last-child { margin-bottom: 0; }
 
 @media (max-width: 760px) {
-  .page-intro--placard { padding: 18px 18px 20px; }
+  .placard { padding: 18px 18px 20px; }
 }
+
+/* The quiet variant. Secondary text — a note under a filter row, a caption —
+   still needs a ground to be read against, but a full mounted card for one
+   small paragraph is louder than the paragraph. Same surface, no brass mount,
+   shadow pulled back to a hint. */
+.placard--quiet {
+  padding: 14px 18px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(60, 50, 38, .08);
+}
+.placard--quiet::before { display: none; }
 
 /* A small paper tag, for a lone link sitting over a room.
    The specimen sheet puts everything else on plate frames, which are opaque
