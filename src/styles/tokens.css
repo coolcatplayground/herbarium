@@ -772,40 +772,12 @@ button, input, select {
   opacity: var(--room-strength);
 }
 
-/* Content still has to be readable over a full-strength room, and the room's
-   own floor is bright enough that warm brown text on it is marginal. So the
-   scrim moves off the image and behind the TEXT instead: the room stays as
-   painted, and the page's own surfaces carry the contrast. */
-.room::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  /* Weighted to the lower two-thirds, where page content actually sits. The
-     top of the frame — vault, window, banner — is left alone, because nothing
-     is ever printed over it. */
-  background: linear-gradient(
-    180deg,
-    rgba(248, 245, 236, 0) 0%,
-    rgba(248, 245, 236, .22) 22%,
-    rgba(248, 245, 236, .62) 46%,
-    rgba(248, 245, 236, .82) 68%,
-    rgba(248, 245, 236, .9) 100%
-  );
-}
-
-@media (max-width: 760px) {
-  /* A narrow viewport crops to the middle of the room and puts the busiest
-     shelving directly behind the heading, so the scrim starts earlier. */
-  .room::after {
-    background: linear-gradient(
-      180deg,
-      rgba(248, 245, 236, .1) 0%,
-      rgba(248, 245, 236, .55) 20%,
-      rgba(248, 245, 236, .85) 44%,
-      rgba(248, 245, 236, .92) 100%
-    );
-  }
-}
+/* There is deliberately no scrim over the image. There used to be, and it was
+   solving the wrong problem: every block of text on these two pages now sits
+   on a placard, a plate frame or a tag of its own, so nothing is read against
+   the room and the room does not need to be dimmed to protect it. Both pages
+   sweep clean — no text element without an opaque ground. If that ever stops
+   being true, mount the new block rather than putting the scrim back. */
 
 /* A mounted placard: any block of text that has to sit over a painted room.
    Measured over the hall at full strength, the heading and intro come out at

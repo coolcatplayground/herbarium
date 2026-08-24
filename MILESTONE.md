@@ -557,8 +557,9 @@ silent failure of §6.1.
   `--specimen-red` (#d98ca3) used as an eyebrow measures **2.35:1** where that
   size needs 3. `--ink` is fine at 8.17:1 and headings clear AA comfortably.
   Fixing the two tokens would lift every page at once. The backdrops were
-  measured against this baseline and cost it 0.12, which is why the page
-  intros sit on placards rather than on the wall.
+  measured against this baseline and cost it nothing in the end: the rooms
+  render as painted with no scrim, and every block of text on those two pages
+  sits on a placard, a plate frame or a tag of its own instead.
 - Consider `.gitattributes` with `*.txt text eol=lf`; the parsers normalise
   already, so this is belt-and-braces.
 - ~~`greendesk.png` unreferenced~~ — removed in §54, along with `src/assets/`,
