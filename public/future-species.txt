@@ -27,6 +27,10 @@ HOW TO ADD ONE:
 5. Optional: set "related_manuscript" to the id of an entry in
    manuscripts.txt (see public/manuscripts.txt) to link this concept back
    to the real paper that inspired it.
+6. Optional: if you have drawn a concept sheet, drop <id>-concept.png in
+   the repo root, run scripts\encode-concept.ps1, and set "art" to the
+   path it prints (e.g. "concepts/ant-fungi.jpg"). Concepts without a
+   sheet render perfectly well - the bench does not assume one exists.
 6. Save the file. Refresh the app in your browser to see it appear.
 =====================================================
 
@@ -37,22 +41,15 @@ inspired_by: The real research area or phenomenon this riffs on
 concept: What it would look like, what it would do, why it's typed this way
 real_basis: The actual science grounding this idea — as specific as you can be
 related_manuscript: (optional — an id from manuscripts.txt)
+art: (optional — e.g. concepts/ant-fungi.jpg)
 ### END
 
-### zombie-fungus-host-concept   [DRAFT — please review]
-name: ??? (working title: a Camponotus-style carpenter-ant Bug-type)
+### ant-fungi-pact-concept   [DRAFT - please review]
+name: Myrmycel (working name)
 types: Bug / Ghost
-inspired_by: Camponotus carpenter ants — the near-exclusive natural host of Ophiocordyceps unilateralis, the real "zombie-ant fungus"
-concept: A normal, healthy colony-forming Bug-type on its own — Ghost typing only becomes relevant once paired with the Grass-type partner below, representing the moment the host's own behavior is no longer its own: body still moving, will no longer in charge. A Tatsugiri/Dondozo-style two-species relationship rather than a single fused creature (which Paras/Parasect already cover).
-real_basis: Ophiocordyceps unilateralis infects Camponotus ants with striking host-species specificity — it isn't a generalist parasite, it's coevolved to this one ant genus specifically. The manipulated ant's body keeps functioning (legs twitching, mandibles biting) well after its own agency is gone, which is the real basis for reading this as Ghost-adjacent rather than just "infected."
+inspired_by: Ophiocordyceps unilateralis and its carpenter-ant host, read against the far older ant-fungus partnerships that are not parasitic at all
+concept: One concept in two bodies, not two Pokemon. A Camponotus-style carpenter ant and a living hyphal organism that bond by consent and move as one - the hyphae draping the ant like living cloth, mushrooms breaking through the folds. The Ghost typing is what the pairing looks like from outside: a body moving to a rhythm that is no longer only its own. But the bond is temporary and either side can end it. Its ability, Symbiotic Sync, powers the pair up while HP is high and lets them down as it falls, and the hidden ability, Reunion, means that when the pair faints the partner does not die with it - it stays behind and can be found again. Separated, they are simply an ant and a fungus, both alive.
+real_basis: Two real things, and the concept sits between them on purpose. Ophiocordyceps unilateralis really does hijack Camponotus ants down to the level of gene expression, forcing a death grip at a particular height and humidity before killing the host and fruiting from its head - that is where the imagery comes from, and it is genuinely one-sided. But ants and fungi also run one of the oldest mutualisms on the planet: leafcutter and other attine ants have farmed fungus for something like fifty-five million years, each side now unable to live without the other and neither in charge. This concept takes its look from the parasite and its terms from the mutualism, and the swap is the invention - the departure from the science, stated rather than hidden.
 related_manuscript: debekker-2015-zombie-ant-genomics
-### END
-
-### zombie-fungus-partner-concept   [DRAFT — please review]
-name: ??? (working title: the zombie-fungus Grass-type partner)
-types: Grass
-inspired_by: Ophiocordyceps unilateralis's behavioral manipulation of its ant host, gene-expression level and all
-concept: Doesn't battle alone — sent out together with the Bug/Ghost host concept above, the pair triggers a combo move (working name "Death Grip") that boosts the host's Attack and Defense while draining a little of its HP each turn, mechanically dramatizing behavioral hijacking rather than just describing it in flavor text. If the host faints while paired, this partner transforms — the fruiting body finally sprouting once the host is dead, same as the real fungus's actual lifecycle. Kept single-typed on purpose so the pairing stays legible: Grass is the agent doing the manipulating, Bug/Ghost is what manipulation looks like from the other side.
-real_basis: Documented down to the gene-expression level: O. unilateralis secretes alkaloids and enterotoxins that hijack the ant's motor behavior, forcing a "death grip" bite at a specific height and humidity before killing the host and fruiting from its head to release spores.
-related_manuscript: debekker-2015-zombie-ant-genomics
+art: concepts/ant-fungi.jpg
 ### END

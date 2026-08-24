@@ -1,7 +1,18 @@
 // Parses public/future-species.txt into a list of speculative concepts.
 // Mirrors the block format used by field-notes.txt and manuscripts.txt.
 
-const FIELD_PATTERN = /^(name|types|inspired_by|concept|real_basis|related_manuscript)\s*:\s*(.*)$/i;
+// `art` is optional and holds a path under public/ — a concept sheet, if one
+// has been drawn. Most concepts will never have art, so the bench has to read
+// well without it; a sheet is a bonus, not a requirement.
+const FIELD_PATTERN = /^(name|types|inspired_by|concept|real_basis|related_manuscript|art)\s*:\s*(.*)$/i;
+
+// "??? (working title: the partner)" -> { name: "???", nameNote: "working title: the partner" }
+// Anything without a parenthetical passes straight through with no note.
+function splitName(raw) {
+  const m = raw.match(/^([^(]+?)\s*\((.+)\)\s*$/);
+  if (!m) return { name: raw, nameNote: "" };
+  return { name: m[1].trim(), nameNote: m[2].trim() };
+}
 
 export function parseFutureSpecies(text) {
   const entries = [];
@@ -43,7 +54,13 @@ export function parseFutureSpecies(text) {
     if (fields.concept?.trim()) {
       entries.push({
         id,
-        name: fields.name?.trim() || "???",
+        // A concept's name routinely carries a working note inside it:
+        // `??? (working title: a Camponotus-style carpenter-ant Bug-type)`.
+        // That is exactly right in a text file the curator edits by hand, and
+        // wrong as a headline — it was being set as a 1.5rem display title.
+        // Split rather than demand tidier input: the file is authored in
+        // Notepad and should stay forgiving.
+        ...splitName(fields.name?.trim() || "???"),
         types: fields.types
           ? fields.types.split("/").map((t) => t.trim().toLowerCase()).filter(Boolean)
           : [],
@@ -51,6 +68,7 @@ export function parseFutureSpecies(text) {
         concept: fields.concept,
         realBasis: fields.real_basis || "",
         relatedManuscript: fields.related_manuscript?.trim() || null,
+        art: fields.art?.trim() || null,
       });
     }
   }
