@@ -6,6 +6,7 @@ import { loadFieldNotes } from "../data/fieldNotesLoader";
 import { getHabitat } from "../data/habitatMap";
 import { loadHabitatOverrides } from "../data/habitatOverridesLoader";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import RoomBackdrop from "../components/RoomBackdrop";
 import SpecimenCard from "../components/SpecimenCard";
 // The nav's own glyph set, reused so the key's entry point here is visually
 // the same object that used to sit in the header.
@@ -91,6 +92,7 @@ export default function Herbarium() {
 
   return (
     <div className="container" style={{ padding: "40px 24px 80px" }}>
+      <RoomBackdrop image="rooms/herbarium-hall.jpg" />
       <section className="page-intro" style={{ marginBottom: "36px" }}>
         {/* Reads "Welcome to The Gallery" top-to-bottom while keeping the
             eyebrow-over-heading rhythm every other page uses. */}

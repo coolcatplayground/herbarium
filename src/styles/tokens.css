@@ -742,3 +742,59 @@ button, input, select {
   .proj__sweep { animation: none !important; opacity: 0; }
   .drawer__file { transition: none; }
 }
+
+/* === Room backdrops ===================================================
+   The painted hall behind the Gallery, and the case room behind a specimen
+   sheet. Two jobs pull against each other here: the room should be legible
+   as a room, and nothing should get harder to read because of it. Text
+   wins that argument every time, so the image is heavily washed out and
+   masked away before it reaches the middle of the screen.
+
+   Fixed, not scrolled — the hall does not slide off when you look down at a
+   sheet. It lives at z-index -1 inside #root, which puts it above the body's
+   paper gradient and greenhouse mullions but behind every piece of content. */
+.room {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  /* Anchored top-centre: these were painted with the vault and the back wall
+     at the top, and that is the part worth seeing. `cover` on a 3:2 image in a
+     tall viewport crops the sides, which costs only shelving. */
+  background-position: 50% 0;
+  background-size: cover;
+  /* Measured against the real image rather than guessed, by sampling its
+     pixels and computing the composite behind actual text.
+     The counter-intuitive result: a STRONGER paper wash (below) with a higher
+     opacity beats a weaker wash with a lower one. The wash sits inside this
+     opacity group, so it lightens the hall's dark green cabinets before the
+     whole group is composited — and it is those darks, not the overall
+     strength, that were eating the contrast. 0.26 over a heavy wash costs
+     less contrast than 0.16 over a light one, and shows more of the room. */
+  opacity: 0.26;
+  /* Gone by 70% of the viewport. Everything below the first screenful reads
+     against clean paper no matter how far down the page you are. */
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0, 0, 0, .4) 52%, transparent 70%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0, 0, 0, .4) 52%, transparent 70%);
+}
+
+/* A wash of the paper ground back over the image. Without it the room's own
+   whites are brighter than the page's cream and the top of the screen reads
+   as a hole punched in the paper rather than as depth behind it. */
+.room::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(242, 237, 224, .78), rgba(242, 237, 224, .95));
+}
+
+@media (max-width: 760px) {
+  /* Narrow viewports crop the image hard and put the busiest shelving right
+     behind the heading, so it steps back further still. */
+  .room {
+    opacity: 0.18;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 18%, transparent 56%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 18%, transparent 56%);
+  }
+}

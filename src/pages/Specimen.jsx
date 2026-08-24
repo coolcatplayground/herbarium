@@ -26,6 +26,7 @@ import graftingCases from "../data/graftingCases";
 import { getSizeGroup, SIZE_FORM_PARENT, HIDDEN_SIZE_FORMS } from "../data/sizeForms";
 import { getSeasonGroup, seasonSpriteUrl } from "../data/seasonForms";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import RoomBackdrop from "../components/RoomBackdrop";
 
 const STAT_LABELS = {
   hp: "Vigor (HP)",
@@ -177,6 +178,7 @@ export default function Specimen() {
 
   return (
     <div className="container" style={{ padding: "40px 24px 100px" }}>
+      <RoomBackdrop image="rooms/specimen-room.jpg" />
       <Link to="/" className="mono" style={{ fontSize: "0.8rem", color: "var(--ink-soft)", textDecoration: "none" }}>
         &larr; Back to the gallery
       </Link>
