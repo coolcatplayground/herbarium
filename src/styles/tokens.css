@@ -519,6 +519,28 @@ button, input, select {
   max-width: 72ch;
 }
 
+/* ...unless the intro is mounted on a placard, in which case the measure moves
+   up onto the card itself. A paragraph capped at 72ch inside a wider box stops
+   short of its own edge and reads as text that ran out, not as a considered
+   line length — the constraint is invisible, the empty strip beside it is not.
+   Sizing the card to the measure instead lets the text fill it edge to edge
+   and keeps exactly the same number of characters per line.
+   The padding is added back so 72ch stays the TEXT width: `box-sizing:
+   border-box` is set globally, so a bare 72ch here would be the border box and
+   the line would come out shorter than intended by the padding. */
+.page-intro.placard {
+  max-width: calc(72ch + 52px);
+}
+.page-intro.placard > p {
+  max-width: none;
+}
+
+@media (max-width: 760px) {
+  /* Padding drops to 18px a side there, and the container is narrower than the
+     measure anyway, so the cap must not bind. */
+  .page-intro.placard { max-width: none; }
+}
+
 /* === The Propagation Bench ============================================
    The one room in this collection that looks forward. Every other drawer
    holds something pressed; a concept has no body to press, so it gets
