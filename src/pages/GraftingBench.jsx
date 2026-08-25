@@ -230,7 +230,7 @@ export default function GraftingBench() {
         )}
 
         {trait.summary ? (
-          <div style={{ display: "grid", gap: "10px", marginTop: "24px", maxWidth: "680px" }}>
+          <div style={{ display: "grid", gap: "10px", marginTop: "24px" }}>
             {trait.summary.map((s) => (
               <p key={s.tag} style={{ fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0 }}>
                 <span className="eyebrow" style={{ fontSize: "0.88rem", marginRight: "8px" }}>{s.tag}</span>
@@ -239,7 +239,7 @@ export default function GraftingBench() {
             ))}
           </div>
         ) : (
-          <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", marginTop: "24px", maxWidth: "680px" }}>{trait.explainer}</p>
+          <p style={{ fontSize: "0.9rem", color: "var(--ink-soft)", marginTop: "24px" }}>{trait.explainer}</p>
         )}
 
         {/* Suppressed only for the roster, which prints its own citation for

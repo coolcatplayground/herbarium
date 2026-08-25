@@ -508,38 +508,17 @@ button, input, select {
   .vres-body       { stroke: var(--specimen-red); }
 }
 
-/* A page intro holds two things with different needs. Running text wants a
-   readable measure — somewhere near 70 characters a line — while a heading
-   does not, and constraining both to the same width makes a long title wrap
-   early with half the row still empty. "Real Manuscripts, Grass-Type Ideas"
-   broke onto a second line at 720px with a third of the container unused.
-   The measure belongs on the prose, so it sits here rather than on the
-   section that wraps both. */
-.page-intro > p {
-  max-width: 72ch;
-}
-
-/* ...unless the intro is mounted on a placard, in which case the measure moves
-   up onto the card itself. A paragraph capped at 72ch inside a wider box stops
-   short of its own edge and reads as text that ran out, not as a considered
-   line length — the constraint is invisible, the empty strip beside it is not.
-   Sizing the card to the measure instead lets the text fill it edge to edge
-   and keeps exactly the same number of characters per line.
-   The padding is added back so 72ch stays the TEXT width: `box-sizing:
-   border-box` is set globally, so a bare 72ch here would be the border box and
-   the line would come out shorter than intended by the padding. */
-.page-intro.placard {
-  max-width: calc(72ch + 52px);
-}
-.page-intro.placard > p {
-  max-width: none;
-}
-
-@media (max-width: 760px) {
-  /* Padding drops to 18px a side there, and the container is narrower than the
-     measure anyway, so the cap must not bind. */
-  .page-intro.placard { max-width: none; }
-}
+/* Page intros run the full width of their container, like every content card
+   on the site does.
+   There used to be a 72-character measure here. The rule behind it is real —
+   past roughly 75 characters the eye starts losing its place on the return
+   sweep — but it was being applied to a three-line intro sitting beside cards
+   that already run 84 characters and read fine. Measured on the Reading Room:
+   a connection paragraph is 1082px wide and uncapped. A narrower intro next to
+   those does not read as careful typography, it reads as text that stopped
+   short, which is a worse problem than a slightly long line.
+   The container's own 1180px cap is what keeps this from running away on a
+   wide monitor; nothing else needs to. */
 
 /* === The Propagation Bench ============================================
    The one room in this collection that looks forward. Every other drawer

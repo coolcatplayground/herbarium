@@ -195,7 +195,7 @@ export default function Herbarium() {
         )}
       </div>
 
-      <p className="placard placard--quiet" style={{ color: "var(--ink-soft)", fontSize: "0.85rem", maxWidth: "720px", marginTop: "-2px", marginBottom: "24px" }}>
+      <p className="placard placard--quiet" style={{ color: "var(--ink-soft)", fontSize: "0.85rem", marginTop: "-2px", marginBottom: "24px" }}>
         Habitat is a pattern read off each specimen's real secondary type, not a game fact &mdash;
         Grass/Water tends to mean wetland flora, Grass/Ground tends to mean deep root systems and
         soil interaction, and Grass/Dark reads as nocturnal-function flora: night-active stomata,
