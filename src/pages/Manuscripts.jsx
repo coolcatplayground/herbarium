@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { loadManuscripts } from "../data/manuscriptsLoader";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import RoomBackdrop from "../components/RoomBackdrop";
 
 export default function Manuscripts() {
   useDocumentTitle("The Reading Room");
@@ -20,7 +21,8 @@ export default function Manuscripts() {
 
   return (
     <div className="container" style={{ padding: "40px 24px 100px" }}>
-      <section className="page-intro" style={{ marginBottom: "36px" }}>
+      <RoomBackdrop image="rooms/reading-room.jpg" />
+      <section className="page-intro placard" style={{ marginBottom: "36px" }}>
         <p className="eyebrow">The Reading Room</p>
         <h2 style={{ fontSize: "var(--step3)" }}>Real Manuscripts, Grass-Type Ideas</h2>
         <p style={{ color: "var(--ink-soft)" }}>

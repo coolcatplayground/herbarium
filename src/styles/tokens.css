@@ -577,7 +577,11 @@ button, input, select {
    rather than a broken card. */
 .drawer__file--empty {
   border-style: dashed;
-  background: transparent;
+  /* Faintly filled rather than transparent. An empty slot still has a label on
+     it, and over a painted room a transparent slot puts that label straight on
+     the shelving. Kept well below the filled cards so it still reads as a gap
+     waiting to be used rather than as a card with nothing in it. */
+  background: rgba(253, 251, 244, .55);
   box-shadow: none;
   cursor: default;
   opacity: .5;

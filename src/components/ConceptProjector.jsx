@@ -105,7 +105,7 @@ export default function ConceptProjector({ entry, manuscriptTitle }) {
 
       {/* Said once, at the foot of the projection, rather than repeated on
           every concept: this room's caveat is structural, not per-entry. */}
-      <p className="proj__footnote">
+      <p className="proj__footnote placard placard--quiet">
         Not a real Pok&eacute;mon, and not a prediction. A concept is only worth
         keeping here if the science under it is real &mdash; the leap from that
         science to the creature is ours, and it is the part that is made up.

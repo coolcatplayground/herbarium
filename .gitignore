@@ -44,8 +44,13 @@ habitat-*.png
 #   *-concept.png   -> public/concepts/  via encode-concept.ps1
 *-concept.png
 #   room art        -> public/rooms/     via encode-room.ps1
-herbarium-hall.png
-specimen-room.png
+# Globs, not a list of filenames. A list has to be edited every time a room is
+# painted, and if it is not, the next `git add -A` commits the source — which
+# is exactly how 15 MB of PNGs reached the repo twice. These three cover every
+# room name the project uses and any that follow the same habit.
+*-room.png
+*-hall.png
+*-bench.png
 
 # Sprites are fetched at build time, not committed (scripts/fetch-sprites.mjs)
 public/sprites/

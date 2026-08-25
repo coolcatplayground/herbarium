@@ -35,6 +35,7 @@ state library, no CSS framework.
 | Pokédex records (`record`) | **145 — every specimen** |
 | Habitat categories | 18 |
 | Habitat rooms illustrated | **18 of 18** — the wing is fully illustrated |
+| Painted room backdrops | **7 of 7 pages** — Gallery, specimen sheet, Reading Room, Exhibition Hall, Propagation Bench, Grafting Bench, Curator'''s Note |
 | Reading Room papers | 16 |
 | Grafting Bench case files | 3 |
 | Propagation Bench concepts | 3 |

@@ -1,4 +1,5 @@
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import RoomBackdrop from "../components/RoomBackdrop";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PLACEHOLDER — the curator profile below is a scaffold to be replaced.
@@ -25,9 +26,14 @@ export default function About() {
   useDocumentTitle("Curator's Note");
   return (
     <div className="container" style={{ padding: "40px 24px 100px", maxWidth: "720px" }}>
-      <p className="eyebrow">About This Collection</p>
+      <RoomBackdrop image="rooms/curator-room.jpg" />
+      {/* This page has no page-intro section, so the header block gets mounted
+          directly. Over the curator's room its text was reading against
+          shelving. */}
+      <div className="placard" style={{ marginBottom: "8px" }}>
+        <p className="eyebrow">About This Collection</p>
       <h2 style={{ fontSize: "var(--step3)" }}>Curator&rsquo;s Note</h2>
-      <p>
+        <p>
         CC Herbarium catalogs every Grass-type Pokémon alongside a real plant-biology or genetics
         concept its design echoes. Roster data, sprites, stats, and evolution chains come to us
         live from{" "}
@@ -36,15 +42,16 @@ export default function About() {
         </a>
         . The botanical annotations and the Grafting Bench&rsquo;s case files are our own writing and
         research, grown out of a plant genetics background and a lifelong Pokédex habit.
-      </p>
-      <p>
+        </p>
+        <p>
         This is a non-commercial fan project. Pokémon and all related properties are trademarks of
         Nintendo, Game Freak, and Creatures Inc. No affiliation is implied.
-      </p>
+        </p>
+      </div>
 
       <hr className="hairline" style={{ margin: "32px 0 24px" }} />
 
-      <section>
+      <section className="placard">
         <p className="eyebrow" style={{ marginBottom: "14px" }}>The Curator</p>
 
         <div className="console-split console-split--figure-left" style={{ alignItems: "start" }}>

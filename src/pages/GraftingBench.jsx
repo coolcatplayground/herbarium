@@ -6,6 +6,7 @@ import SucculenceConsole from "../components/SucculenceConsole";
 import { fetchPokemon, spriteUrl, onSpriteError } from "../api/pokeapi";
 import { loadManuscripts } from "../data/manuscriptsLoader";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import RoomBackdrop from "../components/RoomBackdrop";
 
 // Real-world-analogue and in-game-cohabitation species referenced inside
 // Vileplume's Case File (PollinatorResistanceRoster) but not specimens in
@@ -133,7 +134,8 @@ export default function GraftingBench() {
 
   return (
     <div className="container" style={{ padding: "40px 24px 100px" }}>
-      <section className="page-intro" style={{ marginBottom: "32px" }}>
+      <RoomBackdrop image="rooms/grafting-bench.jpg" />
+      <section className="page-intro placard" style={{ marginBottom: "32px" }}>
         <p className="eyebrow">Where Two Things Meet</p>
         <h2 style={{ fontSize: "var(--step3)" }}>The Grafting Bench</h2>
         <p style={{ color: "var(--ink-soft)" }}>
@@ -152,7 +154,7 @@ export default function GraftingBench() {
           open — was saying nothing the paragraph above had not already said
           better. What survives is the part that carries information: what
           every case is actually made of. */}
-      <section className="page-intro" style={{ marginBottom: "28px" }}>
+      <section className="page-intro placard" style={{ marginBottom: "28px" }}>
         <h2 style={{ fontSize: "var(--step3)" }}>Case Files</h2>
         <p style={{ color: "var(--ink-soft)" }}>
           Pull up a stool. Every case starts the same way: a real specimen from the Herbarium and

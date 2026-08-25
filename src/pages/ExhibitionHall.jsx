@@ -5,6 +5,7 @@ import { getHabitat, HABITATS } from "../data/habitatMap";
 import { loadHabitatOverrides } from "../data/habitatOverridesLoader";
 import TypeBadge from "../components/TypeBadge";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import RoomBackdrop from "../components/RoomBackdrop";
 
 // The index of habitat rooms. Each card is a doorway into one wing; the room
 // itself lives at /habitat/:slug.
@@ -66,7 +67,8 @@ export default function ExhibitionHall() {
 
   return (
     <div className="container" style={{ padding: "40px 24px 90px" }}>
-      <section className="page-intro" style={{ marginBottom: "36px" }}>
+      <RoomBackdrop image="rooms/exhibition-hall.jpg" />
+      <section className="page-intro placard" style={{ marginBottom: "36px" }}>
         <p className="eyebrow">Through the Far Doors</p>
         <h2 style={{ fontSize: "var(--step3)" }}>The Exhibition Hall</h2>
         <p style={{ color: "var(--ink-soft)" }}>

@@ -3,6 +3,7 @@ import { loadFutureSpecies } from "../data/futureSpeciesLoader";
 import { loadManuscripts } from "../data/manuscriptsLoader";
 import ConceptProjector from "../components/ConceptProjector";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import RoomBackdrop from "../components/RoomBackdrop";
 
 // How many slots the drawer shows in total. Concepts fill them from the left
 // and the remainder render as empty mounts.
@@ -48,7 +49,8 @@ export default function FutureSpecies() {
 
   return (
     <div className="container" style={{ padding: "40px 24px 100px" }}>
-      <section className="page-intro" style={{ marginBottom: "28px" }}>
+      <RoomBackdrop image="rooms/propagation-bench.jpg" />
+      <section className="page-intro placard" style={{ marginBottom: "28px" }}>
         <p className="eyebrow">Nursery &mdash; Not Yet Real</p>
         <h2 style={{ fontSize: "var(--step3)" }}>The Propagation Bench</h2>
         <p style={{ color: "var(--ink-soft)" }}>
@@ -118,7 +120,7 @@ export default function FutureSpecies() {
             />
           </div>
 
-          <p className="bench__aside">
+          <p className="bench__aside placard placard--quiet">
             The drawer has room in it on purpose. A concept gets added when a real finding gives
             it something to stand on &mdash; a newly described species, or a relationship somebody
             has just worked out &mdash; rather than whenever an idea turns up.

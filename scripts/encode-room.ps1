@@ -34,7 +34,18 @@ if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir | Out
 $jpegCodec = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() |
   Where-Object { $_.MimeType -eq 'image/jpeg' }
 
-$names = @("herbarium-hall", "specimen-room")
+# One per page that has a painted room. An explicit list rather than a glob:
+# it doubles as the record of which pages have backdrops, and a stray PNG in
+# the repo root cannot accidentally become one.
+$names = @(
+  "herbarium-hall",      # the Gallery
+  "specimen-room",       # a specimen sheet
+  "reading-room",        # the Reading Room
+  "exhibition-hall",     # the Exhibition Hall
+  "propagation-bench",   # the Propagation Bench
+  "grafting-bench",      # the Grafting Bench
+  "curator-room"         # the Curator's Note
+)
 $found = $false
 
 foreach ($name in $names) {
