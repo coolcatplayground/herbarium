@@ -14,7 +14,8 @@
     "sprites": "node scripts/fetch-sprites.mjs",
     "harvest": "node scripts/harvest-manuscripts.mjs",
     "triage": "node scripts/triage-ui.mjs",
-    "artifact": "node scripts/render-artifact.mjs"
+    "artifact": "node scripts/render-artifact.mjs",
+    "fact": "node scripts/find-fact.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",

@@ -43,6 +43,7 @@ git config --local user.email "chacuttayapongwiluk@gmail.com"
 | `npm run sprites` | refetch sprites (skips existing) |
 | `npm run roster:refresh` | regenerate the test roster fixture after PokéAPI gains new Grass-types |
 | `npm run artifact` | rebuild the phone triage page from the queue |
+| `npm run fact -- <term>` | search every field of every block before writing a fact into a note |
 | `npm run harvest` | search Europe PMC for candidate papers into `curation/queue.json` — free, no key |
 | `npm run triage` | local page at :5100 to keep or discard what's queued |
 
@@ -225,6 +226,21 @@ wrong list before.
 Then, per specimen, one distinct real fact that the room text and its own field
 note do not already hold. Across 18 rooms nothing repeats; check before adding.
 
+### Writing a field note
+
+One real, specific thing per specimen — the thing its own placard and record do
+not already say. All 147 hold to that now, and keeping it means checking the
+**whole file** before drafting, not the block being edited:
+
+```bash
+npm run fact -- saguaro "grazing optimisation" thigmomorph
+```
+
+The fact that spoils a note is almost always printed on a placard several rooms
+away. Rewriting the set turned up ten collisions; the six found by reading had
+already been written and had to be unpicked, and the four found by searching
+first cost nothing. Search first. See MILESTONE §5c.
+
 ### Writing a record
 
 Fetch the dex entries first and attribute each citation to the **earliest**
@@ -271,9 +287,12 @@ nothing else.
 
 ## Outstanding
 
-- Most field notes still carry `[DRAFT — please review]`. They are now the
-  weakest writing on every page — ~200 characters sitting between an ~800-char
-  placard and a ~900-char record. Highest-value remaining content work.
+- ~~Most field notes still carry `[DRAFT — please review]`~~ — done. All 147
+  rewritten to the standard of the placards around them, averaging ~594
+  characters against the old ~240. Fifteen blocks still carry the tag: the
+  Megas, Hisuian forms and Ogerpon masks, whose notes were already written to
+  this standard earlier. Whether the tag means "thin first draft" or "the
+  curator has not read this yet" decides whether those fifteen keep it.
 - ~~Rooms unillustrated~~ — done, all 18 carry art. To add one for a room
   created later: drop `habitat-<key>.png` in the repo root, run
   `powershell -ExecutionPolicy Bypass -File scripts\encode-habitat.ps1`, then

@@ -1890,6 +1890,58 @@ factual rather than stylistic — the writing was wrong, not merely plain.
 
 ---
 
+### 55. The curator gets a face, and every field note is rewritten
+
+**The Curator's Note stops being a scaffold.** The portrait frame had stood
+empty since §53 and the correspondence button had no address behind it. Both
+are now real: cc-curator.png in the repo root encodes to public/portraits/cc.jpg
+and the button writes to the curator. The alt text is written out by hand in a
+portraitAlt field rather than assembled from the curator's name, because the
+name does not describe the picture and a screen reader gets nothing at all out
+of "portrait of The Curator".
+
+- A fourth encoder, scripts/encode-portrait.ps1, rather than borrowing one of
+  the three. A portrait sits in a 230px column on a single page, so it caps at
+  720px and 160 KB where a room backdrop caps at 1600px and 300 KB. Same
+  reasoning as its siblings: a different budget with a stated cause
+- `*-curator.png` added to the gitignore art globs. The source PNG is 1.8 MB
+  and matched no existing pattern, which is exactly the failure .gitignore
+  already warns about twice in its own comments
+
+**Every field note is rewritten, 147 of them.** The `note` field was the
+weakest writing on every page — roughly 240 characters of textbook definition
+sitting between an 800-character placard and a 900-character record, written to
+a different brief and never revisited. All 147 now hold one real, specific
+thing per specimen, and none restates what that specimen's own placard or
+record already says. Average length went from about 240 characters to 594.
+
+- **The hard part was not the writing; it was not repeating.** Reading only the
+  block being rewritten is not enough, because the fact that spoils a note is
+  usually printed on a placard several rooms away. Ten collisions turned up:
+  Rotom-Mow and Gogoat both had the grass meristem, Shiftry and Quilladin both
+  had thigmomorphogenesis, Torterra and Skiddo both had the saguaro's nurse,
+  Tsareena and Gourgeist both had the ripening enzymes, Ferrothorn and Kartana
+  both had the silica, Virizion repeated Swadloon on grazing optimisation,
+  Jumpluff repeated Cottonee's hygroscopic pappus, Weepinbell repeated
+  Carnivine's tree shrews, Hoppip repeated Gossifleur's vortex ring, and
+  Simisage repeated Serperior on photoinhibition
+- The first six were found by reading and unpicked afterwards. The rest were
+  caught by a search across every field of every block, run before drafting
+  rather than after — which changed the working rhythm entirely, since six more
+  facts were then discarded at the draft stage instead of being written,
+  applied and removed again
+- A final automated sweep pairs every note against every other field and flags
+  any pair sharing four or more uncommon words. It reports nothing. That is the
+  check worth repeating if these are ever revised
+- The `[DRAFT — please review]` tag comes off each block as it is rewritten.
+  Fifteen still carry it — the Megas, the Hisuian forms and the Ogerpon masks,
+  which were already written to the current standard in an earlier pass and are
+  indistinguishable in quality from the rewritten ones. Whether the tag means
+  "thin first draft" or "the curator has not read this yet" decides whether
+  those fifteen should keep it, and that is the curator's call
+
+---
+
 ## Planned
 
 ### Habitat pages — an exhibition wing
@@ -1930,10 +1982,12 @@ public/
 
 ## Known open items
 
-- Most field notes are still tagged `[DRAFT — please review]` — ongoing
-  review work, not a bug
-- Color contrast still hasn't been specifically audited (mobile layout
-  got a first pass in section 17; contrast did not)
+- ~~Most field notes are still tagged `[DRAFT — please review]`~~ — all 147
+  rewritten in section 55, tag removed as each was done. Fifteen blocks still
+  carry it, and section 55 explains why that is a decision rather than an
+  oversight
+- ~~Color contrast still hasn't been specifically audited~~ — audited and
+  fixed; see MILESTONE §9 (mobile layout got its first pass in section 17)
 - Field notes for `arceus-grass` and `silvally-grass` are written but
   have no specimen to attach to — neither appears in the Grass roster
   PokéAPI returns

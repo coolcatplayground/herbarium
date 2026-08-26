@@ -31,6 +31,7 @@ state library, no CSS framework.
 |---|---|
 | Specimens in the gallery | **145** |
 | Field notes written | **148 blocks** — every specimen has its own, none inherited |
+| Field notes at standard | **147 of 147** — all rewritten, averaging ~594 chars against the old ~240 |
 | Habitat placards (`habitat_note`) | **145 — every specimen** |
 | Pokédex records (`record`) | **145 — every specimen** |
 | Habitat categories | 18 |
@@ -456,6 +457,47 @@ and lagged behind new art twice, and both times the next `git add -A` committed
 several megabytes of PNGs. Also: gitignore has no trailing comments — a `#`
 after a pattern becomes part of the pattern and silently stops it matching.
 
+## 5c. Field notes — the no-repeat rule, and how it is enforced
+
+Every `note` holds one real, specific thing about its specimen that the
+specimen's own `habitat_note` and `record` do not already say. All 147 were
+rewritten against that brief; the old ones averaged about 240 characters of
+textbook definition and now average 594.
+
+**The constraint is not per-block, it is file-wide.** A note also must not
+repeat a fact printed on any *other* specimen's placard or record — and that is
+the part reading cannot catch, because the collision is usually four rooms away.
+Ten turned up during the rewrite:
+
+| | |
+|---|---|
+| grass meristem | Rotom-Mow vs Gogoat |
+| thigmomorphogenesis | Shiftry vs Quilladin |
+| the saguaro's nurse | Torterra vs Skiddo |
+| ripening enzymes | Tsareena vs Gourgeist |
+| silica in grasses | Ferrothorn vs Kartana |
+| grazing optimisation | Virizion vs Swadloon |
+| hygroscopic pappus | Jumpluff vs Cottonee |
+| pitcher tree shrews | Weepinbell vs Carnivine |
+| the pappus vortex ring | Hoppip vs Gossifleur |
+| photoinhibition | Simisage vs Serperior |
+
+Six of those were written, applied, and then unpicked. The remaining four cost
+nothing, because by then the search was being run *before* drafting:
+
+```bash
+npm run fact -- saguaro "grazing optimisation" thigmomorph
+```
+
+`scripts/find-fact.mjs` searches every field of every block and prints the
+surrounding text of each hit. There is also a coarser sweep worth re-running
+after any batch of edits: pair every note against every other field and flag
+any pair sharing four or more uncommon words. It reports nothing at present,
+and it is what caught the last three.
+
+**What this does not check** is whether a fact is *true*. Nothing here does.
+Every claim in these notes is a reading job, as §8a says of the citations.
+
 ## 6. Bugs found and fixed — the ones worth remembering
 
 ### 6.1 The whole content system was silently broken
@@ -620,7 +662,12 @@ silent failure of §6.1.
   and all 145 specimens carry a note, a placard and a record. Verified by
   running the live roster through `getSpecimenNote` rather than through the
   parser, which is what caught the last 11 gaps
-- Most field notes still carry `[DRAFT — please review]`
+- ~~Most field notes still carry `[DRAFT — please review]`~~ — **done, all
+  147 rewritten**, see §5c. Fifteen blocks still carry the tag: the Megas, the
+  Hisuian forms and the Ogerpon masks, whose notes were already written to this
+  standard in an earlier pass. Whether the tag means "thin first draft" or "the
+  curator has not read this yet" decides whether those fifteen keep it, and
+  that is the curator's call rather than a loose end
 - `arceus-grass` and `silvally-grass` have written notes but aren't in the roster
 
 **Known gaps**
