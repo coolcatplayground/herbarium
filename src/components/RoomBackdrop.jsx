@@ -52,10 +52,16 @@ export default function RoomBackdrop({ image }) {
           className={`room-peek${bare ? " is-bare" : ""}`}
           aria-pressed={bare}
           onClick={() => setBare((b) => !b)}
-          title={bare ? "Bring the page back (Esc)" : "Clear the page and look at the room"}
+          title={bare ? "Bring the collection back (Esc)" : "Clear the page and look at the room"}
         >
           <span className="room-peek__glyph" aria-hidden="true" />
-          <span className="room-peek__text">{bare ? "Show the page" : "See the room"}</span>
+          {/* The label says what the button will do next, not what state it is
+              in — a toggle's text is only useful as a promise. Both halves are
+              the curator speaking: an invitation out to the painting, and an
+              invitation back to the work. */}
+          <span className="room-peek__text">
+            {bare ? "Back to the collection" : "Enjoy the scenery"}
+          </span>
         </button>,
         document.body
       )}
