@@ -42,6 +42,7 @@ git config --local user.email "chacuttayapongwiluk@gmail.com"
 | `npm run lint` | oxlint |
 | `npm run sprites` | refetch sprites (skips existing) |
 | `npm run roster:refresh` | regenerate the test roster fixture after PokéAPI gains new Grass-types |
+| `npm run artifact` | rebuild the phone triage page from the queue |
 | `npm run harvest` | search Europe PMC for candidate papers into `curation/queue.json` — free, no key |
 | `npm run triage` | local page at :5100 to keep or discard what's queued |
 
@@ -122,7 +123,48 @@ The page cannot refresh itself: artifact runtime capabilities are `artifact`,
 blocks external hosts. The weekly workflow keeps the queue current; the page
 only catches up when someone republishes it.
 
+## Art and its encoders
+
+Originals stay in the repo root and are gitignored; `public/` holds the web
+copies. Drop the source in, run its encoder, then wire it:
+
+```bash
+powershell -ExecutionPolicy Bypass -File scripts\encode-habitat.ps1   # habitat-<key>.png  -> public/habitats/
+powershell -ExecutionPolicy Bypass -File scripts\encode-concept.ps1   # <id>-concept.png   -> public/concepts/
+powershell -ExecutionPolicy Bypass -File scripts\encode-room.ps1      # <page>.png         -> public/rooms/
+```
+
+Each has a different size budget for a stated reason — a habitat card is
+glanced at, a concept sheet is read, a room loads on every page view. They are
+separate scripts on purpose; see the comments at the top of each.
+
+**Name habitat art after the map key, not the type.** The mono-Grass room is
+keyed `none`, so its art is `habitat-none.png`. The encoder aliases
+`grass`→`none` because that is the natural mistake.
+
+`encode-room.ps1` keeps an explicit list of page names, where being a whitelist
+is the point. Add a room there when you paint one, then point a
+`<RoomBackdrop image="rooms/<name>.jpg" />` at it from the page.
+
 ## Rules that are easy to break
+
+**Never dim a room to make text readable — mount the text.** Every page stands
+in a painted room at full strength. Anything that would otherwise sit on the
+wall goes on a surface: `.placard` (a page intro or heading block),
+`.placard--quiet` (a short secondary note), `.room-tag` (a lone link or
+counter), `.plate-frame` (a content card). Adding a backdrop to a page means
+sweeping it afterwards — walk every text leaf, climb its ancestors, and check
+something gives it an opaque ground. That sweep has found blocks nobody
+reported every single time it has been run.
+
+**A border cannot separate a card from scenery.** It is painted inside the
+element, over the card's own near-white face. The separating edge is the first
+`box-shadow` layer, painted outside over the room. See MILESTONE §5a.
+
+**Source art is gitignored by glob, never by filename.** A filename list lagged
+behind new art twice and both times `git add -A` committed megabytes of PNGs.
+And gitignore has no trailing comments — a `#` after a pattern becomes part of
+the pattern and silently stops it matching.
 
 **Every content parser must normalise `\r\n?` → `\n` before matching.** The
 files are edited in Notepad, Notepad writes CRLF, and `.` does not match `\r` in
@@ -241,7 +283,8 @@ nothing else.
   **Name the file after the map key, not the type** - the mono-Grass room is
   keyed `none`, so its art is `habitat-none.png`. The script aliases
   `grass` to `none`, because that is the natural mistake to make.
-- Colour contrast never audited.
+- ~~Colour contrast never audited~~ — done, see MILESTONE §9. Both failing
+  tokens deepened; the site clears AA on paper and through a frosted placard.
 - `.gitattributes` with `*.txt text eol=lf` is worth adding; parsers already
   normalise, so it is belt-and-braces.
 - Before any public launch: no privacy policy, and GA4 would need a consent

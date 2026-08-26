@@ -8,6 +8,7 @@ import { getSpecimenNote } from "../data/specimenNote";
 import SpecimenCase from "../components/SpecimenCase";
 import TypeBadge from "../components/TypeBadge";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import RoomBackdrop from "../components/RoomBackdrop";
 
 // One habitat, presented as an exhibition room rather than a filtered list:
 // the illustrated scene, the category's own write-up, and then each specimen
@@ -79,7 +80,11 @@ export default function HabitatExhibition() {
 
   return (
     <div className="container" style={{ padding: "24px 24px 90px" }}>
-      <Link to="/exhibition" className="mono" style={{ fontSize: "0.8rem", color: "var(--ink-soft)", textDecoration: "none" }}>
+      {/* A habitat room is a room inside the hall, so it stands in the hall.
+          Its own illustration is already the hero of the page; repeating it
+          behind itself would flatten the sense of being somewhere. */}
+      <RoomBackdrop image="rooms/exhibition-hall.jpg" />
+      <Link to="/exhibition" className="mono room-tag" style={{ fontSize: "0.8rem", color: "var(--ink-soft)", textDecoration: "none" }}>
         &larr; Back to the exhibition hall
       </Link>
 
@@ -100,7 +105,7 @@ export default function HabitatExhibition() {
         </figure>
       )}
 
-      <section style={{ maxWidth: "760px", marginTop: habitat.image ? "26px" : "18px" }}>
+      <section className="placard" style={{ marginTop: habitat.image ? "26px" : "18px" }}>
         <p className="eyebrow">The Habitat Wing</p>
         <h2 style={{ fontSize: "var(--step3)", marginTop: 0, marginBottom: "10px" }}>{habitat.name}</h2>
 
@@ -124,16 +129,22 @@ export default function HabitatExhibition() {
       </section>
 
       <section style={{ marginTop: "40px" }}>
-        <p className="eyebrow" style={{ marginBottom: "4px" }}>
-          Held In This Room
-        </p>
-        <p className="mono" style={{ fontSize: "0.72rem", color: "var(--ink-soft)", margin: "0 0 20px" }}>
-          {loading
-            ? progress
-              ? `Reading the collection… ${progress.completed}/${progress.total}`
-              : "Opening the room…"
-            : `${residents.length} specimen${residents.length === 1 ? "" : "s"}`}
-        </p>
+        {/* The roster's own heading is the last thing on this page printed
+            straight onto the hall; the specimen entries below carry their own
+            frames. It gets the quiet mount rather than a full card, being two
+            short lines. */}
+        <div className="placard placard--quiet" style={{ marginBottom: "20px" }}>
+          <p className="eyebrow" style={{ marginBottom: "4px" }}>
+            Held In This Room
+          </p>
+          <p className="mono" style={{ fontSize: "0.72rem", color: "var(--ink-soft)", margin: 0 }}>
+            {loading
+              ? progress
+                ? `Reading the collection… ${progress.completed}/${progress.total}`
+                : "Opening the room…"
+              : `${residents.length} specimen${residents.length === 1 ? "" : "s"}`}
+          </p>
+        </div>
 
         <div style={{ display: "grid", gap: "18px" }}>
           {residents.map((r) => (

@@ -382,6 +382,79 @@ the orchard that five of its seven specimens are built on.
 
 ---
 
+## 5a. The painted rooms
+
+Seven rooms are painted, one per page, plus the exhibition hall standing in
+behind every habitat room. They render **as painted** — no scrim, no wash, no
+mask. Getting there settled several things worth not relitigating.
+
+**The room is never dimmed to protect text. The text is mounted instead.**
+A scrim was tried first and removed. Every block that would otherwise sit on a
+painted wall now sits on a surface of its own: `.placard` for a page intro or a
+heading block, `.placard--quiet` for a short secondary note, `.room-tag` for a
+lone link or counter, `.plate-frame` for everything that already had one. If
+something new ends up printed on the wall, mount that block — do not put the
+scrim back.
+
+**The check is a sweep, not a spot-check.** Walk every text-bearing leaf, climb
+its ancestors, and ask whether anything gives it an opaque ground. Doing this
+found four blocks nobody had reported on the first pass and six more when the
+hall went behind the habitat rooms. An early version of the sweep only counted
+`.placard`/`.plate-frame` as grounds and reported a dozen false positives on the
+Propagation Bench, whose projector is lit by gradients — accept any background
+image except `.room` itself.
+
+**Placards are frosted, not clear.** Plain translucency was measured and
+rejected: the hall's shelving came through sharp and cost 0.5 of contrast.
+Blurring the backdrop means text is read against the room's local average
+rather than its darkest pixel, which is a far cheaper way to let the room
+through. The whole effect is gated on `@supports (backdrop-filter)`, because
+without the blur it degrades into exactly the version that failed.
+`--placard-frost` is the single dial; 0.86 is roughly the floor before
+`--ink-soft` slips under AA.
+
+**Cards separate from scenery with a ring, not a border.** A border is painted
+*inside* the element over its own near-white face, so at any subtle alpha it
+darkens nothing. The ring is the first `box-shadow` layer, painted outside over
+the scenery. The two cues cover each other: against dark scenery the bright
+card face separates it and the ring vanishes; against pale scenery the ring
+draws the edge and the face vanishes. Measured on the hall, whose worst point
+had fallen to 1.24:1 — now 1.85:1 with nothing below 1.35.
+
+**Presence is mostly size.** The hall's rooms are two to a row at ~549px rather
+than four at ~280px. Fewer, larger cards with air around them separate on their
+own terms rather than needing the painting turned down. Their illustration is a
+16:9 crop rather than a fixed pixel height, so it scales with whatever width
+the grid gives it.
+
+**Two ideas were built and dropped**, recorded so they are not tried again as
+if new. A hotspot map over the hall failed twice over: only eleven of the
+eighteen habitats are actually painted in it, and at 375px the pins came out
+21px across with 8px between the closest pair. A full-height hero on the
+Exhibition Hall was dropped for consistency — one page arriving differently
+from the others reads as an inconsistency rather than as emphasis.
+
+**`See the room`** clears the page and leaves the painting. The control is
+portalled to `<body>` so that hiding the page cannot hide the thing that brings
+it back, and Escape exits.
+
+## 5b. Source art and its encoders
+
+Originals stay on the machine that drew them; `public/` holds the web copies.
+Three encoders in `scripts/`, each with a different budget for a stated reason:
+
+| | cap | budget | why |
+|---|---|---|---|
+| `encode-habitat.ps1` | 1600px | 460 KB | a card illustration read at a glance |
+| `encode-concept.ps1` | 1500px | 620 KB, q≥82 | a sheet someone *reads*; small type goes mushy first |
+| `encode-room.ps1` | 1600px | 300 KB | loads on an ordinary page view, seen through nothing |
+
+`.gitignore` covers them by **glob** (`*-room.png`, `*-hall.png`, `*-bench.png`,
+`habitat-*.png`, `*-concept.png`), not by filename. A filename list was tried
+and lagged behind new art twice, and both times the next `git add -A` committed
+several megabytes of PNGs. Also: gitignore has no trailing comments — a `#`
+after a pattern becomes part of the pattern and silently stops it matching.
+
 ## 6. Bugs found and fixed — the ones worth remembering
 
 ### 6.1 The whole content system was silently broken
@@ -562,11 +635,21 @@ silent failure of §6.1.
   measured; the tokens above are what body copy actually uses.
 - Consider `.gitattributes` with `*.txt text eol=lf`; the parsers normalise
   already, so this is belt-and-braces.
+- Roughly 23 MB of source PNGs sit in the history of the commits that predate
+  the glob-based ignore rules. Harmless, and only worth rewriting if the repo
+  size ever matters.
 - ~~`greendesk.png` unreferenced~~ — removed in §54, along with `src/assets/`,
   `public/icons.svg`, `public/future-cultivars.txt` and the generated proof pages.
 
 **Ideas parked**
-- Habitat rooms as full dioramas once more illustrations land
+- ~~Habitat rooms as full dioramas~~ — the exhibition hall painting is one, and
+  now stands behind every habitat room
+- The Cacnea drought model has no real trade-off: obligate CAM beats every
+  alternative in every build, so the nine combinations collapse to one right
+  answer. Giving the season weather — dry, erratic, wet — would make C3 win the
+  wet year, obligate the drought, and facultative the erratic one, which is the
+  actual reason facultative CAM exists. See §5a for the visual pass that was
+  done instead; the balance was deliberately left alone
 - Case File 01 (Roselia) is still the only slider console, with seven of them
 
 ---

@@ -977,3 +977,84 @@ button, input, select {
     transition: none;
   }
 }
+
+/* === Looking at the room ==============================================
+   The paintings took real work and the pages sit on top of them all day.
+   This clears everything away for as long as you hold it open.
+
+   Everything inside .container except the backdrop itself fades, along with
+   the header and footer. The room stays where it is; only its furniture goes. */
+body.room-only #root .container > *:not(.room),
+body.room-only header,
+body.room-only footer {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 420ms ease;
+}
+#root .container > *,
+header,
+footer {
+  transition: opacity 420ms ease;
+}
+/* The greenhouse mullions are part of the page, not the painting. */
+body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
+
+.room-peek {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 15px 9px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(253, 251, 244, .34);
+  background: rgba(28, 26, 20, .62);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  backdrop-filter: blur(10px) saturate(1.1);
+  color: #f4efe2;
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  letter-spacing: .05em;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(20, 16, 10, .34);
+  transition: background .16s ease, border-color .16s ease, transform .16s ease;
+}
+.room-peek:hover { background: rgba(28, 26, 20, .82); border-color: var(--gold-line); transform: translateY(-2px); }
+.room-peek:focus-visible { outline: 2px solid var(--gold-line); outline-offset: 3px; }
+/* Once the page is gone the control is the only thing left, so it steps back
+   rather than sitting there shouting over an empty room. */
+.room-peek.is-bare { background: rgba(28, 26, 20, .42); }
+.room-peek.is-bare:hover { background: rgba(28, 26, 20, .78); }
+
+/* An open eye that closes when the page is hidden — the glyph says what the
+   button will do next, which is the only thing a toggle's icon can usefully
+   say. */
+.room-peek__glyph {
+  width: 15px; height: 15px; flex-shrink: 0;
+  border: 1.6px solid currentColor;
+  border-radius: 50% 0;
+  transform: rotate(45deg);
+  transition: border-radius .18s ease, transform .18s ease, height .18s ease;
+}
+.room-peek.is-bare .room-peek__glyph {
+  border-radius: 0;
+  height: 2px;
+  border-width: 0 0 1.6px 0;
+  transform: rotate(0deg);
+}
+
+@media (max-width: 700px) {
+  .room-peek { right: 12px; bottom: 12px; padding: 9px 12px; }
+  .room-peek__text { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.room-only #root .container > *:not(.room),
+  body.room-only header,
+  body.room-only footer,
+  #root .container > *,
+  header, footer,
+  .room-peek, .room-peek__glyph { transition: none; }
+}
