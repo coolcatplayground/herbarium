@@ -441,16 +441,17 @@ it back, and Escape exits.
 ## 5b. Source art and its encoders
 
 Originals stay on the machine that drew them; `public/` holds the web copies.
-Three encoders in `scripts/`, each with a different budget for a stated reason:
+Four encoders in `scripts/`, each with a different budget for a stated reason:
 
 | | cap | budget | why |
 |---|---|---|---|
 | `encode-habitat.ps1` | 1600px | 460 KB | a card illustration read at a glance |
 | `encode-concept.ps1` | 1500px | 620 KB, q≥82 | a sheet someone *reads*; small type goes mushy first |
 | `encode-room.ps1` | 1600px | 300 KB | loads on an ordinary page view, seen through nothing |
+| `encode-portrait.ps1` | 720px | 160 KB, q≥80 | one face in a 230px column, on one page |
 
 `.gitignore` covers them by **glob** (`*-room.png`, `*-hall.png`, `*-bench.png`,
-`habitat-*.png`, `*-concept.png`), not by filename. A filename list was tried
+`habitat-*.png`, `*-concept.png`, `*-curator.png`), not by filename. A filename list was tried
 and lagged behind new art twice, and both times the next `git add -A` committed
 several megabytes of PNGs. Also: gitignore has no trailing comments — a `#`
 after a pattern becomes part of the pattern and silently stops it matching.

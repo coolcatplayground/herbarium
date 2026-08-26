@@ -132,11 +132,13 @@ copies. Drop the source in, run its encoder, then wire it:
 powershell -ExecutionPolicy Bypass -File scripts\encode-habitat.ps1   # habitat-<key>.png  -> public/habitats/
 powershell -ExecutionPolicy Bypass -File scripts\encode-concept.ps1   # <id>-concept.png   -> public/concepts/
 powershell -ExecutionPolicy Bypass -File scripts\encode-room.ps1      # <page>.png         -> public/rooms/
+powershell -ExecutionPolicy Bypass -File scripts\encode-portrait.ps1  # <name>-curator.png -> public/portraits/
 ```
 
 Each has a different size budget for a stated reason — a habitat card is
-glanced at, a concept sheet is read, a room loads on every page view. They are
-separate scripts on purpose; see the comments at the top of each.
+glanced at, a concept sheet is read, a room loads on every page view, and a
+portrait is never painted wider than 230px. They are separate scripts on
+purpose; see the comments at the top of each.
 
 **Name habitat art after the map key, not the type.** The mono-Grass room is
 keyed `none`, so its art is `habitat-none.png`. The encoder aliases

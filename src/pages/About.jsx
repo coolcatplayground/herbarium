@@ -2,19 +2,24 @@ import useDocumentTitle from "../hooks/useDocumentTitle";
 import RoomBackdrop from "../components/RoomBackdrop";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// PLACEHOLDER — the curator profile below is a scaffold to be replaced.
-// Everything inside CURATOR is plain text and safe to edit by hand: swap the
-// portrait for a real image, rewrite the paragraphs, and put a real address in
-// `email` (the "address coming soon" marker disappears once you do).
+// The portrait and the address are real. The three `bio` paragraphs are still
+// the scaffold and read like it — everything inside CURATOR is plain text and
+// safe to rewrite by hand.
 // ─────────────────────────────────────────────────────────────────────────────
 const CURATOR = {
   name: "The Curator",
   role: "Curator, CC Herbarium",
-  // Set to an image path (e.g. "curator.jpg" in public/) to replace the frame.
-  portrait: null,
-  // Where to reach the curator. Set `email` to a real address (it is rendered
-  // as a mailto: link) — until then the section says so plainly.
-  email: null,
+  // Source art is cc-curator.png in the repo root, encoded to this path by
+  // scripts/encode-portrait.ps1. Set to null to go back to the empty frame.
+  portrait: "portraits/cc.jpg",
+  // Written out rather than assembled from the name, because the name does not
+  // describe the picture and a screen reader gets nothing from "portrait of
+  // The Curator".
+  portraitAlt:
+    "The curator: a cat's face sculpted in milk foam, ears and all, sitting on a glass of Thai iced tea.",
+  // Where to reach the curator. Rendered as a mailto: link; set it back to null
+  // and the section says plainly that there is no address yet.
+  email: "coolcatruby128@gmail.com",
   bio: [
     "A placeholder, for now. This is where the person behind the collection introduces themselves — who they are, what they do when they are not writing about plants, and what brought them to a Pokédex and a plant-biology textbook at the same time.",
     "The short version of why this exists: the designs kept echoing real botany, and once that is noticed it is difficult to stop noticing. A Pokémon with a bulb on its back is a storage organ. A tumbleweed that rolls is a plant executing its last instruction. Somebody had to write it all down, and it turned out to be me.",
@@ -58,7 +63,7 @@ export default function About() {
           {CURATOR.portrait ? (
             <img
               src={`${import.meta.env.BASE_URL}${CURATOR.portrait}`}
-              alt={`Portrait of ${CURATOR.name}`}
+              alt={CURATOR.portraitAlt}
               style={{
                 width: "100%",
                 borderRadius: "var(--radius)",

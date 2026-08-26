@@ -51,6 +51,8 @@ habitat-*.png
 *-room.png
 *-hall.png
 *-bench.png
+#   *-curator.png   -> public/portraits/ via encode-portrait.ps1
+*-curator.png
 
 # Sprites are fetched at build time, not committed (scripts/fetch-sprites.mjs)
 public/sprites/
