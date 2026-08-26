@@ -139,7 +139,7 @@ button, input, select {
    the bright face separates the card; against light scenery the shadow does.
    One of the two always applies. */
 .plate-frame {
-  border: 1px solid rgba(76, 62, 46, 0.16);
+  border: 2px solid rgba(76, 62, 46, 0.20);
   border-radius: var(--radius);
   background: var(--paper-light);
   box-shadow:
@@ -938,10 +938,21 @@ button, input, select {
    arrive as you come down to them. */
 
 /* --- the rooms arriving ---------------------------------------------- */
+/* Two rooms to a row rather than four.
+   Against a painting, presence is mostly size: a 280px card is an item in a
+   list, and a 560px one is a doorway. Fewer, larger cards with real air around
+   them separate from the hall on their own terms rather than needing the hall
+   turned down. The illustration grows with them — a 16:9 crop instead of a
+   fixed 150px strip, which at this width had become a banner. */
 .hall-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 34px;
+}
+/* One per row once two would each be under about 300px, which is the width
+   below which the illustration and the type stop having room to coexist. */
+@media (max-width: 700px) {
+  .hall-grid { grid-template-columns: minmax(0, 1fr); gap: 22px; }
 }
 /* Only ever applied by JS, one frame after mount. Without that gate a reader
    whose script never ran would be left with an invisible grid instead of a

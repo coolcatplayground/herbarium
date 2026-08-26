@@ -161,13 +161,13 @@ export default function ExhibitionHall() {
                   alt=""
                   aria-hidden="true"
                   loading="lazy"
-                  style={{ width: "100%", height: "150px", objectFit: "cover", display: "block" }}
+                  style={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover", display: "block" }}
                 />
               ) : (
                 <div
                   aria-hidden="true"
                   style={{
-                    height: "150px",
+                    aspectRatio: "16 / 9",
                     background:
                       "repeating-linear-gradient(135deg, var(--paper) 0 12px, var(--paper-light) 12px 24px)",
                     borderBottom: "1px solid var(--paper-shadow)",
