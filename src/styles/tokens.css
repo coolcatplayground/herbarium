@@ -126,13 +126,52 @@ button, input, select {
 
 /* A cozy potted-card look: warm cream fill, soft rounded corners, a gentle
    diffused shadow instead of a hard iron edge. */
+/* A mounted card, and since the rooms arrived it has to hold its own against a
+   painting rather than against paper.
+   Measured against the exhibition hall: a card's face runs about 12:1 against
+   the room on average but falls to 1.9:1 at worst, because the painting has as
+   much pale stone and sky in it as dark foliage. The face was never the
+   problem — a near-white card cannot get brighter. The EDGE was: a 1px mint
+   border says nothing against pale scenery, so the card dissolved wherever the
+   room was light.
+   So the edge is drawn in warm dark instead, and the shadow does real work:
+   a contact line, a mid lift, and a wide ambient pool. Against dark scenery
+   the bright face separates the card; against light scenery the shadow does.
+   One of the two always applies. */
 .plate-frame {
-  border: 1px solid var(--paper-shadow);
+  border: 1px solid rgba(76, 62, 46, 0.16);
   border-radius: var(--radius);
   background: var(--paper-light);
   box-shadow:
-    0 2px 0 rgba(90, 74, 58, 0.04),
-    0 10px 24px -14px rgba(61, 107, 76, 0.35);
+    /* The separation ring, and the reason the border alone was not enough: a
+       border is painted INSIDE the element, over the card's own near-white
+       face, so at any alpha subtle enough to look right it barely darkens
+       anything. A shadow ring is painted OUTSIDE, over the scenery, which is
+       the thing the card actually needs to separate from. */
+    0 0 0 1px rgba(46, 38, 28, 0.30),
+    0 1px 2px rgba(38, 30, 20, 0.12),
+    0 10px 20px -8px rgba(38, 30, 20, 0.26),
+    0 30px 56px -22px rgba(26, 20, 12, 0.40);
+}
+
+/* The room cards are doorways, so they behave like something you can walk
+   through: they lift toward the reader on approach and their shadow deepens
+   under them, which is what lifting actually looks like. */
+.hall-room {
+  transition: transform 180ms cubic-bezier(.22, .9, .3, 1), box-shadow 180ms ease-out;
+}
+.hall-room:hover,
+.hall-room:focus-visible {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 1px rgba(61, 107, 76, 0.55),
+    0 2px 4px rgba(38, 30, 20, 0.14),
+    0 16px 28px -8px rgba(38, 30, 20, 0.32),
+    0 44px 76px -24px rgba(26, 20, 12, 0.48);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hall-room { transition: none; }
+  .hall-room:hover, .hall-room:focus-visible { transform: none; }
 }
 
 .container {
