@@ -45,12 +45,19 @@ HOW THIS WORKS
     push this file for the live site to update.
 
 ABOUT THE EXISTING ENTRIES BELOW
-  Entries tagged "[DRAFT — please review]" were written by Claude as a
-  starting point, based on general biology knowledge, not your research.
-  Treat them as a first draft: correct, rewrite, or delete freely. Once
-  you've reviewed one, feel free to remove the "[DRAFT — please review]"
-  tag from its header line — the app ignores that tag either way, it's
-  just a note to you.
+  These were drafted by Claude from general biology, not from your own
+  research, so correct, rewrite or delete freely — the writing is yours.
+  Entries used to carry a "[DRAFT — please review]" tag marking the thin
+  first-pass notes; all of those have since been rewritten and the tag is
+  gone from every block. If you want to flag one for your own attention,
+  put anything you like after the name on the "###" line: the app reads
+  the name up to the first space or bracket and ignores the rest.
+
+  One rule if you write a new "note": say something the same specimen's
+  own "habitat_note" and "record" don't already say, and check it isn't
+  already printed on another specimen's block somewhere else in the file.
+  From the project folder, "npm run fact -- your search term" will search
+  every field of every entry and show you what it finds.
 =====================================================
 
 ### TEMPLATE — copy everything between here and the next line, then edit
@@ -1246,7 +1253,7 @@ habitat_note: Several heads on one body is the mechanism of this whole category 
 record: Seven syrpents counted inside one syrup apple with a commander at the centre, capricious, their real power arriving only on the rare occasions their moods align (Pokémon Scarlet & Violet, 2022). That last line lands on a genuine orchard problem. Most apple varieties are self-incompatible — a tree cannot set fruit with its own pollen, so an orchard must be planted with compatible partners nearby, and those partners have to be in bloom at the same time. A grower choosing varieties is really choosing which flowering periods will overlap. Fruit does depend on several individuals happening to align.
 ### END
 
-### sceptile-mega   [DRAFT — please review]
+### sceptile-mega
 binomial: Treecko lacerta-arborea var. fulminis
 plant_analogue: Emergent canopy trees
 genetic_concept: Lightning strike risk and hydraulic failure
@@ -1255,7 +1262,7 @@ habitat_note: The only specimen here that is neither apple nor palm, and it supp
 record: The reports stay remarkably consistent across two decades: leaves sharp enough to cut through thick trees (Pokémon Ruby & Sapphire, 2003), seeds carried on its back said to be full of nutrients that revitalise trees (Pokémon Ruby & Sapphire, 2003), and a note that it regulates its body temperature by basking in sunlight (Pokémon Emerald, 2005). The sharp leaves are the least fanciful part — real grasses load their tissue with silica, laying down microscopic phytoliths that stiffen the blade and abrade the mouthparts of whatever grazes on it, which is why grass can genuinely cut skin. The basking is ordinary too: leaves manage their own temperature by angling toward or away from the sun and by transpirational cooling, so a plant positioning itself in sunlight to warm up is describing standard leaf behaviour.
 ### END
 
-### exeggutor-alola   [DRAFT — please review]
+### exeggutor-alola
 binomial: Exeggutor palma-cephala subsp. insularis
 plant_analogue: Tall coconut palms
 genetic_concept: The cohesion–tension limit on height
@@ -1264,7 +1271,7 @@ habitat_note: A palm reaches this category by a completely different route to ev
 record: Reported in almost every generation since 1998, and two claims recur throughout all of it. The first is light: heads grow larger under strong sunlight (Pokémon Ruby & Sapphire, 2003), a good environment produces more of them (Pokémon Crystal, 2001), and cloudy days leave it sluggish (Pokémon Sword & Shield, 2019) — which is light-limited photosynthesis stated about as plainly as a game can state it. The second is shedding: a head that grows too large drops off and continues as an Exeggcute (Pokémon Red & Blue, 1998). That is vegetative reproduction rather than metaphor. Kalanchoe drops fully rooted plantlets from its leaf margins, and garlic and Agave form bulbils that fall from the stalk and grow where they land. Producing offspring by dropping a piece of yourself is ordinary plant practice.
 ### END
 
-### ogerpon-cornerstone-mask   [DRAFT — please review]
+### ogerpon-cornerstone-mask
 binomial: Ogerpon larva-persona var. petraea
 plant_analogue: Serpentine-tolerant flora
 genetic_concept: Symbiont-mediated metal tolerance
@@ -1273,7 +1280,7 @@ habitat_note: The only specimen in this room that is alive on the rock rather th
 record: The single relevant entry is also the room's thesis: its type changes based on which mask it is wearing (Pokémon Scarlet & Violet, 2022). Nothing in botany changes an organism's identity that cleanly, but one thing comes disconcertingly close. Graft a cutting onto a rootstock and the two normally stay distinct, one above the join and one below. Very occasionally the cells of the two intermingle at the union and grow on together as a single shoot — a graft chimera, one plant with two genomes woven through its tissues rather than blended. The famous one is Laburnocytisus 'Adamii', made in a Paris nursery in 1825 from a laburnum and a purple broom, which grows as one tree and flowers in three ways at once: yellow laburnum on some branches, purple broom on others, and a muddy coppery hybrid-looking bloom in between. It is not a hybrid. It is two plants sharing a body, and which one you get depends entirely on which layer of tissue happened to form the bud.
 ### END
 
-### abomasnow-mega   [DRAFT — please review]
+### abomasnow-mega
 binomial: Snover pinus-glacialis var. ponderosa
 plant_analogue: High-density timber species
 genetic_concept: The mass–growth-rate trade-off
@@ -1282,7 +1289,7 @@ habitat_note: The one specimen here that doesn't only endure the weather but mak
 record: The entries fix on weather as an ability: it whips up blizzards and blankets wide areas in snow (Pokémon Diamond & Pearl, 2007), hiding itself in the conditions it creates (Pokémon HeartGold & SoulSilver, 2010). Forests genuinely do manufacture their own weather, and the mechanism is not subtle. A large forest recycles a substantial fraction of its rainfall straight back into the atmosphere through transpiration, which then falls again downwind — over the Amazon, a majority of the rain has been through vegetation at least once, and the moisture is carried inland in what atmospheric scientists call flying rivers. Remove enough of the forest and the rainfall that sustains the rest of it declines, which is the mechanism behind the argument that the system has a tipping point. Trees also seed their own clouds: the volatile terpenes they emit oxidise into aerosol particles that water condenses onto. A large stand of vegetation making the weather it lives in is not an exaggeration.
 ### END
 
-### venusaur-mega   [DRAFT — please review]
+### venusaur-mega
 binomial: Venusaur magniflora var. adiposa
 plant_analogue: Succulent-stemmed desert perennials
 genetic_concept: Thermal buffering by tissue mass
@@ -1291,7 +1298,7 @@ habitat_note: Latex is the most theatrical defence in this room and the least su
 record: Every entry for three decades says the same thing in different words: the flower absorbs solar energy and converts it to power, and the Pokémon is stronger in summer and stays on the move to find sunlight (Pokémon Red & Blue, 1998). Moving toward light is something plants do, on a timescale that hides it. Phototropism is growth rather than motion — cells on the shaded side elongate more than those on the lit side, so the stem bends — and the mechanism was worked out by Darwin and his son, who established that the tip senses the light while the bending happens below it, implying a signal travelling down. That signal turned out to be auxin, redistributed toward the dark side. It is the first plant hormone anyone identified, and the experiment that found it was capping the tips of grass seedlings with tiny foil hats. A plant that stays on the move to seek sunlight is doing something real, several centimetres at a time.
 ### END
 
-### victreebel-mega   [DRAFT — please review]
+### victreebel-mega
 binomial: Victreebel caulis-voraciosus var. gigantea
 plant_analogue: Giant Nepenthes pitcher plants
 genetic_concept: Trap volume as a dietary threshold
@@ -1300,7 +1307,7 @@ habitat_note: A plant that eats insects has an obvious problem it must not solve
 record: The entries build a nastier picture than the others: prey lured with an aroma of honey and swallowed whole, melted in a day, bones and all (Pokémon Yellow, 1999) — and then the detail that acid which has dissolved many prey becomes sweeter and therefore more effective at attracting the next (Pokémon Gold & Silver, 2000). That last one has a real counterpart, and it works the other way about. Pitcher plants do not sweeten with use; they do, however, benefit from having caught things before, because a working pitcher accumulates the bacterial and invertebrate community that processes its catch, and an established trap is more effective than a fresh one. There is also decent evidence that the volatiles rising off a pitcher's contents attract further insects — the smell of previous victims is part of the lure. The entry has the mechanism backwards and the observation right: an old trap does work better.
 ### END
 
-### meganium-mega   [DRAFT — please review]
+### meganium-mega
 binomial: Meganium corolla-magna var. titanum
 plant_analogue: Giant inflorescences (Amorphophallus, Rafflesia)
 genetic_concept: Stored reserves funding a single bloom
@@ -1309,7 +1316,7 @@ habitat_note: One enormous bloom funded by everything the plant has ever saved i
 record: The strangest claim in the record is also the most literal-minded: its breath has the power to revive dead grass and plants (Pokémon Gold & Silver, 2000). Read as chemistry rather than magic it is nearly reasonable, because a plant's breath is what other plants eat. Carbon dioxide is the raw material of photosynthesis and it is genuinely in short supply — at around four hundred parts per million, it is the limiting ingredient for many crops on a bright day, which is why commercial glasshouses pipe it in deliberately and run at two or three times outdoor concentration for measurable gains in yield. Exhaling on a plant is a real if microscopic favour. The other repeated claim, that the flower's fragrance calms aggression (Pokémon Gold & Silver, 2000), sits on far shakier ground, and the honest position is that inhaled plant volatiles have measurable effects on people that fall a long way short of the ones folklore assigns them.
 ### END
 
-### chesnaught-mega   [DRAFT — please review]
+### chesnaught-mega
 binomial: Chespin castanea-bellator var. densa
 plant_analogue: Dense-wooded ironwood species
 genetic_concept: Material density versus volume
@@ -1318,7 +1325,7 @@ habitat_note: A specimen defined by being maximal invites the obvious question �
 record: Both entries are about withstanding things: a tackle forceful enough to flip a fifty-tonne tank, and a defensive posture that could take a bomb blast (Pokémon X & Y, 2013). Absorbing impact rather than resisting it is something plant material is genuinely excellent at, and the reason is that wood fails gradually. Under load, wood does not snap cleanly like a ceramic — the fibres buckle, split along the grain and pull apart cell by cell, and every one of those small failures absorbs energy. That is why a wooden shield outperforms a stone one, why timber-framed buildings ride out earthquakes that drop masonry, and why the specific energy absorbed by balsa in a crushing test is high enough that it is still used as a core material in blast and impact panels. The strength of a nut shell is in the same family. It is not that the material is hard to break. It is that breaking it costs a great deal, in many small instalments.
 ### END
 
-### scovillain-mega   [DRAFT — please review]
+### scovillain-mega
 binomial: Capsakid capsicum-maximus var. ardens
 plant_analogue: Capsicum (chilli peppers)
 genetic_concept: Directed deterrence
@@ -1327,7 +1334,7 @@ habitat_note: The resprout strategy, which is why an Australian forest a month a
 record: Both entries turn on the spicy chemicals — one head converting them into fire, the other driven vicious by them (Pokémon Scarlet & Violet, 2022). What capsaicin is actually for was argued over for a long time, and the strongest answer is not about mammals at all. Fieldwork on wild chillies in Bolivia found that pungency varies sharply between populations and tracks the local pressure from fungi rather than from anything with teeth: insects puncture the fruit, Fusarium gets in through the wound and rots the seeds, and capsaicin is a potent antifungal that stops it. Where the fungal risk is high, hot plants dominate; where it is low, mild ones persist perfectly well, because the chemistry is expensive and there is no point paying for it. The burn a person experiences is a side effect of a seed-protection system, and the reason there is such a thing as a sweet pepper is that some populations were never under enough attack to need it.
 ### END
 
-### lilligant-hisui   [DRAFT — please review]
+### lilligant-hisui
 binomial: Petilil folium-elegans subsp. montana
 plant_analogue: Mechanically-defended alpine herbs
 genetic_concept: Chemical versus structural defence budgets
@@ -1336,7 +1343,7 @@ habitat_note: A specimen shaped by deep snow belongs on the ground this room's w
 record: The entries treat it as a luxury good, and the last one puts a price on it: essential oils made from its flowers have a sublime scent and are staggeringly expensive (Pokémon Sword & Shield, 2019). Real floral oils are, for reasons of sheer arithmetic. Rose otto takes something on the order of three to four tonnes of petals to yield a single kilogram of oil, and the petals have to be picked by hand in the few hours after dawn, before the day's heat drives off the volatiles the whole business exists to capture. Jasmine is worse, because heat destroys the scent outright and the flowers have to be extracted with solvent rather than distilled. Orris, the violet note in perfumery, comes from iris rhizomes that are dried and then left to age for three to five years before they smell of anything at all. Nothing about it is difficult chemistry. It is that the raw material is enormous, fragile, and on a schedule.
 ### END
 
-### decidueye-hisui   [DRAFT — please review]
+### decidueye-hisui
 binomial: Rowlet strix-decidua subsp. frigida
 plant_analogue: Cold-climate ecotypes
 genetic_concept: Behavioural divergence without morphological change
@@ -1345,7 +1352,7 @@ habitat_note: The claim that a cold-country form differs from its lowland relati
 record: The entries keep making the same claim, which is speed and precision — a quill nocked and fired in a tenth of a second (Pokémon Ultra Sun & Ultra Moon, 2017), shots that pierce a pebble at over a hundred yards (Pokémon Sun & Moon, 2016). Plants shoot as well, and they are quicker than this. The sandbox tree builds pressure in a drying capsule until it detonates, throwing seed at something like seventy metres a second and clearing forty metres of ground; bunchberry opens its flower and fires pollen in under half a millisecond, a couple of hundred times faster than the tenth of a second an archer is being praised for. The Hisuian entry goes further, offering the air stored in its feather shafts as firm proof that evolution can be influenced by environment (Pokémon Legends: Arceus, 2022). That deserves a small correction: environment does not direct the change, it selects among changes already present. Plants do bend the point, though — one genotype will grow quite different leaves above and below the waterline.
 ### END
 
-### zarude-dada   [DRAFT — please review]
+### zarude-dada
 binomial: Zarude simius-liana var. nutrix
 plant_analogue: Nurse plants and provisioned seed
 genetic_concept: Parental investment as a life stage
@@ -1354,7 +1361,7 @@ habitat_note: Provisioning is how a plant equips its offspring for the dark, and
 record: One entry does the work, and it is generous: once the vines on its body tear off they become nutrients in the soil, and this helps the plants of the forest grow (Pokémon Sword & Shield, 2019). Woody climbers are not usually so good for a forest, and the measurements are fairly unforgiving. A tree carrying a heavy load of lianas grows measurably more slowly, reproduces less, and dies sooner — the climbers compete above ground for light and below ground for water, and they add weight and windage to a crown that was not built for it. Worse, they link neighbouring crowns together, so a falling tree drags others down with it. Liana abundance has been rising across neotropical forests for decades, and because climbers store far less carbon than the trees they suppress, a forest shifting toward lianas holds less carbon than the one it replaced. Vines shed into the soil do return nutrients. It is the standing part of the plant that costs the forest.
 ### END
 
-### shaymin-sky   [DRAFT — please review]
+### shaymin-sky
 binomial: Shaymin gratia-florens var. volatilis
 plant_analogue: Wind-dispersed seed (pappus, samara)
 genetic_concept: The dispersal–defence trade-off
@@ -1363,7 +1370,7 @@ habitat_note: Its land form is filed with the pollinators; this one is the same 
 record: The claim is the boldest in the room: it can dissolve toxins in the air and instantly transform ruined land into a field of flowers (Pokémon Diamond & Pearl, 2007). Plants do clean air, and the honest version needs care in both directions. Indoors, the famous chamber experiments showing houseplants stripping volatile organic compounds have been badly over-read — repeat the calculation for a real room with real air exchange and you need something on the order of a hundred plants per occupant to rival simply opening a window. Outdoors is a different matter. Roadside vegetation and green walls measurably lower particulate concentrations downwind, tree canopies intercept dust, and the effect scales with leaf area and hairiness rather than with charm. One plant on a desk is decoration. A belt of them along a road is infrastructure.
 ### END
 
-### ogerpon-wellspring-mask   [DRAFT — please review]
+### ogerpon-wellspring-mask
 binomial: Ogerpon larva-persona var. aquifera
 plant_analogue: Mycorrhizal root partnerships
 genetic_concept: Tolerance conferred by a symbiont
@@ -1372,7 +1379,7 @@ habitat_note: Its note has the symbiont; the wetland case for one is worth stati
 record: The single relevant entry is also the room's thesis: its type changes based on which mask it is wearing (Pokémon Scarlet & Violet, 2022). Nothing in botany changes an organism's identity that cleanly, but one thing comes disconcertingly close. Graft a cutting onto a rootstock and the two normally stay distinct, one above the join and one below. Very occasionally the cells of the two intermingle at the union and grow on together as a single shoot — a graft chimera, one plant with two genomes woven through its tissues rather than blended. The famous one is Laburnocytisus 'Adamii', made in a Paris nursery in 1825 from a laburnum and a purple broom, which grows as one tree and flowers in three ways at once: yellow laburnum on some branches, purple broom on others, and a muddy coppery hybrid-looking bloom in between. It is not a hybrid. It is two plants sharing a body, and which one you get depends entirely on which layer of tissue happened to form the bud.
 ### END
 
-### ogerpon-hearthflame-mask   [DRAFT — please review]
+### ogerpon-hearthflame-mask
 binomial: Ogerpon larva-persona var. thermophila
 plant_analogue: Geothermal-soil panic grass
 genetic_concept: Three-way symbiosis and heat tolerance
