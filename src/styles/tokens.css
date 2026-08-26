@@ -4,11 +4,21 @@
   --paper-light: #fdfbf4;      /* card fill, sun-bleached white */
   --paper-shadow: #d8ead9;     /* soft mint shadow */
   --ink: #5a4a3a;              /* warm brown ink */
-  --ink-soft: #8a7a68;         /* soft warm brown-grey */
+  /* Deepened from #8a7a68. That value measured 3.99:1 on paper where body text
+     needs 4.5, so it had been failing site-wide since long before the rooms —
+     and it is what made a translucent placard unaffordable, because there was
+     no headroom left to spend. Same warm brown, four steps down: 5.60:1 on
+     paper and 4.58:1 read through a frosted card over the busiest room. Still
+     clearly lighter than --ink at 8.19:1, so the hierarchy it exists for holds. */
+  --ink-soft: #726351;         /* soft warm brown-grey */
   --botanical-green: #6fa97b;  /* sage leaf green */
   --botanical-green-deep: #3d6b4c; /* deeper garden green, for headings */
   --moss: #9bc7a0;             /* pastel mint */
-  --specimen-red: #d98ca3;     /* dusty pink floral accent */
+  /* Deepened from #d98ca3, which measured 2.46:1 on paper and 2.01 through a
+     frosted card — an eyebrow at 22px needs 3:1 even judged as large text, so
+     it was failing everywhere too. This is the same dusty rose with the
+     lightness pulled down until it clears: 4.09:1 on paper, 3.34:1 frosted. */
+  --specimen-red: #b85f7b;     /* dusty pink floral accent */
   --gold-line: #e8b84b;        /* butter-yellow pendant-light accent */
   --paper-line: rgba(90, 74, 58, 0.14);
   --mullion: rgba(159, 199, 160, 0.16);
@@ -795,10 +805,14 @@ button, input, select {
   position: relative;
   padding: 22px 26px 24px;
   border-radius: 4px 4px 10px 4px;
-  /* Fully opaque, not translucent. At 94% the hall's darkest pixels showed
-     through just enough to pull the intro from 3.99:1 down to 3.45:1, and a
-     placard that costs contrast is not doing its job. The soft look comes from
-     the shadow and the mount, neither of which needs the panel see-through. */
+  /* Opaque by default, frosted where the browser can blur.
+     Plain translucency was tried and rejected: at 94% the hall's dark shelving
+     came through at full sharpness and pulled the intro from 3.99:1 to 3.45:1.
+     Blurring the backdrop changes the arithmetic — text is then read against
+     the room's LOCAL AVERAGE rather than its darkest pixel, so the same amount
+     of room shows through at a fraction of the contrast cost.
+     The opaque background stays as the base so a browser without
+     backdrop-filter still gets a readable card rather than a washed-out one. */
   background: linear-gradient(180deg, var(--paper-light), #faf7ee);
   border: 1px solid var(--paper-line);
   box-shadow:
@@ -832,6 +846,34 @@ button, input, select {
   box-shadow: 0 2px 10px rgba(60, 50, 38, .08);
 }
 .placard--quiet::before { display: none; }
+
+/* Frosted glass, only where it can actually be frosted. Without the blur this
+   would be plain translucency over sharp detail, which is the thing that did
+   not work — so the whole effect is gated on `backdrop-filter` rather than
+   degrading into the version that fails.
+   `--placard-frost` is the single dial: higher lets more room through. */
+:root {
+  /* 0.90 is where the room reads as present through the card without the card
+     stopping doing its job. Measured against the hall, the busiest of the
+     seven: below this the deepened --ink-soft starts dropping under AA again. */
+  --placard-frost: 0.90;
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .placard {
+    background: linear-gradient(
+      180deg,
+      rgba(253, 251, 244, var(--placard-frost)),
+      rgba(250, 247, 238, calc(var(--placard-frost) + 0.06))
+    );
+    -webkit-backdrop-filter: blur(16px) saturate(1.12);
+    backdrop-filter: blur(16px) saturate(1.12);
+  }
+  .room-tag {
+    background: rgba(253, 251, 244, 0.82);
+    -webkit-backdrop-filter: blur(12px) saturate(1.1);
+    backdrop-filter: blur(12px) saturate(1.1);
+  }
+}
 
 /* A small paper tag, for a lone link sitting over a room.
    The specimen sheet puts everything else on plate frames, which are opaque

@@ -552,15 +552,14 @@ silent failure of §6.1.
 **Known gaps**
 - ~~No automated tests~~ — done, see §8a. The CRLF fixture test that would have
   caught §6.1 now exists and is mutation-verified.
-- Colour contrast partly audited now, with numbers. Two tokens fail WCAG AA
-  on the plain paper ground, site-wide, and predate the room backdrops:
-  `--ink-soft` (#8a7a68) measures **3.99:1** where body text needs 4.5, and
-  `--specimen-red` (#d98ca3) used as an eyebrow measures **2.35:1** where that
-  size needs 3. `--ink` is fine at 8.17:1 and headings clear AA comfortably.
-  Fixing the two tokens would lift every page at once. The backdrops were
-  measured against this baseline and cost it nothing in the end: the rooms
-  render as painted with no scrim, and every block of text on those two pages
-  sits on a placard, a plate frame or a tag of its own instead.
+- ~~Colour contrast never audited~~ — audited and fixed. Two tokens were failing
+  WCAG AA on plain paper, site-wide, long before the room backdrops:
+  `--ink-soft` at 3.99:1 where body text needs 4.5, and `--specimen-red` used
+  as an eyebrow at 2.46:1 where its size needs 3. Both are deepened within their
+  own hue — #8a7a68 to #726351, #d98ca3 to #b85f7b — and now measure 5.60:1 and
+  4.09:1 on paper, 4.58:1 and 3.34:1 read through a frosted placard over the
+  busiest room. `--ink` was always fine at 8.19:1. Nothing else has been
+  measured; the tokens above are what body copy actually uses.
 - Consider `.gitattributes` with `*.txt text eol=lf`; the parsers normalise
   already, so this is belt-and-braces.
 - ~~`greendesk.png` unreferenced~~ — removed in §54, along with `src/assets/`,
