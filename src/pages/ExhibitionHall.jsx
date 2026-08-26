@@ -65,6 +65,61 @@ export default function ExhibitionHall() {
 
   const illustrated = rooms.filter((r) => r.image).length;
 
+  // The rooms arrive rather than being there already.
+  //
+  // Armed from JS, and only after a frame, so the hidden starting state never
+  // exists for anyone whose JS did not run — without this the whole grid would
+  // simply be invisible rather than animated. Skipped outright for anyone who
+  // has asked for less motion; they get the cards immediately, which is the
+  // correct answer rather than a degraded one.
+  const [armed, setArmed] = useState(false);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = requestAnimationFrame(() => setArmed(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  // Each card lights as it comes into view, so the invitation happens where
+  // the reader is looking rather than all at once above the fold.
+  useEffect(() => {
+    if (!armed) return;
+    const cards = document.querySelectorAll(".hall-grid.is-armed .hall-room");
+    if (!cards.length) return;
+    if (!("IntersectionObserver" in window)) {
+      cards.forEach((c) => c.classList.add("is-in"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-in");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -8% 0px" }
+    );
+    cards.forEach((c) => io.observe(c));
+
+    // Backstop. Arming hides the grid; the observer is what brings it back, so
+    // anything that stops the observer firing would leave eighteen invisible
+    // rooms on the page. This is not hypothetical — requestAnimationFrame and
+    // observer callbacks both go quiet in a tab that is not compositing, which
+    // is exactly where nobody is watching to notice.
+    // After a second and a half the rooms simply appear, animated or not. The
+    // worst case this allows is a reveal that did not play; the worst case it
+    // removes is a hall with nothing in it.
+    const backstop = setTimeout(() => {
+      cards.forEach((c) => c.classList.add("is-in"));
+    }, 1500);
+
+    return () => {
+      io.disconnect();
+      clearTimeout(backstop);
+    };
+  }, [armed, rooms.length, counts]);
+
   return (
     <div className="container" style={{ padding: "40px 24px 90px" }}>
       <RoomBackdrop image="rooms/exhibition-hall.jpg" />
@@ -83,20 +138,21 @@ export default function ExhibitionHall() {
         </p>
       </section>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
-        {rooms.map((room) => {
+      <div className={`hall-grid${armed ? " is-armed" : ""}`}>
+        {rooms.map((room, i) => {
           const residents = counts[room.name];
           return (
             <Link
               key={room.slug}
               to={`/habitat/${room.slug}`}
-              className="plate-frame"
+              className="plate-frame hall-room"
               style={{
                 display: "flex",
                 flexDirection: "column",
                 textDecoration: "none",
                 color: "var(--ink)",
                 overflow: "hidden",
+                "--stagger": `${(i % 6) * 70}ms`,
               }}
             >
               {room.image ? (

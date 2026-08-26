@@ -890,3 +890,40 @@ button, input, select {
   transition: background .14s ease, color .14s ease;
 }
 .room-tag:hover { background: var(--paper-light); color: var(--botanical-green-deep); }
+
+/* === The Exhibition Hall's arrival ====================================
+   The hall uses the same fixed backdrop as every other room — a hero here was
+   tried and dropped, because one page arriving differently from the other six
+   reads as an inconsistency rather than as emphasis.
+   What survives is the invitation: the rooms are not there when you land, they
+   arrive as you come down to them. */
+
+/* --- the rooms arriving ---------------------------------------------- */
+.hall-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+/* Only ever applied by JS, one frame after mount. Without that gate a reader
+   whose script never ran would be left with an invisible grid instead of a
+   plain one — the failure mode of every reveal done carelessly. */
+.hall-grid.is-armed .hall-room {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.hall-grid.is-armed .hall-room.is-in {
+  opacity: 1;
+  transform: none;
+  /* The stagger is per-row rather than per-card: it resets every six, so the
+     last room in an eighteen-room hall does not wait on seventeen before it. */
+  transition: opacity 520ms ease-out var(--stagger, 0ms),
+              transform 520ms cubic-bezier(.22, .9, .3, 1) var(--stagger, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hall-grid.is-armed .hall-room {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
