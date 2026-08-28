@@ -153,14 +153,19 @@ is the point. Add a room there when you paint one, then point a
 
 `/write` — six sheets of stationery, a ruled writing area, and a letter drawn in
 plain text for the curator to receive. Papers and letter-building live in
-`src/data/curatorMail.js`; the marks are inline SVG in `MailMotif.jsx`.
+`src/data/curatorMail.js`.
 
-Adding a paper means adding one entry to `MAIL_PAPERS` and one case to
-`MailMotif`. Two things to hold to:
+The papers are **real mail items**: the `id` is the PokéAPI item name *and* the
+sprite filename, and `fetch-sprites.mjs` imports `MAIL_PAPERS` to build its
+download list, so adding a paper is one entry in that array and nothing else.
+PokéAPI lists 36 under the `all-mail` item category. Three things to hold to:
 
-- **Measure the new tint.** Every paper's accent is used for 13px text, which
-  needs 4.5:1 against the tint's *darkest* gradient stop. Two of the first six
-  failed that on the first pass. Ink is fine on all of them at ~7:1.
+- **Derive the colours from the sprite, don't pick them.** Tint is the sprite's
+  dominant colour desaturated; the accent is that colour darkened until it
+  clears 4.6:1 against the tint's darkest gradient stop, which is what the 13px
+  paper name needs. Two hand-picked accents failed AA on the first pass.
+- **Keep the icon at an integer scale.** 24px art at 48px with
+  `image-rendering: pixelated`. Anything else smooths it back into mush.
 - **A dingbat, not an emoji**, for the `glyph` — it has to survive a mail client.
 
 Nothing is sent from the page and nothing is collected. See MILESTONE §5d for

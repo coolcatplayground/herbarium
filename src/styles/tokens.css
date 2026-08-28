@@ -1143,7 +1143,18 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   outline-offset: 3px;
 }
 
-.mail-swatch__motif { color: var(--sheet-accent); }
+.mail-swatch__motif { color: var(--sheet-accent); line-height: 0; }
+
+/* The item sprite. 24x24 pixel art drawn at 48, which is an exact doubling —
+   any non-integer scale reintroduces the blur that pixelated exists to prevent,
+   so the size is set in the markup rather than left for the layout to decide. */
+.mail-icon {
+  display: block;
+  image-rendering: pixelated;
+  /* Safari spells it differently and ignores the standard keyword. */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+}
 
 .mail-swatch__name {
   font-family: var(--font-display);

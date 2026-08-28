@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import RoomBackdrop from "../components/RoomBackdrop";
-import MailMotif from "../components/MailMotif";
 import {
   CURATOR_ADDRESS,
   DEFAULT_PAPER,
@@ -26,6 +25,32 @@ import {
 // plainly — see `curatorMail.js` for why the clipboard is not the small print.
 
 const DRAFT_KEY = "cc-herbarium-mail-draft";
+
+// The item's own sprite, served from our own origin like every other image
+// here — never hotlinked, for the reason set out at the top of
+// scripts/fetch-sprites.mjs.
+//
+// 24x24 pixel art drawn at an exact multiple of itself, with `pixelated` so
+// the browser does not smooth it. Bilinear upscaling is what makes sprite art
+// look like a mistake rather than a choice.
+//
+// It removes itself if the file is missing, which happens on a fresh clone
+// before `npm run sprites` has been run. The sheet still reads correctly
+// without it: the paper's name is written beside it, never carried by it.
+function MailIcon({ id, size = 48 }) {
+  const [missing, setMissing] = useState(false);
+  if (missing) return null;
+  return (
+    <img
+      className="mail-icon"
+      src={`${import.meta.env.BASE_URL}sprites/${id}.png`}
+      alt=""
+      width={size}
+      height={size}
+      onError={() => setMissing(true)}
+    />
+  );
+}
 
 // A letter someone has spent ten minutes composing should survive a stray
 // reload. Wrapped because storage throws outright in a locked-down browser
@@ -150,7 +175,7 @@ export default function WriteToCurator() {
                       className="sr-only"
                     />
                     <span className="mail-swatch__motif" aria-hidden="true">
-                      <MailMotif paper={sheet.id} size={30} />
+                      <MailIcon id={sheet.id} />
                     </span>
                     <span className="mail-swatch__name">{sheet.name}</span>
                     <span className="mail-swatch__blurb">{sheet.blurb}</span>
@@ -163,7 +188,7 @@ export default function WriteToCurator() {
           <div className="mail-sheet" style={paperStyle}>
             <div className="mail-sheet__head">
               <span className="mail-sheet__motif" aria-hidden="true">
-                <MailMotif paper={paper.id} size={28} />
+                <MailIcon id={paper.id} />
               </span>
               <span className="mail-sheet__title">{paper.name}</span>
             </div>
@@ -237,7 +262,7 @@ export default function WriteToCurator() {
           >
             <div className="mail-sheet__head">
               <span className="mail-sheet__motif" aria-hidden="true">
-                <MailMotif paper={paper.id} size={28} />
+                <MailIcon id={paper.id} />
               </span>
               <span className="mail-sheet__title">{paper.name}</span>
             </div>

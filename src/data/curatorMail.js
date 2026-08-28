@@ -34,68 +34,80 @@ export const NAME_MAX = 32;
 const SHEET_WIDTH = 36;
 const INDENT = "   ";
 
-// Papers. Original stationery in the collection's own idiom rather than
-// reproductions of the in-game designs — the same idea, a tinted sheet with a
-// motif and a themed rule, drawn from the plants this place is about.
+// Papers. These are real mail items: `id` is the PokéAPI item name, and the
+// mark on each sheet is that item's own sprite, fetched into public/sprites/ by
+// scripts/fetch-sprites.mjs along with everything else the site serves. Same
+// footing as the type icons and the specimen artwork — recognisable official
+// assets in a non-commercial fan project, per the disclaimer in README.md.
 //
-// `glyph` is the paper's mark in the plain-text letter, where an SVG cannot
+// Six of the thirty-six, each chosen because it maps to a room this collection
+// actually has. The rest are listed by PokéAPI under the `all-mail` item
+// category and cost one entry here plus one line in the fetcher to add; Flame
+// Mail, for the fire-adapted flora, is the obvious next one.
+//
+// The colours are not eyeballed. Each sheet's tint and accent are derived from
+// the dominant colour of its own sprite — desaturated for the tint, darkened
+// for the accent until it clears 4.6:1 against the tint's darkest stop, which
+// is what the 13px paper name needs. See DEVLOG §57.
+//
+// `glyph` is the paper's mark in the plain-text letter, where a sprite cannot
 // go. All six are long-standing Unicode dingbats rather than emoji, because
 // emoji arrive as colour images in some mail clients and as tofu in others,
 // while these fall back to an ordinary glyph in any font that has them.
 export const MAIL_PAPERS = [
   {
-    id: "bloom",
+    id: "grass-mail",
+    name: "Grass Mail",
+    glyph: "❦",
+    blurb: "the mono-Grass room, and the biggest one",
+    tint: "linear-gradient(165deg, #f7fbf9 0%, #f0f7f4 55%, #e9f4f0 100%)",
+    accent: "#1e7b59",
+    rule: "rgba(30, 123, 89, 0.34)",
+  },
+  {
+    id: "bloom-mail",
     name: "Bloom Mail",
     glyph: "✿",
-    blurb: "Dusty rose, for a flowering thought",
-    tint: "linear-gradient(165deg, #fdf6f7 0%, #fbeef1 55%, #f7e6ea 100%)",
-    accent: "#9e4763",
-    rule: "rgba(158, 71, 99, 0.34)",
+    blurb: "anything in flower",
+    tint: "linear-gradient(165deg, #fbf6fa 0%, #f8eff6 55%, #f5e7f2 100%)",
+    accent: "#bd1f92",
+    rule: "rgba(189, 31, 146, 0.34)",
   },
   {
-    id: "fern",
-    name: "Fern Mail",
-    glyph: "❦",
-    blurb: "Sage green, for a note out of the shade",
-    tint: "linear-gradient(165deg, #f6faf5 0%, #eef6ef 55%, #e6f1e8 100%)",
-    accent: "#356044",
-    rule: "rgba(53, 96, 68, 0.32)",
-  },
-  {
-    id: "orchard",
-    name: "Orchard Mail",
+    id: "tropic-mail",
+    name: "Tropic Mail",
     glyph: "❧",
-    blurb: "Butter gold, for something in season",
-    tint: "linear-gradient(165deg, #fdfaef 0%, #fbf4e2 55%, #f7edd4 100%)",
-    accent: "#805c14",
-    rule: "rgba(128, 92, 20, 0.34)",
+    blurb: "the canopy and the orchard",
+    tint: "linear-gradient(165deg, #f8faf7 0%, #f2f7f0 55%, #edf3ea 100%)",
+    accent: "#3f7923",
+    rule: "rgba(63, 121, 35, 0.34)",
   },
   {
-    id: "moss",
-    name: "Moss Mail",
-    glyph: "✤",
-    blurb: "Deep green, for the forest floor",
-    tint: "linear-gradient(165deg, #f4f8f3 0%, #e9f2ea 55%, #dfebe1 100%)",
-    accent: "#2b5439",
-    rule: "rgba(43, 84, 57, 0.32)",
-  },
-  {
-    id: "tide",
-    name: "Tide Mail",
+    id: "wave-mail",
+    name: "Wave Mail",
     glyph: "✽",
-    blurb: "Pale water, for the wetland rooms",
-    tint: "linear-gradient(165deg, #f2f9fa 0%, #e8f3f5 55%, #dfedf0 100%)",
-    accent: "#245863",
-    rule: "rgba(36, 88, 99, 0.32)",
+    blurb: "the wetland rooms",
+    tint: "linear-gradient(165deg, #f6fafb 0%, #eff6f8 55%, #e8f2f5 100%)",
+    accent: "#187493",
+    rule: "rgba(24, 116, 147, 0.34)",
   },
   {
-    id: "ember",
-    name: "Ember Mail",
-    glyph: "❈",
-    blurb: "Warm amber, for a plant that waits for fire",
-    tint: "linear-gradient(165deg, #fdf6f0 0%, #faece0 55%, #f5e1d0 100%)",
-    accent: "#8c4a20",
-    rule: "rgba(140, 74, 32, 0.34)",
+    id: "snow-mail",
+    name: "Snow Mail",
+    glyph: "✻",
+    blurb: "the treeline, and everything under snow",
+    tint: "linear-gradient(165deg, #f6f6fb 0%, #efeff8 55%, #e8e8f5 100%)",
+    accent: "#5454e3",
+    rule: "rgba(84, 84, 227, 0.34)",
+  },
+  {
+    id: "wood-mail",
+    name: "Wood Mail",
+    glyph: "✤",
+    blurb: "lignin, timber and tree rings",
+    tint: "linear-gradient(165deg, #faf9f7 0%, #f6f5f1 55%, #f2f1ea 100%)",
+    accent: "#7d6b2c",
+    rule: "rgba(125, 107, 44, 0.34)",
   },
 ];
 

@@ -2004,6 +2004,63 @@ this nobody can inspect after the fact.
 
 ---
 
+### 57. The mail desk gets the real stationery
+
+§56 shipped six invented papers, on the reasoning that original art was safer
+than reproductions. That was a call about this project's own provenance, and it
+was not the assistant's to make quietly — this site already serves 40 MB of
+official artwork and traces the official type icons, both documented as
+non-commercial fan use. The curator asked why the actual designs were not used,
+which was the right question.
+
+**What is actually reachable.** PokéAPI lists 36 mail items under the
+`all-mail` category — Grass, Bloom, Wave, Snow, Tropic, Wood, Flame, Retro and
+the rest — each with its official 24x24 item sprite in the same repository the
+specimen artwork already comes from. What is *not* there is the full mail canvas,
+the stationery art that fills the screen behind the message in-game. That exists
+only in third-party sprite rips, which is a different sourcing question, and it
+was left open rather than decided.
+
+**Six of the thirty-six**, each chosen because it maps to a room this collection
+has: Grass for the mono-Grass room, Bloom for anything in flower, Tropic for the
+canopy, Wave for the wetlands, Snow for the treeline, Wood for lignin and tree
+rings. Picked by building a labelled contact sheet of all 36 upscaled 5x and
+looking at them, rather than from memory — the same rule the rosters are read by.
+
+- Sprites are fetched into `public/sprites/` by the existing fetcher and served
+  from our own origin, never hotlinked. 1.6 KB for all six
+- `fetch-sprites.mjs` imports `MAIL_PAPERS` and derives its download list from
+  it, instead of repeating the six names. A second copy of that list is a copy
+  that drifts: add a seventh paper, forget the fetcher, and the sheet renders
+  with a missing icon in production while working locally where the file happens
+  to be lying around. This works because the paper id *is* the item name
+- `MailMotif.jsx` and its six hand-drawn SVG marks are deleted rather than left
+  unreferenced, per §54
+
+**The colours are computed from the sprites.** Each icon's pixels were
+histogrammed with System.Drawing, the dominant non-outline colour taken as the
+paper's hue, then: the sheet is that hue at 0.22–0.42 saturation across three
+gradient stops, and the accent is the same hue darkened in 0.005 steps until it
+clears 4.6:1 against the sheet's own darkest stop — which is what the 13px paper
+name needs. Verified afterwards in the browser rather than trusted: ink 6.99 to
+7.54:1, accents 4.61 to 4.69:1, all six.
+
+The first attempt started its accent search at lightness 0.44 and Snow Mail came
+out at 8.54:1 — legible, but a much darker blue than the sprite, because blue
+crosses the threshold early. Starting the search lighter, at 0.62, brings every
+accent down to just over the line and keeps it recognisably the sprite's colour.
+
+**Icons render at exactly 2x** — 24px art at 48px with `image-rendering:
+pixelated`. The size is set in the markup rather than left to the layout,
+because a non-integer scale puts back the smoothing the property exists to
+prevent, and blurred sprite art reads as a mistake rather than a choice.
+
+Also corrected here: README's project-status paragraph still told readers the
+field notes were drafts, contrast was unaudited and there were no tests, all
+three of which stopped being true in §55 and earlier.
+
+---
+
 ## Planned
 
 ### Habitat pages — an exhibition wing

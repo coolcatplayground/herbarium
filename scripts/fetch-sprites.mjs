@@ -14,6 +14,7 @@
 // works before this has been run.
 import { mkdir, writeFile, readdir, stat } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { MAIL_PAPERS } from "../src/data/curatorMail.js";
 
 const OUT = new URL("../public/sprites/", import.meta.url);
 const BASE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon";
@@ -24,6 +25,22 @@ const CONCURRENCY = 8;
 // Seasonal forms are pokemon-form entries with no official artwork, so the two
 // Deerling-line faces use the HOME set for all four seasons — see seasonForms.js.
 const SEASON_SLUGS = ["585", "585-summer", "585-autumn", "585-winter", "586", "586-summer", "586-autumn", "586-winter"];
+
+// The mail desk's stationery. Item sprites rather than pokemon ones, so they
+// come from a different directory of the same repository — 24x24 pixel art, a
+// few hundred bytes each. They land in the same output folder because the
+// filenames cannot collide with the numeric pokemon ids.
+//
+// Read straight off MAIL_PAPERS rather than listed again here. A second copy
+// of the list would be a copy that drifts: add a seventh paper, forget the
+// fetcher, and the sheet renders with a missing icon in production while
+// working locally where the file happens to be lying around. The paper id IS
+// the PokéAPI item name, which is why this works at all.
+//
+// Importing app code into a build script is safe here specifically because
+// curatorMail.js is pure — no React, no browser globals, no import.meta.env.
+const ITEMS = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items";
+const MAIL_SLUGS = MAIL_PAPERS.map((p) => p.id);
 
 async function rosterIds() {
   const res = await fetch("https://pokeapi.co/api/v2/type/grass");
@@ -50,6 +67,9 @@ function targets(ids) {
   for (const slug of SEASON_SLUGS) {
     out.push({ url: `${HOME}/${slug}.png`, file: `home-${slug}.png` });
     out.push({ url: `${HOME}/shiny/${slug}.png`, file: `home-${slug}-shiny.png` });
+  }
+  for (const slug of MAIL_SLUGS) {
+    out.push({ url: `${ITEMS}/${slug}.png`, file: `${slug}.png` });
   }
   return out;
 }

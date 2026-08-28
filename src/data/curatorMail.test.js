@@ -18,7 +18,9 @@ import {
 describe("papers", () => {
   it("gives every paper the fields the sheet and the letter both need", () => {
     for (const paper of MAIL_PAPERS) {
-      expect(paper.id).toMatch(/^[a-z]+$/);
+      // The id is the PokéAPI item name, which is also the sprite filename —
+      // so it has to stay in that shape or the icon 404s.
+      expect(paper.id).toMatch(/^[a-z]+-mail$/);
       expect(paper.name).toBeTruthy();
       expect(paper.glyph).toHaveLength(1);
       expect(paper.tint).toContain("gradient");
@@ -67,13 +69,13 @@ describe("wrapText", () => {
 
 describe("buildLetter", () => {
   const letter = buildLetter({
-    paper: "fern",
+    paper: "grass-mail",
     from: "Chacu",
     message: "The Bulbasaur note says a corm has no layers.\n\nGladiolus corms have tunics.",
   });
 
   it("names the paper and signs the sender", () => {
-    expect(letter).toContain("FERN MAIL");
+    expect(letter).toContain("GRASS MAIL");
     expect(letter).toContain("❦");
     expect(letter).toContain("from — Chacu");
   });
@@ -97,7 +99,7 @@ describe("buildLetter", () => {
   });
 
   it("says so plainly when no name was given rather than leaving a dangling dash", () => {
-    const anon = buildLetter({ paper: "bloom", from: "", message: "hello" });
+    const anon = buildLetter({ paper: "grass-mail", from: "", message: "hello" });
     expect(anon).toContain("from — a visitor who left no name");
   });
 
@@ -107,7 +109,7 @@ describe("buildLetter", () => {
     const override = "\u202E";
     const nul = "\u0000";
     const out = buildLetter({
-      paper: "bloom",
+      paper: "grass-mail",
       from: `a${override}b`,
       message: `one${override}two${nul}\nthree`,
     });
@@ -121,38 +123,38 @@ describe("buildLetter", () => {
 
   it("enforces the caps the composer advertises", () => {
     const long = "x".repeat(MESSAGE_MAX + 200);
-    const letterText = buildLetter({ paper: "bloom", from: "y".repeat(NAME_MAX + 20), message: long });
+    const letterText = buildLetter({ paper: "grass-mail", from: "y".repeat(NAME_MAX + 20), message: long });
     expect(letterText.match(/x/g).length).toBe(MESSAGE_MAX);
     expect(letterText.match(/y/g).length).toBe(NAME_MAX);
   });
 
   it("does not fall over on an unknown paper", () => {
-    expect(buildLetter({ paper: "nope", from: "a", message: "b" })).toContain("BLOOM MAIL");
+    expect(buildLetter({ paper: "nope", from: "a", message: "b" })).toContain("GRASS MAIL");
   });
 });
 
 describe("letterSubject", () => {
   it("names the paper and the sender", () => {
-    expect(letterSubject({ paper: "tide", from: "Chacu" })).toBe(
-      "Tide Mail from Chacu — CC Herbarium",
+    expect(letterSubject({ paper: "wave-mail", from: "Chacu" })).toBe(
+      "Wave Mail from Chacu — CC Herbarium",
     );
   });
 
   it("drops the sender clause rather than leaving it empty", () => {
-    expect(letterSubject({ paper: "tide", from: "  " })).toBe("Tide Mail — CC Herbarium");
+    expect(letterSubject({ paper: "wave-mail", from: "  " })).toBe("Wave Mail — CC Herbarium");
   });
 });
 
 describe("mailtoHref", () => {
   it("addresses the curator and encodes the letter", () => {
-    const href = mailtoHref({ paper: "bloom", from: "Chacu", message: "hello" });
+    const href = mailtoHref({ paper: "grass-mail", from: "Chacu", message: "hello" });
     expect(href.startsWith("mailto:")).toBe(true);
     expect(href).toContain("subject=");
-    expect(decodeURIComponent(href.split("&body=")[1])).toContain("BLOOM MAIL");
+    expect(decodeURIComponent(href.split("&body=")[1])).toContain("GRASS MAIL");
   });
 
   it("encodes newlines rather than emitting a raw line break into a URL", () => {
-    const href = mailtoHref({ paper: "bloom", from: "a", message: "one\ntwo" });
+    const href = mailtoHref({ paper: "grass-mail", from: "a", message: "one\ntwo" });
     expect(href).not.toContain("\n");
     expect(href).toContain("%0A");
   });
@@ -161,7 +163,7 @@ describe("mailtoHref", () => {
   // with the longest name the composer will take, still has to hand off.
   it("hands off the longest Latin letter the composer will accept", () => {
     const href = mailtoHref({
-      paper: "ember",
+      paper: "wood-mail",
       from: "n".repeat(NAME_MAX),
       message: "word ".repeat(MESSAGE_MAX / 5),
     });
@@ -175,7 +177,7 @@ describe("mailtoHref", () => {
   // and must not be reported as one.
   it("declines the hand-off rather than truncating a letter in a non-Latin script", () => {
     const href = mailtoHref({
-      paper: "bloom",
+      paper: "grass-mail",
       from: "Chacu",
       message: "ก".repeat(300),
     });
@@ -185,7 +187,7 @@ describe("mailtoHref", () => {
   it("returns null rather than a truncated letter when anything else is over the ceiling", () => {
     const href = mailtoHref({
       address: "a".repeat(MAILTO_MAX),
-      paper: "bloom",
+      paper: "grass-mail",
       from: "a",
       message: "b",
     });

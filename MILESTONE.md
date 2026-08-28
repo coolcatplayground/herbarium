@@ -507,6 +507,27 @@ straight to a `mailto:`, which is a better invitation and also works for the
 large share of visitors who have no mail client wired to their browser at all —
 for them the old link did nothing visible whatsoever.
 
+**The papers are real mail items.** Grass, Bloom, Tropic, Wave, Snow and Wood
+Mail — six of the thirty-six PokéAPI lists under `all-mail` — each carrying its
+own 24×24 item sprite, served from our own origin by `fetch-sprites.mjs` like
+every other image here. Same footing as the type icons and the specimen
+artwork. Six were chosen because each maps to a room the collection actually
+has; the rest cost one entry in `MAIL_PAPERS` to add, and the fetcher reads its
+download list straight off that array so the two cannot drift apart.
+
+The first pass invented six botanical papers instead, which was a judgement
+about this project's provenance that was never the assistant's to make quietly.
+What is *not* used is the full in-game mail canvas — that art is not on PokéAPI
+and would have to come from third-party sprite rips, which is a different
+sourcing question and remains open.
+
+**Sheet colours are derived, not chosen.** Each paper's tint and accent come
+from the dominant colour of its own sprite: desaturated to about 0.22–0.42 for
+the three gradient stops, and darkened for the accent until it clears 4.6:1
+against the tint's darkest stop. Measured in the browser afterwards, ink lands
+6.99–7.54:1 and every accent 4.61–4.69:1. The sprites render at exactly 2× with
+`image-rendering: pixelated`; a non-integer scale puts the blur straight back.
+
 **Nothing is sent from the page.** The site is static, so a letter leaves by the
 visitor's own mail client or by their clipboard. No form service, no key, no
 account, and no third party holding somebody's correspondence — the same terms

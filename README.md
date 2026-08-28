@@ -92,9 +92,10 @@ If you add a parser for a new content file, normalize `\r\n?` → `\n` before ma
 
 ## Project status
 
-Development history and design reasoning are in [DEVLOG.md](DEVLOG.md), including a
-"Known open items" section covering what's still outstanding — most field notes are tagged as
-drafts pending review, color contrast hasn't been audited, and there are no automated tests.
+Development history and design reasoning are in [DEVLOG.md](DEVLOG.md); what is true *now*,
+and why, is in [MILESTONE.md](MILESTONE.md). The three things this section used to list as
+outstanding have all been done: every field note has been rewritten out of draft, colour
+contrast has been audited and the two failing tokens fixed, and there are 497 tests.
 
 ## Disclaimer
 
