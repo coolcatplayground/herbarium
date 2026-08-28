@@ -1113,15 +1113,9 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   margin: 0 0 22px;
   /* The gap above is owned by .placard--title, not split between the two. */
   margin-top: 0;
-  padding: 16px 18px 20px;
+  /* Even top and bottom now that no legend sits in the top border. */
+  padding: 18px;
   border-width: 2px;
-}
-
-.mail-papers__legend {
-  font-family: var(--font-structural);
-  font-size: 1.35rem;
-  color: var(--specimen-red);
-  padding: 0 8px;
 }
 
 .mail-papers__grid {

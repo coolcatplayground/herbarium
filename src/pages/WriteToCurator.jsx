@@ -199,7 +199,19 @@ export default function WriteToCurator() {
       {!sealed && (
         <>
           <fieldset className="plate-frame mail-papers">
-            <legend className="mail-papers__legend">Choose a sheet</legend>
+            {/* Kept for assistive tech, hidden from view.
+
+                It was visible and it was broken: a <legend> is positioned by
+                the browser straddling the fieldset's top border, so it punched
+                a gap in the card's edge and sat half over the painted room
+                behind it — unmounted text on a painting, which is the one thing
+                this site's CSS is most careful never to do.
+
+                Deleting the element outright would have been worse than the
+                bug. A radio group with no accessible name announces as six
+                unlabelled buttons, and the sheets are the whole choice on this
+                page. So it stays, silently. */}
+            <legend className="sr-only">Choose a sheet</legend>
             <div className="mail-papers__grid">
               {MAIL_PAPERS.map((sheet) => {
                 const checked = sheet.id === paperId;

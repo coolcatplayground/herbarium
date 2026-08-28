@@ -202,6 +202,14 @@ a tidy-up.
 
 ## Rules that are easy to break
 
+**A `<legend>` mounts itself on nothing.** The browser positions it straddling
+the fieldset's top border, punching a gap in the card's edge — so over a painted
+room half the word sits on the card and half on the painting, and it is
+unreadable. This shipped on the mail desk and had to be pointed out. If a
+fieldset needs a visible label, put it in a real element inside the card, or
+give the fieldset an `aria-label` and hide the legend with `.sr-only` — but do
+not simply delete it, or the radio group announces as unlabelled buttons.
+
 **A relative `url()` in CSS resolves against the stylesheet, not the page.** So
 an asset path handed to CSS through a custom property — `--x: url(./mail/a.png)`
 inline, `background-image: var(--x)` in the stylesheet — resolves correctly in
