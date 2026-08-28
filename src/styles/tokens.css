@@ -1311,8 +1311,12 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   line-height: 1.45;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  margin: 0;
-  flex: 1 1 auto;
+  margin: 0 0 10px;
+  /* Takes the height it needs and no more. It used to be flex: 1 1 auto,
+     which expanded to fill the panel and shoved the signature to the very
+     bottom — so a two-line letter on Air Mail, whose panel is the tallest in
+     the set, signed itself half a card away from its own last sentence. */
+  flex: 0 1 auto;
 }
 
 .mail-sheet__sign {
