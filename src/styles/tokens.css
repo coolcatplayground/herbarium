@@ -1068,10 +1068,12 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
    shadow, the swatches sit inside a plate frame, and every note around them is
    on a placard.
 
-   Two custom properties are set inline from the chosen paper: --sheet-canvas
-   (the artwork) and --sheet-accent (its colour, for the label). --sheet-veil
-   is the measured opacity the writing panel needs over that particular
-   artwork; see the sheet block below.
+   The chosen paper sets custom properties inline: --sheet-accent (its colour,
+   for the label), --sheet-veil (the measured opacity the writing panel needs
+   over that particular artwork) and the four --panel-* insets. The artwork
+   itself is NOT among them — it is an <img>, for the reason set out at
+   .mail-sheet__art below, and putting it back into a url() would reintroduce a
+   bug that is invisible in dev.
    ───────────────────────────────────────────────────────────────────────── */
 
 /* Genuinely hidden from sight and genuinely present for a screen reader. The
@@ -1206,17 +1208,37 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   aspect-ratio: 4 / 3;
   border-radius: 6px;
   overflow: hidden;
-  /* A ground under the artwork, not decoration. Without it this element has
-     no background COLOUR at all — only the image — so if the canvas ever fails
-     to load, the sheet becomes a hole and the curator's room shows straight
-     through the mail. The art is opaque and covers the box, so this is never
-     seen when things are working. */
+  /* A ground under the artwork, so a canvas that fails to load leaves a cream
+     card rather than a hole with the curator's room showing through it. */
   background-color: var(--paper-light);
-  background-image: var(--sheet-canvas);
-  /* Stretched to the box rather than contained: every canvas in the set is
-     256x192, so 100% 100% IS its own ratio and nothing is distorted. */
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+}
+
+/* The stationery, drawn as an ELEMENT rather than as a CSS background, and
+   that is not a style preference — it is the fix for a bug that only ever
+   appeared in production.
+
+   It used to be `background-image: var(--sheet-canvas)`, with the custom
+   property set inline as `url(./mail/grass-mail.png)`. A relative url() in CSS
+   resolves against the STYLESHEET, not the document — and `var()` substitution
+   happens where the property is used, which is this stylesheet. In dev, Vite
+   injects styles into the document, so it resolved to /mail/…​ and worked. In a
+   build the stylesheet is /assets/index-*.css, so the same declaration resolved
+   to /assets/mail/…​ and 404'd on every sheet. The paper swatches were fine
+   throughout because an <img src> is an HTML attribute, resolved against the
+   document.
+
+   So the artwork uses the mechanism that was already proven to work. Anything
+   here that needs a per-paper asset should be an element, not a url() handed
+   through a custom property. */
+.mail-sheet__art {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* fill, not cover: the box is 4/3 and every canvas in the set is 256x192,
+     so the two already agree and nothing is stretched or cropped. */
+  object-fit: fill;
   image-rendering: pixelated;
 }
 
@@ -1226,6 +1248,8 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
    measurements in MAIL_PAPERS stop describing the pixels underneath. */
 .mail-sheet__panel {
   position: absolute;
+  /* Above the artwork, which is now a sibling element rather than a backdrop. */
+  z-index: 1;
   /* Set per paper from MAIL_PAPERS.panel — each artwork puts its writing
      area somewhere slightly different, and the veil measurements describe
      the pixels inside THIS rect. */

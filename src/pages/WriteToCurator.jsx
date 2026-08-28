@@ -127,7 +127,6 @@ export default function WriteToCurator() {
   }
 
   const paperStyle = {
-    "--sheet-canvas": `url(${import.meta.env.BASE_URL}mail/${paper.id}.png)`,
     "--sheet-accent": paper.accent,
     // The measured opacity this particular artwork needs under body text. Not
     // a style choice — see MAIL_PAPERS.
@@ -195,6 +194,13 @@ export default function WriteToCurator() {
 
           <figure className="mail-sheet" style={paperStyle}>
             <div className="mail-sheet__canvas">
+              <img
+                className="mail-sheet__art"
+                src={`${import.meta.env.BASE_URL}mail/${paper.id}.png`}
+                alt=""
+                width={256}
+                height={192}
+              />
               <div className="mail-sheet__panel">
                 <input
                   type="text"
@@ -264,6 +270,13 @@ export default function WriteToCurator() {
             aria-label={`Your ${paper.name}, sealed and ready to send`}
           >
             <div className="mail-sheet__canvas">
+              <img
+                className="mail-sheet__art"
+                src={`${import.meta.env.BASE_URL}mail/${paper.id}.png`}
+                alt=""
+                width={256}
+                height={192}
+              />
               <div className="mail-sheet__panel">
                 <p className="mail-sheet__written">{message.trim()}</p>
                 <p className="mail-sheet__sign">

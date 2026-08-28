@@ -573,6 +573,42 @@ wrong it is already in somebody's inbox.
 
 ## 6. Bugs found and fixed — the ones worth remembering
 
+### 6.0 The mail artwork was invisible in production and perfect in dev
+
+Every sheet at `/write` rendered blank on the deployed site while working in
+`npm run dev`, and every local check passed — computed styles, contrast,
+geometry, the lot.
+
+The artwork was a CSS background whose URL arrived through a custom property:
+`--sheet-canvas: url(./mail/grass-mail.png)`, set inline on the sheet, consumed
+by `background-image: var(--sheet-canvas)` in the stylesheet.
+
+**A relative `url()` in CSS resolves against the stylesheet, not the document**,
+and `var()` substitution happens where the property is *used*. In dev, Vite
+injects styles into the document, so it resolved to `/mail/…` and worked. In a
+build the stylesheet is `/assets/index-*.css`, so the identical declaration
+resolved to `/assets/mail/…` — a directory that does not exist — and 404'd on
+all six papers.
+
+The paper swatches were correct the whole time, which is the tell: they use
+`<img src>`, an HTML attribute, resolved against the document. The fix is to
+draw the artwork the same way, as a real element rather than a backdrop.
+
+Two things worth carrying forward:
+
+- **Per-paper assets must be elements, not `url()` through a custom property.**
+  There is a comment saying so at `.mail-sheet__art`.
+- **Dev is not production for asset URLs.** Nothing measurable in the dev server
+  would have caught this; `npx vite build && npx vite preview` would have caught
+  it in seconds, because the built stylesheet lives under `/assets/` even when
+  served from the root.
+
+It surfaced because the curator asked whether the mail background was
+transparent. It was not — the artwork is opaque RGB with no alpha — but the
+sheet was showing a fallback ground added one commit earlier, which is the only
+reason the failure looked like transparency rather than a blank card.
+
+
 ### 6.1 The whole content system was silently broken
 
 **Every plain-text file was parsing to zero entries.** The field regex ends

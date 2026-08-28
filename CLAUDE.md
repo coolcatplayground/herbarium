@@ -182,6 +182,19 @@ measurement about Thai text rather than a hedge.
 
 ## Rules that are easy to break
 
+**A relative `url()` in CSS resolves against the stylesheet, not the page.** So
+an asset path handed to CSS through a custom property — `--x: url(./mail/a.png)`
+inline, `background-image: var(--x)` in the stylesheet — resolves correctly in
+dev, where Vite injects styles into the document, and breaks in every build,
+where the stylesheet sits under `/assets/`. Per-paper and per-specimen assets go
+in as `<img src>`, which is resolved against the document. See MILESTONE §6.0;
+this shipped, and every local check passed while it was broken.
+
+**`npm run dev` is not production for asset paths.** If a change touches how an
+asset URL is built, check it with `npx vite build && npx vite preview` before
+believing it. The dev server resolves things the build does not.
+
+
 **Never dim a room to make text readable — mount the text.** Every page stands
 in a painted room at full strength. Anything that would otherwise sit on the
 wall goes on a surface: `.placard` (a page intro or heading block),

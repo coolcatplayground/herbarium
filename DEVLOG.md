@@ -2109,6 +2109,40 @@ Bulbagarden committed into `public/mail/`.
 
 ---
 
+### 59. The mail was blank in production, and had been since §58
+
+The curator asked whether the mail background was transparent. It was not — the
+six canvases are opaque RGB, no alpha channel, no tRNS chunk, and the live site
+serves them at exactly their byte counts. The sheets were nevertheless blank,
+and had been from the moment §58 deployed.
+
+**Cause.** The artwork was a CSS background whose URL came through a custom
+property: `--sheet-canvas: url(./mail/grass-mail.png)` set inline, consumed by
+`background-image: var(--sheet-canvas)` in the stylesheet. A relative `url()`
+in CSS resolves against the stylesheet rather than the document, and
+substitution happens where the property is used — so in a build, where the
+stylesheet is `/assets/index-*.css`, it resolved to `/assets/mail/…` and 404'd.
+In dev Vite injects styles into the document, so it resolved to `/mail/…` and
+was flawless.
+
+**Why every check missed it.** Everything was verified against `npm run dev`:
+computed styles, panel geometry, veil opacity, contrast, mobile line counts. All
+of it correct, and none of it production. The one signal that would have caught
+it was sitting in plain view the whole time — the paper swatches rendered
+perfectly, because they use `<img src>` rather than a background.
+
+**Fix.** The artwork is drawn as an `<img>`, the mechanism the swatches already
+proved. Reproduced first (`dist/mail/` exists, `dist/assets/mail/` does not),
+then fixed, then confirmed against `vite preview` — all six papers loading,
+each with its own veil and panel rect.
+
+The fallback ground added in the previous commit is why the failure looked like
+transparency rather than an empty card: without it the sheet would have been a
+hole with the curator's room showing through, which would at least have been
+obvious. Keeping it.
+
+---
+
 ## Planned
 
 ### Habitat pages — an exhibition wing
