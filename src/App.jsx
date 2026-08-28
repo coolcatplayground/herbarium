@@ -10,6 +10,7 @@ import GraftingBench from "./pages/GraftingBench";
 import Manuscripts from "./pages/Manuscripts";
 import FutureSpecies from "./pages/FutureSpecies";
 import About from "./pages/About";
+import WriteToCurator from "./pages/WriteToCurator";
 import "./styles/tokens.css";
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/manuscripts" element={<Manuscripts />} />
           <Route path="/future-species" element={<FutureSpecies />} />
           <Route path="/about" element={<About />} />
+          <Route path="/write" element={<WriteToCurator />} />
         </Routes>
       </main>
       <footer style={{ borderTop: "1px solid var(--paper-line)", padding: "20px 0", marginTop: "40px" }}>

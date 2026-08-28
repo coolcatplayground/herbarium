@@ -1058,3 +1058,328 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   header, footer,
   .room-peek, .room-peek__glyph { transition: none; }
 }
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   The mail desk.
+
+   Everything here stands in the curator's room, so the rule from §5a applies
+   throughout: nothing is read against the painting. The sheet is an opaque
+   tinted card carrying its own shadow, the swatches sit inside a plate frame,
+   and every note around them is on a placard.
+
+   The three custom properties — --sheet-tint, --sheet-accent, --sheet-rule —
+   are set inline from the chosen paper, so one set of rules dresses six.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Genuinely hidden from sight and genuinely present for a screen reader. The
+   radio inputs behind the paper swatches need this: a card that cannot be
+   tabbed to or announced is not a choice, it is a picture of one. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.mail-papers {
+  margin: 0 0 22px;
+  padding: 16px 18px 20px;
+  border-width: 2px;
+}
+
+.mail-papers__legend {
+  font-family: var(--font-structural);
+  font-size: 1.35rem;
+  color: var(--specimen-red);
+  padding: 0 8px;
+}
+
+.mail-papers__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.mail-swatch {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 2px;
+  padding: 12px 12px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: var(--sheet-tint);
+  color: var(--sheet-accent);
+  /* Two rings rather than a border: an unchosen sheet still has to read as a
+     distinct object on the frame beneath it, and a border painted inside the
+     tint at any subtle alpha does not manage that. */
+  box-shadow:
+    0 0 0 1px rgba(46, 38, 28, 0.16),
+    0 1px 3px rgba(38, 30, 20, 0.10);
+  transition: box-shadow 160ms ease, transform 160ms ease;
+}
+
+.mail-swatch:hover { transform: translateY(-1px); }
+
+/* The chosen sheet is marked twice over — a heavier ring in the paper's own
+   accent AND a lift — because colour alone is not a state anyone can rely on
+   seeing. The radio underneath carries the real answer for assistive tech. */
+.mail-swatch.is-chosen {
+  box-shadow:
+    0 0 0 2px var(--sheet-accent),
+    0 2px 4px rgba(38, 30, 20, 0.14),
+    0 10px 18px -10px rgba(38, 30, 20, 0.35);
+  transform: translateY(-1px);
+}
+
+.mail-swatch:focus-within {
+  outline: 2px solid var(--botanical-green-deep);
+  outline-offset: 3px;
+}
+
+.mail-swatch__motif { color: var(--sheet-accent); }
+
+.mail-swatch__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--ink);
+  margin-top: 4px;
+}
+
+.mail-swatch__blurb {
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+/* The sheet itself. */
+.mail-sheet {
+  position: relative;
+  background: var(--sheet-tint);
+  border-radius: 4px 14px 4px 4px;
+  padding: 20px 22px 16px;
+  color: var(--ink);
+  box-shadow:
+    0 0 0 1px rgba(46, 38, 28, 0.28),
+    0 1px 2px rgba(38, 30, 20, 0.12),
+    0 12px 24px -10px rgba(38, 30, 20, 0.30),
+    0 34px 60px -26px rgba(26, 20, 12, 0.42);
+}
+
+/* No fake torn corner. It was drawn and then removed: the trick needs the
+   page background painted over the sheet corner, and this sheet stands on a
+   painted room rather than on the page, so the triangle read as a stray
+   rectangle instead of as a tear. The asymmetric radius above is the whole of
+   the flourish now. */
+
+.mail-sheet__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--sheet-rule);
+  color: var(--sheet-accent);
+}
+
+.mail-sheet__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+}
+
+.mail-field { display: block; margin-bottom: 12px; }
+.mail-field--body { margin-bottom: 6px; }
+
+.mail-field__label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 3px;
+}
+
+.mail-sheet__from,
+.mail-sheet__body {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  font-family: var(--font-structural);
+  padding: 0;
+}
+
+.mail-sheet__from {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  border-bottom: 1px solid var(--sheet-rule);
+}
+
+/* The ruled writing area. The rules are painted as a repeating gradient and
+   the text sits on them, which only works while the line height and the
+   gradient period are the same number — 30px, in both places below. Change one
+   and the writing lifts off the lines. */
+.mail-sheet__body {
+  font-size: 1.3rem;
+  line-height: 30px;
+  resize: vertical;
+  min-height: 150px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 29px,
+    var(--sheet-rule) 29px,
+    var(--sheet-rule) 30px
+  );
+}
+
+.mail-sheet__from::placeholder,
+.mail-sheet__body::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.75;
+}
+
+.mail-sheet__from:focus-visible,
+.mail-sheet__body:focus-visible {
+  outline: 2px solid var(--botanical-green-deep);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.mail-sheet__count {
+  margin: 4px 0 0;
+  text-align: right;
+  font-size: 0.68rem;
+  color: var(--ink-soft);
+}
+
+.mail-sheet__count.is-near { color: var(--specimen-red); }
+
+/* The sealed reading. Same paper, no inputs — what the letter looks like once
+   it is written rather than while it is being written. */
+.mail-sheet--sealed { padding-bottom: 20px; }
+.mail-sheet--sealed:focus-visible { outline: 2px solid var(--botanical-green-deep); outline-offset: 4px; }
+
+.mail-sheet__written {
+  font-family: var(--font-structural);
+  font-size: 1.3rem;
+  line-height: 30px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 0 0 18px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 29px,
+    var(--sheet-rule) 29px,
+    var(--sheet-rule) 30px
+  );
+}
+
+.mail-sheet__sign {
+  margin: 0;
+  padding-top: 10px;
+  border-top: 2px solid var(--sheet-rule);
+  font-family: var(--font-structural);
+  font-size: 1.15rem;
+  text-align: right;
+  color: var(--ink);
+}
+
+.mail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0 0;
+}
+
+.mail-button {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--paper-shadow);
+  background: var(--paper-light);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(38, 30, 20, 0.12), 0 8px 18px -10px rgba(38, 30, 20, 0.4);
+}
+
+.mail-button--primary {
+  background: var(--botanical-green-deep);
+  border-color: var(--botanical-green-deep);
+  color: var(--paper-light);
+}
+
+.mail-button:disabled {
+  cursor: default;
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+.mail-button:focus-visible {
+  outline: 2px solid var(--botanical-green-deep);
+  outline-offset: 3px;
+}
+
+.mail-hint { margin-top: 14px; }
+
+/* An address that is also a copy button. Styled as the link it looks like
+   rather than as a control, since that is what it behaves like. */
+.mail-inline {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--specimen-red);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.mail-summary { cursor: pointer; font-size: 0.72rem; color: var(--ink-soft); }
+
+/* The plain-text letter, shown in the font the recipient may not see it in.
+   Scrolls inside itself rather than pushing the page sideways. */
+.mail-plain {
+  margin: 12px 0 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--paper);
+  border: 1px solid var(--paper-line);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--ink);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+@media (max-width: 700px) {
+  .mail-papers__grid { grid-template-columns: repeat(2, 1fr); }
+  .mail-sheet { padding: 16px 16px 14px; }
+  .mail-actions .mail-button { flex: 1 1 auto; text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .mail-papers__grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mail-swatch, .mail-swatch:hover, .mail-swatch.is-chosen { transition: none; transform: none; }
+}

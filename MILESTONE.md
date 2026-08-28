@@ -55,6 +55,7 @@ state library, no CSS framework.
 | `/manuscripts` | Manuscripts.jsx | Reading Room |
 | `/future-species` | FutureSpecies.jsx | Propagation Bench |
 | `/about` | About.jsx | **Curator’s Note** — the collection, and the curator |
+| `/write` | WriteToCurator.jsx | **The mail desk** — compose a letter to the curator on one of six sheets |
 
 **Vocabulary** (settled deliberately, used consistently in code and copy):
 the **gallery** is the all-panels page; a **specimen face** is one species' page;
@@ -497,6 +498,49 @@ and it is what caught the last three.
 
 **What this does not check** is whether a fact is *true*. Nothing here does.
 Every claim in these notes is a reading job, as §8a says of the citations.
+
+## 5d. The mail desk
+
+`/write`. Choose one of six sheets of stationery, write on it, seal it, look at
+the letter, and hand it over. The Curator's Note button goes here instead of
+straight to a `mailto:`, which is a better invitation and also works for the
+large share of visitors who have no mail client wired to their browser at all —
+for them the old link did nothing visible whatsoever.
+
+**Nothing is sent from the page.** The site is static, so a letter leaves by the
+visitor's own mail client or by their clipboard. No form service, no key, no
+account, and no third party holding somebody's correspondence — the same terms
+the acquisitions pipeline runs on.
+
+**The letter the curator receives is the deliverable**, not a form dump. It is
+drawn in text: the paper's dingbat and name, the message wrapped to 36 columns,
+a rule, and the signature. Two decisions in it are not obvious.
+
+- **It has a left edge and no right one.** A full box needs every line padded to
+  an identical width, which only holds if the reader's client renders plain text
+  monospaced — and Gmail does not. The rules run left to right and nothing has to
+  meet a margin that may not exist.
+- **The dingbats are Unicode, not emoji.** Emoji arrive as colour images in some
+  clients and as tofu in others; `✿ ❦ ❧ ✤ ✽ ❈` degrade to an ordinary glyph.
+
+**Why the clipboard is not the small print.** A `mailto:` URL has to survive
+being handed to the OS, so the ceiling is about 2000 characters percent-encoded.
+Measured: a 500-character letter in Latin text encodes to ~1780 and fits. The
+same 500 characters in **Thai encode to 5560**, because every character costs
+nine. No message limit can both guarantee the hand-off and be usable for writing
+a correction in a non-Latin script, so `mailtoHref` returns `null` when it will
+not fit, the mail-app button says so plainly, and copying is offered with equal
+weight. The plain-text letter unfolds itself when the clipboard is refused,
+because at that moment it is the only way out.
+
+Contrast measured on all six papers against each tint's darkest gradient stop:
+ink runs 6.69–7.32:1, and two accents were deepened to clear AA for the 13px
+paper name — Bloom from `#a8506c` (4.33:1, failing) and Orchard from `#8a6418`
+(4.60:1, thin).
+
+Logic lives in `src/data/curatorMail.js` and is covered by 22 tests, because the
+letter is the one part nobody can inspect after the fact — by the time it is
+wrong it is already in somebody's inbox.
 
 ## 6. Bugs found and fixed — the ones worth remembering
 

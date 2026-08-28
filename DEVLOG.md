@@ -1942,6 +1942,68 @@ record already says. Average length went from about 240 characters to 594.
 
 ---
 
+### 56. The mail desk
+
+The correspondence button used to be a bare `mailto:`, which is a poor
+invitation and, for the many visitors with no mail client wired to their
+browser, did nothing visible at all. It now goes to `/write`: six sheets of
+stationery, a ruled writing area, a sealed reading of what you wrote, and then
+the hand-off.
+
+- Standing in the curator's room, the same one the Curator's Note stands in,
+  because it is the same conversation continued rather than a form bolted to
+  the side of the building
+- Papers are original stationery in the collection's own idiom rather than
+  reproductions of the in-game designs — a tinted sheet, a themed rule, and a
+  mark drawn as inline SVG so it takes the paper's accent colour
+
+**Nothing is sent from the page**, and that constraint did the designing. The
+site is static, so a letter leaves by the visitor's own mail client or their
+clipboard. No form service, no key, no account, nobody else holding somebody's
+correspondence.
+
+**The letter is the deliverable.** It arrives drawn in text rather than as a
+dump of form fields: the paper's dingbat and name, the message wrapped to 36
+columns, a rule, the signature. It has a left edge and no right one, because a
+full box needs every line padded to a fixed width and that only holds if the
+reader's client renders plain text monospaced — Gmail does not, so a right edge
+would be ragged for a large share of readers. The marks are Unicode dingbats
+rather than emoji for the same class of reason.
+
+**The measurement that changed the design.** A `mailto:` has to survive being
+handed to the OS, so the ceiling is around 2000 characters once percent-encoded.
+A 500-character letter in Latin text encodes to about 1780 and fits. The same
+500 characters in Thai encode to **5560**, because every character costs nine.
+
+- No message limit can both guarantee the hand-off and leave room to write a
+  correction in a non-Latin script — a limit that guaranteed it would be under
+  200 characters
+- So `mailtoHref` returns null rather than truncating, the mail-app button says
+  plainly that the letter is over what a mail link carries, and copying is
+  offered with equal weight instead of as a fallback
+- The plain-text letter is folded away by default and unfolds itself when the
+  clipboard is refused, because at that moment it stops being a curiosity and
+  becomes the only way out. Found by testing: the embedded preview pane refuses
+  clipboard access, which exercised the path
+
+**Contrast, measured on all six papers** against each tint's darkest gradient
+stop rather than its lightest: ink runs 6.69–7.32:1 everywhere, and two accents
+were deepened to clear AA at the 13px paper name — Bloom from `#a8506c`
+(4.33:1, failing) and Orchard from `#8a6418` (4.60:1, thin).
+
+**A decoration removed rather than shipped.** The sheet had a drawn torn-off
+corner, which works by painting the page background over the corner — and this
+sheet stands on a painted room rather than on the page, so the triangle would
+have read as a stray rectangle. Taken out; the asymmetric corner radius is the
+whole flourish now.
+
+22 tests on `curatorMail.js`, covering the wrap, the paragraph breaks, the
+hard-break of a DOI too long for the sheet, the control-character strip, both
+caps, and both sides of the mail-link ceiling. The letter is the one part of
+this nobody can inspect after the fact.
+
+---
+
 ## Planned
 
 ### Habitat pages — an exhibition wing

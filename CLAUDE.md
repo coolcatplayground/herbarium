@@ -149,6 +149,24 @@ keyed `none`, so its art is `habitat-none.png`. The encoder aliases
 is the point. Add a room there when you paint one, then point a
 `<RoomBackdrop image="rooms/<name>.jpg" />` at it from the page.
 
+## The mail desk
+
+`/write` — six sheets of stationery, a ruled writing area, and a letter drawn in
+plain text for the curator to receive. Papers and letter-building live in
+`src/data/curatorMail.js`; the marks are inline SVG in `MailMotif.jsx`.
+
+Adding a paper means adding one entry to `MAIL_PAPERS` and one case to
+`MailMotif`. Two things to hold to:
+
+- **Measure the new tint.** Every paper's accent is used for 13px text, which
+  needs 4.5:1 against the tint's *darkest* gradient stop. Two of the first six
+  failed that on the first pass. Ink is fine on all of them at ~7:1.
+- **A dingbat, not an emoji**, for the `glyph` — it has to survive a mail client.
+
+Nothing is sent from the page and nothing is collected. See MILESTONE §5d for
+why the clipboard is offered with equal weight to the mail link, which is a
+measurement about Thai text rather than a hedge.
+
 ## Rules that are easy to break
 
 **Never dim a room to make text readable — mount the text.** Every page stands
