@@ -1092,8 +1092,27 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   border: 0;
 }
 
+/* The page's title block, once its two explanatory paragraphs were removed.
+
+   A .placard is padded for a card with prose in it — 22px over, 24px under —
+   which around a lone eyebrow and heading leaves a slab of empty card, and then
+   the placard's own bottom margin leaves a second gap before the sheets. This
+   trims both: enough room to sit the heading properly, and a single considered
+   distance down to "Choose a sheet". */
+.placard--title {
+  padding: 16px 26px 18px;
+  margin-bottom: 14px;
+}
+
+.placard--title .eyebrow {
+  display: block;
+  margin: 0 0 2px;
+}
+
 .mail-papers {
   margin: 0 0 22px;
+  /* The gap above is owned by .placard--title, not split between the two. */
+  margin-top: 0;
   padding: 16px 18px 20px;
   border-width: 2px;
 }

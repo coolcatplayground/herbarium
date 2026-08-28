@@ -183,23 +183,17 @@ export default function WriteToCurator() {
     <div className="container" style={{ padding: "40px 24px 100px", maxWidth: "720px" }}>
       <RoomBackdrop image="rooms/curator-room.jpg" />
 
-      <div className="placard" style={{ marginBottom: "22px" }}>
+      {/* Title only. The two explanatory paragraphs were removed deliberately:
+          the sheets below explain themselves, and a preamble telling someone
+          they may write a letter, above an obvious letter-writing desk, was
+          saying nothing they could not already see.
+
+          What the second paragraph carried — whether letters are kept — has not
+          been dropped, it has moved to the point of sending. See the note by
+          the sealed sheet's actions. */}
+      <div className="placard placard--title">
         <p className="eyebrow">Correspondence</p>
-        <h2 style={{ fontSize: "var(--step3)", margin: "0 0 10px" }}>Write to the Curator</h2>
-        <p>
-          Corrections are welcome and so is argument. Choose a sheet, write on it, and seal
-          it when you are ready — the desk shows you the finished letter before it goes
-          anywhere.
-        </p>
-        {/* This paragraph is generated from collectsLetters() rather than
-            written twice, so the promise cannot outlive the behaviour. Wire an
-            endpoint and it stops claiming nothing is kept; take the endpoint
-            away and it stops claiming anything is. */}
-        <p className="mono" style={{ fontSize: "0.78rem", color: "var(--ink-soft)", margin: 0 }}>
-          {collectsLetters()
-            ? "Sealed letters are delivered to the curator's desk and kept until they are read. An address is optional, used only to reply, and never shown to anyone else."
-            : "Nothing is sent from this page and nothing is kept here. The letter goes to your own mail app, or to your clipboard, and travels from there."}
-        </p>
+        <h2 style={{ fontSize: "var(--step3)", margin: 0 }}>Write to the Curator</h2>
       </div>
 
       {!sealed && (
@@ -447,6 +441,16 @@ export default function WriteToCurator() {
                 letter.
               </p>
             )}
+            {/* The disclosure that used to sit in the page's preamble. It reads
+                better here and it is fairer here: you are told what becomes of
+                your letter at the moment you are deciding to send it, not in a
+                paragraph above a blank sheet. Still generated from
+                collectsLetters(), so it cannot outlive the behaviour. */}
+            <p style={{ margin: "0 0 8px" }}>
+              {collectsLetters()
+                ? "Sending delivers this letter to the curator's desk, where it is kept until it has been read. An address is optional, used only to reply, and shown to nobody else."
+                : "Nothing is sent from this page and nothing is kept here — the letter leaves by your own mail app or your clipboard."}
+            </p>
             <p style={{ margin: 0 }}>
               The curator reads at{" "}
               <a href={`mailto:${CURATOR_ADDRESS}`} style={{ color: "var(--specimen-red)" }}>
