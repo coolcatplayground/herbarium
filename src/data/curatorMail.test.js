@@ -23,7 +23,19 @@ describe("papers", () => {
       expect(paper.id).toMatch(/^[a-z]+-mail$/);
       expect(paper.name).toBeTruthy();
       expect(paper.glyph).toHaveLength(1);
-      expect(paper.tint).toContain("gradient");
+      expect(paper.veil).toBeGreaterThanOrEqual(0);
+      expect(paper.veil).toBeLessThanOrEqual(1);
+      // The panel rect has to be a sane box inside the card, because the veil
+      // that keeps text legible was measured against the pixels inside it.
+      const [x0, y0, x1, y1] = paper.panel;
+      expect(x1).toBeGreaterThan(x0);
+      expect(y1).toBeGreaterThan(y0);
+      expect(x0).toBeGreaterThanOrEqual(0);
+      expect(y0).toBeGreaterThanOrEqual(0);
+      expect(x1).toBeLessThanOrEqual(1);
+      expect(y1).toBeLessThanOrEqual(1);
+      // A panel smaller than a fifth of the card is not a writing area.
+      expect((x1 - x0) * (y1 - y0)).toBeGreaterThan(0.2);
       expect(paper.accent).toMatch(/^#[0-9a-f]{6}$/);
     }
   });
@@ -135,13 +147,13 @@ describe("buildLetter", () => {
 
 describe("letterSubject", () => {
   it("names the paper and the sender", () => {
-    expect(letterSubject({ paper: "wave-mail", from: "Chacu" })).toBe(
-      "Wave Mail from Chacu — CC Herbarium",
+    expect(letterSubject({ paper: "bubble-mail", from: "Chacu" })).toBe(
+      "Bubble Mail from Chacu — CC Herbarium",
     );
   });
 
   it("drops the sender clause rather than leaving it empty", () => {
-    expect(letterSubject({ paper: "wave-mail", from: "  " })).toBe("Wave Mail — CC Herbarium");
+    expect(letterSubject({ paper: "bubble-mail", from: "  " })).toBe("Bubble Mail — CC Herbarium");
   });
 });
 
@@ -163,7 +175,7 @@ describe("mailtoHref", () => {
   // with the longest name the composer will take, still has to hand off.
   it("hands off the longest Latin letter the composer will accept", () => {
     const href = mailtoHref({
-      paper: "wood-mail",
+      paper: "flame-mail",
       from: "n".repeat(NAME_MAX),
       message: "word ".repeat(MESSAGE_MAX / 5),
     });

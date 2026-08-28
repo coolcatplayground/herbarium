@@ -8,6 +8,12 @@ far the science actually reaches.
 Built as a portfolio piece connecting a plant genetics background to a Pokédex — live data from
 [PokéAPI](https://pokeapi.co), original botanical write-ups and design.
 
+Artwork provenance, since it now comes from two places: specimen sprites, type icons and the mail
+bag icons are from PokéAPI's sprite repository, fetched at build time. The six mail stationery
+canvases in `public/mail/` are from the [Bulbagarden archives](https://archives.bulbagarden.net)
+and are committed rather than fetched. Both are official assets used here under the same
+non-commercial fan-work terms as everything else; see the disclaimer at the foot of this file.
+
 ## Features
 
 - **The Glasshouse** — the full live Grass-type roster from PokéAPI, searchable by name and

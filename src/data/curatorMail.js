@@ -34,21 +34,42 @@ export const NAME_MAX = 32;
 const SHEET_WIDTH = 36;
 const INDENT = "   ";
 
-// Papers. These are real mail items: `id` is the PokéAPI item name, and the
-// mark on each sheet is that item's own sprite, fetched into public/sprites/ by
-// scripts/fetch-sprites.mjs along with everything else the site serves. Same
-// footing as the type icons and the specimen artwork — recognisable official
-// assets in a non-commercial fan project, per the disclaimer in README.md.
+// Papers. These are real mail, and each one is two assets:
 //
-// Six of the thirty-six, each chosen because it maps to a room this collection
-// actually has. The rest are listed by PokéAPI under the `all-mail` item
-// category and cost one entry here plus one line in the fetcher to add; Flame
-// Mail, for the fire-adapted flora, is the obvious next one.
+//   public/mail/<id>.png      the 256x192 stationery canvas the games draw
+//                             behind a letter. Committed, because it comes
+//                             from the Bulbagarden archives rather than from
+//                             PokéAPI and is not something to make CI fetch.
+//   public/sprites/<id>.png   the 24x24 bag icon, from PokéAPI's sprite
+//                             repository like all the other artwork here,
+//                             fetched by scripts/fetch-sprites.mjs, which
+//                             reads its download list off this array.
 //
-// The colours are not eyeballed. Each sheet's tint and accent are derived from
-// the dominant colour of its own sprite — desaturated for the tint, darkened
-// for the accent until it clears 4.6:1 against the tint's darkest stop, which
-// is what the 13px paper name needs. See DEVLOG §57.
+// `id` is the PokéAPI item name and doubles as both filenames. Same footing as
+// the type icons and the specimen artwork: recognisable official assets in a
+// non-commercial fan project, per the disclaimer in README.md.
+//
+// Six of the twelve Generation IV designs. Generation IV specifically, because
+// its whole set is 256x192 while Generation III's is 240x160, and a chooser
+// full of sheets at two different aspect ratios looks like a bug. Each of the
+// six maps to a room this collection actually has.
+//
+// `panel` is where the artwork itself puts a writing area, read off the art and
+// given as fractions of the card. It matters twice over: the letter is
+// positioned there, and `veil` was measured against the pixels inside *that*
+// rect. Move one without the other and the contrast guarantee is void.
+//
+// `veil` is how opaque the writing panel has to be over that artwork for body
+// ink to clear AA. Four of the six carry text on the panel their own art draws,
+// needing between nothing and a third. Bloom and Bubble draw no writing area at
+// all, so the letter goes on an opaque mounted card instead — measurement said
+// a light wash would clear AA on both, but rendering it showed a translucent
+// rectangle reads as a sticker stuck on the art, where a solid card reads as a
+// label laid on it deliberately. That one is a judgement, and it was made by
+// looking; the numbers are in the per-paper comments below.
+//
+// `accent` is the canvas's own dominant frame colour, darkened until it clears
+// 4.6:1 against the label chip it sits on. See DEVLOG §58.
 //
 // `glyph` is the paper's mark in the plain-text letter, where a sprite cannot
 // go. All six are long-standing Unicode dingbats rather than emoji, because
@@ -59,55 +80,71 @@ export const MAIL_PAPERS = [
     id: "grass-mail",
     name: "Grass Mail",
     glyph: "❦",
-    blurb: "the mono-Grass room, and the biggest one",
-    tint: "linear-gradient(165deg, #f7fbf9 0%, #f0f7f4 55%, #e9f4f0 100%)",
-    accent: "#1e7b59",
-    rule: "rgba(30, 123, 89, 0.34)",
+    blurb: "the mono-Grass room, and the largest one",
+    accent: "#17824a",
+    // Where this artwork puts its own writing area, as fractions of the card.
+    panel: [0.16, 0.15, 0.84, 0.57],
+    // 0.04 is what the pixels under this rect require; the rest is headroom.
+    veil: 0.1,
+  },
+  {
+    id: "air-mail",
+    name: "Air Mail",
+    glyph: "✤",
+    blurb: "seeds that leave on the wind",
+    accent: "#29823d",
+    // Where this artwork puts its own writing area, as fractions of the card.
+    panel: [0.08, 0.08, 0.92, 0.66],
+    // Needs nothing: the artwork draws a white panel and the ink clears 6.9:1 on it.
+    veil: 0,
   },
   {
     id: "bloom-mail",
     name: "Bloom Mail",
     glyph: "✿",
     blurb: "anything in flower",
-    tint: "linear-gradient(165deg, #fbf6fa 0%, #f8eff6 55%, #f5e7f2 100%)",
-    accent: "#bd1f92",
-    rule: "rgba(189, 31, 146, 0.34)",
+    accent: "#d42575",
+    // Where this artwork puts its own writing area, as fractions of the card.
+    panel: [0.12, 0.14, 0.88, 0.64],
+    // No writing panel in this artwork, so the letter goes on a mounted card
+    // rather than a wash. 0.46 would have cleared AA; an opaque card reads as a
+    // deliberate label instead of a sticker.
+    veil: 0.88,
   },
   {
-    id: "tropic-mail",
-    name: "Tropic Mail",
-    glyph: "❧",
-    blurb: "the canopy and the orchard",
-    tint: "linear-gradient(165deg, #f8faf7 0%, #f2f7f0 55%, #edf3ea 100%)",
-    accent: "#3f7923",
-    rule: "rgba(63, 121, 35, 0.34)",
-  },
-  {
-    id: "wave-mail",
-    name: "Wave Mail",
+    id: "bubble-mail",
+    name: "Bubble Mail",
     glyph: "✽",
     blurb: "the wetland rooms",
-    tint: "linear-gradient(165deg, #f6fafb 0%, #eff6f8 55%, #e8f2f5 100%)",
-    accent: "#187493",
-    rule: "rgba(24, 116, 147, 0.34)",
+    accent: "#1f77b2",
+    // Where this artwork puts its own writing area, as fractions of the card.
+    panel: [0.12, 0.14, 0.88, 0.64],
+    // No writing panel in this artwork, so the letter goes on a mounted card
+    // rather than a wash. 0.2 would have cleared AA; an opaque card reads as a
+    // deliberate label instead of a sticker.
+    veil: 0.86,
   },
   {
     id: "snow-mail",
     name: "Snow Mail",
     glyph: "✻",
     blurb: "the treeline, and everything under snow",
-    tint: "linear-gradient(165deg, #f6f6fb 0%, #efeff8 55%, #e8e8f5 100%)",
-    accent: "#5454e3",
-    rule: "rgba(84, 84, 227, 0.34)",
+    accent: "#6464ce",
+    // Where this artwork puts its own writing area, as fractions of the card.
+    panel: [0.11, 0.15, 0.89, 0.6],
+    // 0 is what the pixels under this rect require; the rest is headroom.
+    veil: 0.06,
   },
   {
-    id: "wood-mail",
-    name: "Wood Mail",
-    glyph: "✤",
-    blurb: "lignin, timber and tree rings",
-    tint: "linear-gradient(165deg, #faf9f7 0%, #f6f5f1 55%, #f2f1ea 100%)",
-    accent: "#7d6b2c",
-    rule: "rgba(125, 107, 44, 0.34)",
+    id: "flame-mail",
+    name: "Flame Mail",
+    glyph: "❧",
+    blurb: "the flora that waits for fire",
+    accent: "#d73226",
+    // Where this artwork puts its own writing area, as fractions of the card.
+    panel: [0.14, 0.13, 0.86, 0.55],
+    // 0.28 is what the pixels under this rect require; the rest is headroom.
+    veil: 0.34,
   },
 ];
 

@@ -1064,12 +1064,14 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
    The mail desk.
 
    Everything here stands in the curator's room, so the rule from §5a applies
-   throughout: nothing is read against the painting. The sheet is an opaque
-   tinted card carrying its own shadow, the swatches sit inside a plate frame,
-   and every note around them is on a placard.
+   throughout: nothing is read against the painting. The sheets carry their own
+   shadow, the swatches sit inside a plate frame, and every note around them is
+   on a placard.
 
-   The three custom properties — --sheet-tint, --sheet-accent, --sheet-rule —
-   are set inline from the chosen paper, so one set of rules dresses six.
+   Two custom properties are set inline from the chosen paper: --sheet-canvas
+   (the artwork) and --sheet-accent (its colour, for the label). --sheet-veil
+   is the measured opacity the writing panel needs over that particular
+   artwork; see the sheet block below.
    ───────────────────────────────────────────────────────────────────────── */
 
 /* Genuinely hidden from sight and genuinely present for a screen reader. The
@@ -1107,18 +1109,17 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   gap: 12px;
 }
 
+/* A swatch shows the artwork itself, because the artwork is the thing being
+   chosen. The card underneath is the site's own paper, so the label reads on
+   a known ground rather than on whichever pixels the thumbnail ends with. */
 .mail-swatch {
   display: grid;
   grid-template-rows: auto auto 1fr;
-  gap: 2px;
-  padding: 12px 12px 14px;
+  gap: 4px;
+  padding: 8px 8px 10px;
   border-radius: 10px;
   cursor: pointer;
-  background: var(--sheet-tint);
-  color: var(--sheet-accent);
-  /* Two rings rather than a border: an unchosen sheet still has to read as a
-     distinct object on the frame beneath it, and a border painted inside the
-     tint at any subtle alpha does not manage that. */
+  background: var(--paper-light);
   box-shadow:
     0 0 0 1px rgba(46, 38, 28, 0.16),
     0 1px 3px rgba(38, 30, 20, 0.10);
@@ -1143,17 +1144,17 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   outline-offset: 3px;
 }
 
-.mail-swatch__motif { color: var(--sheet-accent); line-height: 0; }
-
-/* The item sprite. 24x24 pixel art drawn at 48, which is an exact doubling —
-   any non-integer scale reintroduces the blur that pixelated exists to prevent,
-   so the size is set in the markup rather than left for the layout to decide. */
-.mail-icon {
+/* The thumbnail is a downscale of 256x192 art, so it is NOT pixelated here —
+   nearest-neighbour on the way down drops every other row and turns fine
+   pixel detail into aliasing. Smoothing is the right answer shrinking; it is
+   the wrong answer enlarging, which is why the sheet does the opposite. */
+.mail-swatch__art {
   display: block;
-  image-rendering: pixelated;
-  /* Safari spells it differently and ignores the standard keyword. */
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: pixelated;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(46, 38, 28, 0.22);
 }
 
 .mail-swatch__name {
@@ -1161,7 +1162,7 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   font-weight: 600;
   font-size: 0.92rem;
   color: var(--ink);
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .mail-swatch__blurb {
@@ -1170,57 +1171,70 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   color: var(--ink-soft);
 }
 
-/* The sheet itself. */
+/* The item's own bag sprite, used as the mark on the sheet's label. 24px art
+   at 24px — no scaling at all, so nothing to smooth. */
+.mail-icon {
+  display: block;
+  image-rendering: pixelated;
+}
+
+/* The sheet itself, which is now the real stationery.
+
+   The artwork is a 256x192 mail canvas from the games, drawn at its own aspect
+   ratio and pixelated so it stays crisp. The writing does NOT sit directly on
+   it: measured against the six canvases, body ink clears AA unaided on exactly
+   one of them. So the letter is written on a mounted panel over the art, which
+   is the same rule the rest of the site follows over its painted rooms — never
+   dim the room, mount the text.
+
+   --sheet-veil is how opaque that panel has to be, measured per canvas at this
+   exact inset rather than chosen: 0 for Air Mail, which needs nothing, up to
+   0.5 for Bloom Mail. See MILESTONE §5d. */
 .mail-sheet {
   position: relative;
-  background: var(--sheet-tint);
-  border-radius: 4px 14px 4px 4px;
-  padding: 20px 22px 16px;
-  color: var(--ink);
+  border-radius: 6px;
   box-shadow:
-    0 0 0 1px rgba(46, 38, 28, 0.28),
+    0 0 0 1px rgba(46, 38, 28, 0.30),
     0 1px 2px rgba(38, 30, 20, 0.12),
     0 12px 24px -10px rgba(38, 30, 20, 0.30),
     0 34px 60px -26px rgba(26, 20, 12, 0.42);
+  margin: 0;
 }
 
-/* No fake torn corner. It was drawn and then removed: the trick needs the
-   page background painted over the sheet corner, and this sheet stands on a
-   painted room rather than on the page, so the triangle read as a stray
-   rectangle instead of as a tear. The asymmetric radius above is the whole of
-   the flourish now. */
+.mail-sheet__canvas {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 6px;
+  overflow: hidden;
+  background-image: var(--sheet-canvas);
+  /* Stretched to the box rather than contained: every canvas in the set is
+     256x192, so 100% 100% IS its own ratio and nothing is distorted. */
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
 
-.mail-sheet__head {
+/* The writing area, positioned over the panel the artwork itself draws. The
+   inset is uniform across the six because their panels are: 14% in from each
+   side, 16% down from the top, 28% up from the bottom. Change it and the veil
+   measurements in MAIL_PAPERS stop describing the pixels underneath. */
+.mail-sheet__panel {
+  position: absolute;
+  /* Set per paper from MAIL_PAPERS.panel — each artwork puts its writing
+     area somewhere slightly different, and the veil measurements describe
+     the pixels inside THIS rect. */
+  inset: var(--panel-top) var(--panel-right) var(--panel-bottom) var(--panel-left);
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-bottom: 10px;
-  margin-bottom: 12px;
-  border-bottom: 2px solid var(--sheet-rule);
-  color: var(--sheet-accent);
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  overflow: auto;
+  border-radius: 3px;
+  background: rgba(253, 251, 244, var(--sheet-veil));
 }
 
-.mail-sheet__title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-size: 0.82rem;
-}
-
-.mail-field { display: block; margin-bottom: 12px; }
-.mail-field--body { margin-bottom: 6px; }
-
-.mail-field__label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  margin-bottom: 3px;
-}
-
+/* No ruled lines of our own. Several of these canvases draw their own, and a
+   second set at a different pitch would fight them. */
 .mail-sheet__from,
 .mail-sheet__body {
   display: block;
@@ -1233,81 +1247,82 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
 }
 
 .mail-sheet__from {
-  font-size: 1.3rem;
-  line-height: 1.6;
-  border-bottom: 1px solid var(--sheet-rule);
+  font-size: 1.15rem;
+  line-height: 1.5;
+  flex: 0 0 auto;
+  border-bottom: 1px solid rgba(90, 74, 58, 0.22);
 }
 
-/* The ruled writing area. The rules are painted as a repeating gradient and
-   the text sits on them, which only works while the line height and the
-   gradient period are the same number — 30px, in both places below. Change one
-   and the writing lifts off the lines. */
 .mail-sheet__body {
-  font-size: 1.3rem;
-  line-height: 30px;
-  resize: vertical;
-  min-height: 150px;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 29px,
-    var(--sheet-rule) 29px,
-    var(--sheet-rule) 30px
-  );
+  font-size: 1.2rem;
+  line-height: 1.45;
+  flex: 1 1 auto;
+  resize: none;
+  min-height: 0;
 }
 
 .mail-sheet__from::placeholder,
 .mail-sheet__body::placeholder {
   color: var(--ink-soft);
-  opacity: 0.75;
+  opacity: 0.8;
 }
 
 .mail-sheet__from:focus-visible,
 .mail-sheet__body:focus-visible {
   outline: 2px solid var(--botanical-green-deep);
-  outline-offset: 3px;
+  outline-offset: 2px;
   border-radius: 3px;
 }
 
+/* The written letter in the sealed view: same panel, no inputs. */
+.mail-sheet__written {
+  font-family: var(--font-structural);
+  font-size: 1.2rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.mail-sheet__sign {
+  margin: 0;
+  padding-top: 4px;
+  border-top: 1px solid rgba(90, 74, 58, 0.22);
+  font-family: var(--font-structural);
+  font-size: 1.05rem;
+  text-align: right;
+  flex: 0 0 auto;
+}
+
+/* The label under the sheet, the way a painting is captioned rather than
+   written on. Mounted, because it stands over the curator's room. */
+.mail-sheet__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 6px 12px 6px 8px;
+  border-radius: 999px;
+  width: fit-content;
+  background: var(--paper-light);
+  color: var(--sheet-accent);
+  box-shadow: 0 0 0 1px rgba(46, 38, 28, 0.22), 0 2px 8px rgba(38, 30, 20, 0.14);
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
+
 .mail-sheet__count {
-  margin: 4px 0 0;
+  margin: 6px 0 0;
   text-align: right;
   font-size: 0.68rem;
   color: var(--ink-soft);
 }
 
 .mail-sheet__count.is-near { color: var(--specimen-red); }
-
-/* The sealed reading. Same paper, no inputs — what the letter looks like once
-   it is written rather than while it is being written. */
-.mail-sheet--sealed { padding-bottom: 20px; }
-.mail-sheet--sealed:focus-visible { outline: 2px solid var(--botanical-green-deep); outline-offset: 4px; }
-
-.mail-sheet__written {
-  font-family: var(--font-structural);
-  font-size: 1.3rem;
-  line-height: 30px;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  margin: 0 0 18px;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 29px,
-    var(--sheet-rule) 29px,
-    var(--sheet-rule) 30px
-  );
-}
-
-.mail-sheet__sign {
-  margin: 0;
-  padding-top: 10px;
-  border-top: 2px solid var(--sheet-rule);
-  font-family: var(--font-structural);
-  font-size: 1.15rem;
-  text-align: right;
-  color: var(--ink);
-}
 
 .mail-actions {
   display: flex;
@@ -1379,6 +1394,26 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   color: var(--ink);
   overflow-x: auto;
   white-space: pre;
+}
+
+/* On a phone the artwork's own writing panel is far too small to compose in:
+   at 375px Grass Mail's panel leaves a textarea 181x42, which is one and a
+   half lines. Measured, not guessed — and unusable.
+
+   So below 640px every paper abandons its drawn panel and takes a large
+   opaque card inside the frame instead. The art still frames the letter and
+   still says which mail this is; it just stops being written on. Opaque also
+   means the per-paper veil measurements are not in play here, which is why
+   this can safely ignore them. */
+@media (max-width: 640px) {
+  .mail-sheet__panel {
+    inset: 10% 8% 14%;
+    background: var(--paper-light);
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(38, 30, 20, 0.22);
+  }
+  .mail-sheet__body, .mail-sheet__written { font-size: 1.05rem; line-height: 1.4; }
+  .mail-sheet__from { font-size: 1rem; }
 }
 
 @media (max-width: 700px) {

@@ -127,9 +127,16 @@ export default function WriteToCurator() {
   }
 
   const paperStyle = {
-    "--sheet-tint": paper.tint,
+    "--sheet-canvas": `url(${import.meta.env.BASE_URL}mail/${paper.id}.png)`,
     "--sheet-accent": paper.accent,
-    "--sheet-rule": paper.rule,
+    // The measured opacity this particular artwork needs under body text. Not
+    // a style choice — see MAIL_PAPERS.
+    "--sheet-veil": paper.veil,
+    // The artwork's own writing area, as CSS insets.
+    "--panel-left": `${paper.panel[0] * 100}%`,
+    "--panel-top": `${paper.panel[1] * 100}%`,
+    "--panel-right": `${(1 - paper.panel[2]) * 100}%`,
+    "--panel-bottom": `${(1 - paper.panel[3]) * 100}%`,
   };
 
   return (
@@ -161,10 +168,7 @@ export default function WriteToCurator() {
                   <label
                     key={sheet.id}
                     className={`mail-swatch${checked ? " is-chosen" : ""}`}
-                    style={{
-                      "--sheet-tint": sheet.tint,
-                      "--sheet-accent": sheet.accent,
-                    }}
+                    style={{ "--sheet-accent": sheet.accent }}
                   >
                     <input
                       type="radio"
@@ -174,9 +178,13 @@ export default function WriteToCurator() {
                       onChange={() => setPaperId(sheet.id)}
                       className="sr-only"
                     />
-                    <span className="mail-swatch__motif" aria-hidden="true">
-                      <MailIcon id={sheet.id} />
-                    </span>
+                    <img
+                      className="mail-swatch__art"
+                      src={`${import.meta.env.BASE_URL}mail/${sheet.id}.png`}
+                      alt=""
+                      width={256}
+                      height={192}
+                    />
                     <span className="mail-swatch__name">{sheet.name}</span>
                     <span className="mail-swatch__blurb">{sheet.blurb}</span>
                   </label>
@@ -185,47 +193,42 @@ export default function WriteToCurator() {
             </div>
           </fieldset>
 
-          <div className="mail-sheet" style={paperStyle}>
-            <div className="mail-sheet__head">
-              <span className="mail-sheet__motif" aria-hidden="true">
-                <MailIcon id={paper.id} />
-              </span>
-              <span className="mail-sheet__title">{paper.name}</span>
+          <figure className="mail-sheet" style={paperStyle}>
+            <div className="mail-sheet__canvas">
+              <div className="mail-sheet__panel">
+                <input
+                  type="text"
+                  value={from}
+                  maxLength={NAME_MAX}
+                  onChange={(e) => setFrom(e.target.value)}
+                  placeholder="a name to sign it with"
+                  className="mail-sheet__from"
+                  aria-label="Your name"
+                />
+                <textarea
+                  value={message}
+                  maxLength={MESSAGE_MAX}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="mail-sheet__body"
+                  placeholder="Write here."
+                  aria-label="Your letter"
+                />
+              </div>
             </div>
+            <figcaption className="mail-sheet__label">
+              <MailIcon id={paper.id} size={24} />
+              {paper.name}
+            </figcaption>
+          </figure>
 
-            <label className="mail-field">
-              <span className="mail-field__label">From</span>
-              <input
-                type="text"
-                value={from}
-                maxLength={NAME_MAX}
-                onChange={(e) => setFrom(e.target.value)}
-                placeholder="a name to sign it with"
-                className="mail-sheet__from"
-              />
-            </label>
-
-            <label className="mail-field mail-field--body">
-              <span className="mail-field__label">Your letter</span>
-              <textarea
-                value={message}
-                maxLength={MESSAGE_MAX}
-                onChange={(e) => setMessage(e.target.value)}
-                rows={8}
-                className="mail-sheet__body"
-                placeholder="Write here."
-              />
-            </label>
-
-            <p
-              className={`mail-sheet__count mono${
-                message.length > MESSAGE_MAX - 60 ? " is-near" : ""
-              }`}
-              aria-live="polite"
-            >
-              {message.length} of {MESSAGE_MAX} characters
-            </p>
-          </div>
+          <p
+            className={`mail-sheet__count mono${
+              message.length > MESSAGE_MAX - 60 ? " is-near" : ""
+            }`}
+            aria-live="polite"
+          >
+            {message.length} of {MESSAGE_MAX} characters
+          </p>
 
           <div className="mail-actions">
             <button
@@ -253,24 +256,26 @@ export default function WriteToCurator() {
 
       {sealed && (
         <>
-          <div
+          <figure
             className="mail-sheet mail-sheet--sealed"
             style={paperStyle}
             ref={sealedRef}
             tabIndex={-1}
             aria-label={`Your ${paper.name}, sealed and ready to send`}
           >
-            <div className="mail-sheet__head">
-              <span className="mail-sheet__motif" aria-hidden="true">
-                <MailIcon id={paper.id} />
-              </span>
-              <span className="mail-sheet__title">{paper.name}</span>
+            <div className="mail-sheet__canvas">
+              <div className="mail-sheet__panel">
+                <p className="mail-sheet__written">{message.trim()}</p>
+                <p className="mail-sheet__sign">
+                  from — {from.trim() || "a visitor who left no name"}
+                </p>
+              </div>
             </div>
-            <p className="mail-sheet__written">{message.trim()}</p>
-            <p className="mail-sheet__sign">
-              from — {from.trim() || "a visitor who left no name"}
-            </p>
-          </div>
+            <figcaption className="mail-sheet__label">
+              <MailIcon id={paper.id} size={24} />
+              {paper.name}
+            </figcaption>
+          </figure>
 
           <div className="mail-actions">
             {href ? (

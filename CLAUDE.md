@@ -155,18 +155,26 @@ is the point. Add a room there when you paint one, then point a
 plain text for the curator to receive. Papers and letter-building live in
 `src/data/curatorMail.js`.
 
-The papers are **real mail items**: the `id` is the PokéAPI item name *and* the
-sprite filename, and `fetch-sprites.mjs` imports `MAIL_PAPERS` to build its
-download list, so adding a paper is one entry in that array and nothing else.
-PokéAPI lists 36 under the `all-mail` item category. Three things to hold to:
+The papers are **the real stationery**. Each is two assets keyed on the PokéAPI
+item name: `public/mail/<id>.png` (the 256×192 canvas, committed, from the
+Bulbagarden archives) and `public/sprites/<id>.png` (the 24×24 bag icon, fetched
+by `fetch-sprites.mjs`, which reads its list off `MAIL_PAPERS`).
 
-- **Derive the colours from the sprite, don't pick them.** Tint is the sprite's
-  dominant colour desaturated; the accent is that colour darkened until it
-  clears 4.6:1 against the tint's darkest gradient stop, which is what the 13px
-  paper name needs. Two hand-picked accents failed AA on the first pass.
-- **Keep the icon at an integer scale.** 24px art at 48px with
-  `image-rendering: pixelated`. Anything else smooths it back into mush.
-- **A dingbat, not an emoji**, for the `glyph` — it has to survive a mail client.
+Adding a paper is one entry in that array — but three of its fields are
+measurements, not preferences, and getting them by eye will ship unreadable mail:
+
+- **`panel`** is the rect that artwork reserves for writing, as fractions of the
+  card. Read it off the art.
+- **`veil`** is the opacity that panel needs for body ink to clear AA, measured
+  against the pixels *inside that rect*. Move `panel` and `veil` stops being
+  true. Only three of the twelve Gen IV designs carry text unaided; four cannot
+  carry it at any opacity.
+- **`accent`** must clear 4.6:1 against `--paper-light`, the label chip it sits on.
+
+Stay in **Generation IV** unless you are redoing all six: Gen III mail is
+240×160 against Gen IV's 256×192, and mixed aspect ratios look broken. And
+**render it before believing it** — the veil that measured fine on Bloom Mail
+looked like a sticker, which is why that one uses an opaque card instead.
 
 Nothing is sent from the page and nothing is collected. See MILESTONE §5d for
 why the clipboard is offered with equal weight to the mail link, which is a

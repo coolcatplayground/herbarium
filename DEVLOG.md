@@ -2061,6 +2061,54 @@ three of which stopped being true in §55 and earlier.
 
 ---
 
+### 58. The mail desk gets the actual canvases
+
+§57 used the real mail names and the real bag icons but kept a CSS sheet. The
+curator sent the Grass Mail canvas and said, reasonably, that they expected it
+to be the background — so the stationery is now the artwork.
+
+**Where it came from.** PokéAPI has the 24×24 bag icons and nothing else; the
+full canvas exists in the Bulbagarden archives, resolved through the MediaWiki
+API rather than by guessing upload paths. Twelve Generation IV designs at
+256×192, and Generation III's twelve at 240×160 — the Gen IV set only, because
+a chooser holding two aspect ratios reads as a bug. That drops Tropic, Wave and
+Wood from §57 and brings in Air, Bubble and Flame, each still mapping to a room.
+
+**The finding that shaped the whole thing.** Body ink over these canvases was
+measured at the 2nd percentile of the writing region, and it clears AA on three
+of the twelve. `steel`, `space`, `brick` and `heart` fail with any ink, light
+or dark. Writing straight onto the art was never an option.
+
+So the letter goes on a mounted panel over the canvas, which is the site's own
+rule rather than an exception to it. Each paper carries the rect its artwork
+reserves for writing, plus the veil opacity measured against the pixels inside
+*that* rect — the two are a pair, and moving one invalidates the other.
+
+**Two places where looking beat measuring.** Both were caught by rendering the
+composite in System.Drawing, because the preview pane in this environment will
+not composite frames and cannot be screenshotted:
+
+- A single uniform inset put Grass Mail's writing off its drawn panel and onto
+  the leafy border. Legible by the numbers, a mess to look at. Fixed by giving
+  every paper its own rect
+- Bloom and Bubble draw no writing area at all. A light wash cleared AA on both
+  and rendered as a translucent sticker stuck to the art. They now use an opaque
+  card, which reads as a label laid on the stationery. That is a judgement, and
+  it overrules the measurement rather than dressing it up
+
+**The phone case, which the numbers found and the eye would not have.** At 375px
+Grass Mail's drawn panel leaves a textarea of 181×42 — one and a half lines,
+unusable. Below 640px every paper abandons its drawn panel for a large opaque
+card inside the frame: 228×121, five lines. The art still frames the letter and
+still says which mail it is; it stops being written on. Opaque also takes the
+per-paper veils out of play, which is what makes ignoring them safe.
+
+Also here: `README` now states artwork provenance, because it is no longer all
+from one place — sprites and icons from PokéAPI at build time, canvases from
+Bulbagarden committed into `public/mail/`.
+
+---
+
 ## Planned
 
 ### Habitat pages — an exhibition wing
