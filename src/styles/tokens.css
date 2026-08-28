@@ -1206,6 +1206,12 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   aspect-ratio: 4 / 3;
   border-radius: 6px;
   overflow: hidden;
+  /* A ground under the artwork, not decoration. Without it this element has
+     no background COLOUR at all — only the image — so if the canvas ever fails
+     to load, the sheet becomes a hole and the curator's room shows straight
+     through the mail. The art is opaque and covers the box, so this is never
+     seen when things are working. */
+  background-color: var(--paper-light);
   background-image: var(--sheet-canvas);
   /* Stretched to the box rather than contained: every canvas in the set is
      256x192, so 100% 100% IS its own ratio and nothing is distorted. */
