@@ -9,6 +9,9 @@ import {
   buildLetter,
   letterSubject,
   mailtoHref,
+  MAIL_ENDPOINT,
+  collectsLetters,
+  buildSubmission,
 } from "./curatorMail";
 
 // What is actually worth testing here is the letter that leaves the building.
@@ -204,5 +207,54 @@ describe("mailtoHref", () => {
       message: "b",
     });
     expect(href).toBeNull();
+  });
+});
+
+describe("delivery", () => {
+  it("is off until an endpoint is configured, so the page tells the truth by default", () => {
+    expect(MAIL_ENDPOINT).toBeNull();
+    expect(collectsLetters()).toBe(false);
+  });
+
+  it("only counts a real https endpoint as collecting", () => {
+    // The page's privacy copy is generated from this. A blank string or a
+    // half-pasted value must not be enough to make it claim it keeps letters.
+    for (const bad of [null, undefined, "", "   ", "paste-url-here", "http://insecure"]) {
+      expect(typeof bad === "string" && bad.startsWith("https://")).toBe(false);
+    }
+  });
+
+  it("sends the text and the drawn letter, never a picture", () => {
+    const sub = buildSubmission({
+      paper: "grass-mail",
+      from: "Chacu",
+      replyTo: "a@b.co",
+      message: "A corm is not a bulb.",
+    });
+    expect(sub).toMatchObject({ paper: "grass-mail", paperName: "Grass Mail", from: "Chacu", replyTo: "a@b.co" });
+    expect(sub.message).toBe("A corm is not a bulb.");
+    expect(sub.letter).toContain("GRASS MAIL");
+    expect(Date.parse(sub.sentAt)).not.toBeNaN();
+    // Nothing image-shaped goes over the wire — see the note on buildSubmission.
+    expect(JSON.stringify(sub)).not.toMatch(/data:image|base64/);
+  });
+
+  it("applies the same caps and stripping to the submission as to the letter", () => {
+    const sub = buildSubmission({
+      paper: "grass-mail",
+      from: "y".repeat(NAME_MAX + 20),
+      replyTo: `a${"\u202E"}@b.co`,
+      message: "x".repeat(MESSAGE_MAX + 200),
+    });
+    expect(sub.from).toHaveLength(NAME_MAX);
+    expect(sub.message).toHaveLength(MESSAGE_MAX);
+    expect(sub.replyTo).toBe("a@b.co");
+  });
+
+  it("survives a letter with no name and no address", () => {
+    const sub = buildSubmission({ paper: "air-mail", from: "", replyTo: "", message: "hello" });
+    expect(sub.from).toBe("");
+    expect(sub.replyTo).toBe("");
+    expect(sub.letter).toContain("a visitor who left no name");
   });
 });

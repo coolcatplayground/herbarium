@@ -176,9 +176,29 @@ Stay in **Generation IV** unless you are redoing all six: Gen III mail is
 **render it before believing it** — the veil that measured fine on Bloom Mail
 looked like a sticker, which is why that one uses an opaque card instead.
 
-Nothing is sent from the page and nothing is collected. See MILESTONE §5d for
-why the clipboard is offered with equal weight to the mail link, which is a
-measurement about Thai text rather than a hedge.
+### Turning the desk on
+
+The desk posts letters to a Google Sheet **only when `MAIL_ENDPOINT` in
+`src/data/curatorMail.js` holds an Apps Script /exec URL.** Until then it sends
+nothing and stores nothing.
+
+1. New Google Sheet → Extensions → Apps Script.
+2. Paste `scripts/apps-script/mail-desk.gs` over Code.gs, save.
+3. Deploy → New deployment → Web app, *execute as me*, *access: anyone*.
+4. Paste the /exec URL into `MAIL_ENDPOINT`.
+
+**The privacy copy on the page is generated from `collectsLetters()`, not
+written by hand.** With no endpoint the page says nothing is kept; with one it
+says letters are delivered and an address is optional. Never hard-code either
+sentence — the whole point is that the promise cannot outlive the behaviour.
+
+Re-deploy the Apps Script as a **new version** after editing it, or the old code
+keeps serving. And the endpoint is public by necessity: a honeypot field and a
+daily cap are what stand between it and a spreadsheet with a million rows in it.
+Apps Script cannot see caller IPs, so there is no per-sender limiting.
+
+Storing letters makes the privacy note in MILESTONE §9 a requirement rather than
+a tidy-up.
 
 ## Rules that are easy to break
 

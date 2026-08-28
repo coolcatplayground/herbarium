@@ -4,6 +4,9 @@ import useDocumentTitle from "../hooks/useDocumentTitle";
 import RoomBackdrop from "../components/RoomBackdrop";
 import {
   CURATOR_ADDRESS,
+  MAIL_ENDPOINT,
+  buildSubmission,
+  collectsLetters,
   DEFAULT_PAPER,
   MAIL_PAPERS,
   MESSAGE_MAX,
@@ -89,14 +92,24 @@ export default function WriteToCurator() {
   // because at that moment it stops being a curiosity and becomes the only way
   // the letter gets out.
   const [showPlain, setShowPlain] = useState(false);
+  // Optional, and only ever used to reply. Asked for because a correction you
+  // cannot answer is half a conversation — but never required, because plenty
+  // of people will rightly not want to hand over an address to say that a
+  // placard has a date wrong.
+  const [replyTo, setReplyTo] = useState(draft?.replyTo ?? "");
+  // The honeypot. Never shown, never focusable, never announced. A person
+  // cannot fill it in; a bot filling every field it finds will.
+  const [trap, setTrap] = useState("");
+  // idle · sending · delivered · failed
+  const [delivery, setDelivery] = useState("idle");
 
   const sealedRef = useRef(null);
   const paper = getPaper(paperId);
   const written = message.trim().length > 0;
 
   useEffect(() => {
-    saveDraft({ paper: paperId, from, message });
-  }, [paperId, from, message]);
+    saveDraft({ paper: paperId, from, replyTo, message });
+  }, [paperId, from, replyTo, message]);
 
   // Moving focus to the sealed letter rather than leaving it at the button that
   // is no longer on screen. Without this a screen reader is told nothing
@@ -126,6 +139,34 @@ export default function WriteToCurator() {
     }
   }
 
+  // Posting the letter to the curator's desk, when there is a desk to post to.
+  //
+  // The response is read rather than fired blind: Apps Script's /exec redirects
+  // to a googleusercontent URL that does send CORS headers, so a normal fetch
+  // usually can read the reply — but "usually" is not "always", and a letter
+  // that vanished must never be reported as delivered. So a throw is treated as
+  // an unknown outcome, not a success, and the page says exactly that and keeps
+  // the other two routes open.
+  async function send() {
+    setDelivery("sending");
+    try {
+      const res = await fetch(MAIL_ENDPOINT, {
+        method: "POST",
+        // text/plain keeps this a "simple" request, so the browser sends it
+        // without a preflight — which Apps Script does not answer.
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          ...buildSubmission({ paper: paperId, from, replyTo, message }),
+          hp: trap,
+        }),
+      });
+      const body = await res.json();
+      setDelivery(body && body.ok ? "delivered" : "failed");
+    } catch {
+      setDelivery("failed");
+    }
+  }
+
   const paperStyle = {
     "--sheet-accent": paper.accent,
     // The measured opacity this particular artwork needs under body text. Not
@@ -146,13 +187,18 @@ export default function WriteToCurator() {
         <p className="eyebrow">Correspondence</p>
         <h2 style={{ fontSize: "var(--step3)", margin: "0 0 10px" }}>Write to the Curator</h2>
         <p>
-          Corrections are welcome and so is argument. Choose a sheet, write on it, and the
-          desk will make you a letter — you can read exactly what arrives before anything
-          leaves.
+          Corrections are welcome and so is argument. Choose a sheet, write on it, and seal
+          it when you are ready — the desk shows you the finished letter before it goes
+          anywhere.
         </p>
+        {/* This paragraph is generated from collectsLetters() rather than
+            written twice, so the promise cannot outlive the behaviour. Wire an
+            endpoint and it stops claiming nothing is kept; take the endpoint
+            away and it stops claiming anything is. */}
         <p className="mono" style={{ fontSize: "0.78rem", color: "var(--ink-soft)", margin: 0 }}>
-          Nothing is sent from this page and nothing is collected here. The letter goes to
-          your own mail app, or to your clipboard, and travels from there.
+          {collectsLetters()
+            ? "Sealed letters are delivered to the curator's desk and kept until they are read. An address is optional, used only to reply, and never shown to anyone else."
+            : "Nothing is sent from this page and nothing is kept here. The letter goes to your own mail app, or to your clipboard, and travels from there."}
         </p>
       </div>
 
@@ -219,6 +265,19 @@ export default function WriteToCurator() {
                   placeholder="Write here."
                   aria-label="Your letter"
                 />
+                {/* Off-screen rather than display:none — some bots skip
+                    anything hidden, and this one is meant to be found and
+                    filled. tabIndex -1 and aria-hidden keep it away from
+                    anyone using a keyboard or a screen reader. */}
+                <input
+                  className="sr-only"
+                  type="text"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  autoComplete="off"
+                  value={trap}
+                  onChange={(e) => setTrap(e.target.value)}
+                />
               </div>
             </div>
             <figcaption className="mail-sheet__label">
@@ -227,14 +286,32 @@ export default function WriteToCurator() {
             </figcaption>
           </figure>
 
-          <p
-            className={`mail-sheet__count mono${
-              message.length > MESSAGE_MAX - 60 ? " is-near" : ""
-            }`}
-            aria-live="polite"
-          >
-            {message.length} of {MESSAGE_MAX} characters
-          </p>
+          <div className="mail-meta">
+            <p
+              className={`mail-sheet__count mono${
+                message.length > MESSAGE_MAX - 60 ? " is-near" : ""
+              }`}
+              aria-live="polite"
+            >
+              {message.length} of {MESSAGE_MAX} characters
+            </p>
+            {collectsLetters() && (
+              <label className="mail-reply">
+                <span className="mail-reply__label mono">
+                  Your address — optional, only used to reply
+                </span>
+                <input
+                  type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  maxLength={254}
+                  value={replyTo}
+                  onChange={(e) => setReplyTo(e.target.value)}
+                  placeholder="leave blank if you would rather not"
+                />
+              </label>
+            )}
+          </div>
 
           <div className="mail-actions">
             <button
@@ -291,8 +368,25 @@ export default function WriteToCurator() {
           </figure>
 
           <div className="mail-actions">
+            {collectsLetters() && (
+              <button
+                type="button"
+                className="mail-button mail-button--primary"
+                onClick={send}
+                disabled={delivery === "sending" || delivery === "delivered"}
+              >
+                {delivery === "sending"
+                  ? "Sending…"
+                  : delivery === "delivered"
+                    ? "Delivered"
+                    : "Send it to the curator"}
+              </button>
+            )}
             {href ? (
-              <a className="mail-button mail-button--primary" href={href}>
+              <a
+                className={`mail-button${collectsLetters() ? "" : " mail-button--primary"}`}
+                href={href}
+              >
                 Open it in your mail app
               </a>
             ) : (
@@ -316,6 +410,17 @@ export default function WriteToCurator() {
           </div>
 
           <div className="placard placard--quiet mail-hint" aria-live="polite">
+            {delivery === "delivered" && (
+              <p style={{ margin: "0 0 8px" }}>
+                Delivered to the desk. It will be read — and if you left an address, answered.
+              </p>
+            )}
+            {delivery === "failed" && (
+              <p style={{ margin: "0 0 8px" }}>
+                The desk did not confirm it, so treat this letter as unsent rather than
+                lost — the two routes below both still work.
+              </p>
+            )}
             {copied === "letter" && (
               <p style={{ margin: "0 0 8px" }}>
                 Copied. Paste it into a mail to{" "}

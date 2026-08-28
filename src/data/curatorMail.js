@@ -270,3 +270,45 @@ export function mailtoHref({ address = CURATOR_ADDRESS, paper, from, message }) 
     `&body=${encodeURIComponent(buildLetter({ paper, from, message }))}`;
   return href.length > MAILTO_MAX ? null : href;
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Delivery.
+//
+// Until this holds a URL, the desk has no way to send anything and says so: the
+// letter leaves by the visitor's own mail client or their clipboard, and nothing
+// is stored anywhere. Paste an Apps Script /exec URL here and the desk gains a
+// third route — posting the letter to the curator's sheet — and the page's copy
+// changes to say that, because a page that collects letters must not go on
+// telling people it collects nothing.
+//
+// That coupling is deliberate. `collectsLetters()` is what the copy reads, so
+// the promise on the page and the behaviour behind it cannot drift apart.
+//
+// Deploy instructions and the script itself: scripts/apps-script/mail-desk.gs
+export const MAIL_ENDPOINT = null;
+
+export function collectsLetters() {
+  return typeof MAIL_ENDPOINT === "string" && MAIL_ENDPOINT.startsWith("https://");
+}
+
+// What actually goes over the wire: the text, not a picture of it.
+//
+// A rendered PNG was the other candidate and is the wrong thing to send. An
+// uploaded image is arbitrary bytes, so the desk would accept and store whatever
+// anyone chose to post; and an image cannot be searched for a specimen name or
+// have a DOI copied out of it, which is most of what this inbox is for. The
+// picture is a rendering of this payload, made by our own code, whenever anyone
+// looks at it.
+export function buildSubmission({ paper, from, replyTo, message }) {
+  const sheet = getPaper(paper);
+  return {
+    paper: sheet.id,
+    paperName: sheet.name,
+    from: clean(from, NAME_MAX),
+    // Bounded like everything else. An address longer than this is not one.
+    replyTo: clean(replyTo, 254),
+    message: clean(message, MESSAGE_MAX),
+    letter: buildLetter({ paper, from, message }),
+    sentAt: new Date().toISOString(),
+  };
+}
