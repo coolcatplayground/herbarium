@@ -1362,32 +1362,62 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   font-size: 0.78rem;
 }
 
+/* The character count, mounted on the stationery rather than hanging under it.
+
+   It used to sit below the sheet with no ground behind it, so over a painted
+   room it was unreadable — the same failure as the fieldset legend, and found
+   the same way. On the artwork it needs its own opaque chip, because it has to
+   stay legible over six different canvases without knowing which one it is on.
+
+   Bottom right, inside the frame: far enough in that no canvas's border art
+   runs under it, and out of the writing panel so it never covers a word. */
 .mail-sheet__count {
-  margin: 6px 0 0;
-  text-align: right;
+  position: absolute;
+  right: 3.5%;
+  bottom: 4%;
+  z-index: 2;
+  margin: 0;
+  padding: 3px 9px;
+  border-radius: 999px;
   font-size: 0.68rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
   color: var(--ink-soft);
+  background: var(--paper-light);
+  box-shadow:
+    0 0 0 1px rgba(46, 38, 28, 0.22),
+    0 2px 6px rgba(38, 30, 20, 0.18);
+  pointer-events: none;
 }
 
-.mail-sheet__count.is-near { color: var(--specimen-red); }
+/* Near the limit it stops being a readout and starts being a warning, so it
+   takes the accent and the ring goes with it. */
+.mail-sheet__count.is-near {
+  /* Not --specimen-red. That token measures 4.09:1 on this chip, which clears
+     the 3:1 it needs as a 22px eyebrow and fails the 4.5:1 this needs at 11px
+     bold. Same hue, pulled down until it passes: 4.90:1. */
+  color: #ab5170;
+  box-shadow:
+    0 0 0 1px #ab5170,
+    0 2px 6px rgba(38, 30, 20, 0.18);
+}
 
 /* The postal machinery under the sheet: the character count, and the reply
    address when the desk is collecting letters. Deliberately NOT on the
    stationery — an address is not part of the letter, and putting it on the
    paper would read as though the curator had published it. */
+/* Holds only the reply address now that the count moved onto the sheet, and
+   collapses to nothing when the desk is not collecting letters. */
 .mail-meta {
   display: flex;
   flex-wrap: wrap;
-  align-items: end;
-  justify-content: space-between;
   gap: 10px 18px;
-  margin-top: 6px;
+  margin-top: 12px;
 }
 
-.mail-meta .mail-sheet__count { margin: 0; order: 2; }
+.mail-meta:empty { display: none; }
 
 .mail-reply {
-  order: 1;
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -1508,6 +1538,9 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
     box-shadow: 0 1px 3px rgba(38, 30, 20, 0.22);
   }
   .mail-sheet__body, .mail-sheet__written { font-size: 1.05rem; line-height: 1.4; }
+  /* The card is a third the size here, so a chip inset by percentage rides up
+     into the writing panel. Fixed pixels tuck it into the margin below. */
+  .mail-sheet__count { right: 10px; bottom: 6px; }
   .mail-sheet__from { font-size: 1rem; }
 }
 

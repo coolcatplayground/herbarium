@@ -285,6 +285,19 @@ export default function WriteToCurator() {
                   onChange={(e) => setTrap(e.target.value)}
                 />
               </div>
+              {/* Sits on the stationery, bottom right, on its own mounted chip.
+                  It used to hang under the sheet with nothing behind it, which
+                  over a painted room made it unreadable — the same mistake as
+                  the fieldset legend. Anything laid on the artwork needs a
+                  ground of its own. */}
+              <p
+                className={`mail-sheet__count mono${
+                  message.length > MESSAGE_MAX - 60 ? " is-near" : ""
+                }`}
+                aria-live="polite"
+              >
+                {message.length} of {MESSAGE_MAX}
+              </p>
             </div>
             <figcaption className="mail-sheet__label">
               <MailIcon id={paper.id} size={24} />
@@ -293,14 +306,6 @@ export default function WriteToCurator() {
           </figure>
 
           <div className="mail-meta">
-            <p
-              className={`mail-sheet__count mono${
-                message.length > MESSAGE_MAX - 60 ? " is-near" : ""
-              }`}
-              aria-live="polite"
-            >
-              {message.length} of {MESSAGE_MAX} characters
-            </p>
             {collectsLetters() && (
               <label className="mail-reply">
                 <span className="mail-reply__label mono">
@@ -329,7 +334,7 @@ export default function WriteToCurator() {
                 setSealed(true);
               }}
             >
-              Seal it and look
+              Seal it and check
             </button>
             <Link to="/about" className="mail-button">
               Back to the Curator&rsquo;s Note
