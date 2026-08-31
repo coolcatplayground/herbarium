@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { fetchGrassRoster, fetchRosterTypes, spriteUrl, onSpriteError } from "../api/pokeapi";
+import { fetchGrassRoster, fetchRosterTypes, onSpriteError, thumbUrl } from "../api/pokeapi";
 import { getHabitat, getHabitatBySlug } from "../data/habitatMap";
 import { loadHabitatOverrides } from "../data/habitatOverridesLoader";
 import { loadFieldNotes } from "../data/fieldNotesLoader";
@@ -154,7 +154,7 @@ export default function HabitatExhibition() {
               style={{ padding: "18px 20px" }}
             >
               <Link to={`/specimen/${r.name}`} style={{ textDecoration: "none" }}>
-                <SpecimenCase sprite={spriteUrl(r.id)} name={r.name} lazy onSpriteError={onSpriteError} />
+                <SpecimenCase sprite={thumbUrl(r.id)} name={r.name} lazy onSpriteError={onSpriteError} />
               </Link>
 
               <div>

@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import GeneExpressionConsole from "../components/GeneExpressionConsole";
 import PollinatorResistanceRoster from "../components/PollinatorResistanceRoster";
 import SucculenceConsole from "../components/SucculenceConsole";
-import { fetchPokemon, spriteUrl, onSpriteError } from "../api/pokeapi";
+import { fetchPokemon, onSpriteError, thumbUrl } from "../api/pokeapi";
 import { loadManuscripts } from "../data/manuscriptsLoader";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import RoomBackdrop from "../components/RoomBackdrop";
@@ -186,7 +186,7 @@ export default function GraftingBench() {
               }}
             >
               {specimenIds[t.specimenName] && (
-                <img src={spriteUrl(specimenIds[t.specimenName])} alt={t.specimenName} width={22} height={22} onError={onSpriteError} />
+                <img src={thumbUrl(specimenIds[t.specimenName])} alt={t.specimenName} width={22} height={22} onError={onSpriteError} />
               )}
               <span className="mono" style={{ fontSize: "0.65rem", color: "var(--specimen-red)" }}>
                 Case {t.caseNumber}

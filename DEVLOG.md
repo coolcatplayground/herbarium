@@ -2143,6 +2143,59 @@ obvious. Keeping it.
 
 ---
 
+### 60. Thumbnails, and a card for the link
+
+Two things found by looking at what the site actually costs a visitor rather
+than at what it looks like.
+
+**Every list view was downloading the full artwork.** The official renders are
+475×475 and average 127 KB. The gallery paints them at about 162 CSS pixels, the
+determination key at 64–80, the case-file consoles at 48, and the Grafting Bench
+at 22 — a twenty-two pixel image pulling a 127 KB file. Lazy loading, which was
+already done carefully including the 0×0 trap, meant you only paid for what
+scrolled past; scrolling the whole gallery was still about 18.7 MB.
+
+`npm run sprites` now resizes what it downloads into `public/sprites/thumb/` as
+320px WebP, and every list view asks for those. Measured on the built site:
+**18.7 MB → 2.4 MB across 151 specimens, 127 KB → 16 KB per card, 87% lighter.**
+320px covers the largest consumer on a 2× screen; WebP is half the size of PNG
+at the same dimensions.
+
+- `sharp` is a new devDependency, and it is the reason the win is 87% rather
+  than about 50%. System.Drawing, which the other encoders use, is Windows-only
+  and CI runs ubuntu, and it cannot write WebP either
+- Output is gitignored with the rest of the sprites, so nothing new is committed
+  and CI regenerates it
+- Shiny gets no thumbnail: it is used only by the toggle on the specimen sheet,
+  which shows the full artwork anyway
+
+**The fallback gained a rung, and I nearly shipped it broken.** A missing
+thumbnail should step down to the full local artwork before going upstream. The
+script that was supposed to add that step to `onSpriteError` silently did not
+match, and reported success from a hardcoded log line rather than a check — so
+for a while `thumbUrl` was live with a fallback that recognised neither the
+`.webp` path nor anything else, leaving a broken image on any fresh clone.
+
+Caught by writing `src/api/sprites.test.js` first and watching two of its eight
+assertions fail. The chain — thumbnail → local artwork → upstream → the card's
+own no-sprite layout — is now pinned by a test that specifically checks the two
+guards do not consume each other's turn, which was the failure mode a single
+shared flag would have produced.
+
+**The link had no card.** There were no `og:` or `twitter:` tags at all, so
+pasting the URL anywhere produced a bare link — for a piece whose README calls it
+a portfolio piece, that is most of the first impression. `public/og-card.jpg` is
+the exhibition hall cropped top-anchored to 1200×630 so the painted
+CC-HERBARIUM signage survives, 224 KB, committed rather than generated at build
+so a crawler can never arrive between a deploy and a generation step. Nothing is
+overlaid on it: the artwork carries the name already, and an overlay would need
+a font installed on whichever machine ran the script.
+
+Also here: `.gitattributes`. Everything was already stored as LF in the index,
+so adding it churned nothing — it only settles what future checkouts do.
+
+---
+
 ## Planned
 
 ### Habitat pages — an exhibition wing

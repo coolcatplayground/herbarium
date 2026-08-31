@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchGrassRoster, fetchKeyData, spriteUrl, onSpriteError } from "../api/pokeapi";
+import { fetchGrassRoster, fetchKeyData, onSpriteError, thumbUrl } from "../api/pokeapi";
 import { getHabitat } from "../data/habitatMap";
 import { loadHabitatOverrides } from "../data/habitatOverridesLoader";
 import useDocumentTitle from "../hooks/useDocumentTitle";
@@ -285,7 +285,7 @@ export default function DeterminationKey() {
                   maxWidth: "440px",
                 }}
               >
-                <img src={spriteUrl(finalPool[0].id)} alt={finalPool[0].name} width={80} height={80} style={{ objectFit: "contain" }} onError={onSpriteError} />
+                <img src={thumbUrl(finalPool[0].id)} alt={finalPool[0].name} width={80} height={80} style={{ objectFit: "contain" }} onError={onSpriteError} />
                 <div>
                   <p className="eyebrow" style={{ marginBottom: "2px", color: "var(--specimen-red)" }}>Determined</p>
                   <p style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0, color: "var(--ink)", textTransform: "capitalize" }}>
@@ -313,7 +313,7 @@ export default function DeterminationKey() {
                       to={`/specimen/${s.name}`}
                       style={{ textDecoration: "none", textAlign: "center", color: "var(--ink)" }}
                     >
-                      <img src={spriteUrl(s.id)} alt={s.name} width={64} height={64} style={{ objectFit: "contain" }} onError={onSpriteError} />
+                      <img src={thumbUrl(s.id)} alt={s.name} width={64} height={64} style={{ objectFit: "contain" }} onError={onSpriteError} />
                       <p className="mono" style={{ fontSize: "0.68rem", margin: "4px 0 0", textTransform: "capitalize" }}>
                         {s.name.replace(/-/g, " ")}
                       </p>

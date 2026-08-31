@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { spriteUrl, onSpriteError } from "../api/pokeapi";
+import { onSpriteError, thumbUrl } from "../api/pokeapi";
 
 // Cacnea's case is about a drought, and a drought is something that happens
 // TO a plant over time — it isn't a set of dials the plant gets to tune. So
@@ -648,7 +648,7 @@ function AnalogueCard({ name, pokemonName, family, blurb, spriteIds }) {
     >
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "2px" }}>
         {id ? (
-          <img src={spriteUrl(id)} alt={name} width={48} height={48} style={{ objectFit: "contain" }} onError={onSpriteError} />
+          <img src={thumbUrl(id)} alt={name} width={48} height={48} style={{ objectFit: "contain" }} onError={onSpriteError} />
         ) : (
           <div style={{ width: 48, height: 48 }} />
         )}

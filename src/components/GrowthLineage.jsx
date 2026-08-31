@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { spriteUrl, onSpriteError } from "../api/pokeapi";
+import { onSpriteError, thumbUrl } from "../api/pokeapi";
 
 // The specimen's line of descent, rendered as a vertical stem so it fits the
 // narrow left column of the specimen sheet. This replaces two separate
@@ -30,7 +30,7 @@ function LineageNode({ node, isCurrent }) {
   const body = (
     <>
       <img
-        src={spriteUrl(node.id)}
+        src={thumbUrl(node.id)}
         alt=""
         aria-hidden="true"
         width={40}
@@ -157,7 +157,7 @@ export default function GrowthLineage({ lineage, currentSpecies }) {
                         }}
                       >
                         <img
-                          src={spriteUrl(f.id)}
+                          src={thumbUrl(f.id)}
                           alt=""
                           aria-hidden="true"
                           width={18}

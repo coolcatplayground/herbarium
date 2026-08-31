@@ -14,6 +14,7 @@
 // works before this has been run.
 import { mkdir, writeFile, readdir, stat } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import sharp from "sharp";
 import { MAIL_PAPERS } from "../src/data/curatorMail.js";
 
 const OUT = new URL("../public/sprites/", import.meta.url);
@@ -21,6 +22,22 @@ const BASE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/p
 const ART = `${BASE}/other/official-artwork`;
 const HOME = `${BASE}/other/home`;
 const CONCURRENCY = 8;
+
+// Thumbnails for every list view. The official artwork is 475x475 and averages
+// 125 KB; the gallery paints it at about 162 CSS pixels, the determination key
+// at 64-80, the case-file consoles at 48, and the Grafting Bench at 22. Every
+// one of those was downloading the full render.
+//
+// 320px covers the largest of them on a 2x screen. In WebP that is around 8% of
+// the original file — measured, not estimated: Bulbasaur's artwork is 198.6 KB
+// as a 475px PNG and 16.6 KB as a 320px WebP, and WebP beats PNG two to one at
+// the same dimensions. A full scroll of the gallery goes from roughly 18 MB to
+// under 2 MB.
+//
+// Only the plain sprites get one. Shiny is used solely by the toggle on the
+// specimen sheet, which shows the full artwork anyway.
+const THUMBS = new URL("../public/sprites/thumb/", import.meta.url);
+const THUMB_PX = 320;
 
 // Seasonal forms are pokemon-form entries with no official artwork, so the two
 // Deerling-line faces use the HOME set for all four seasons — see seasonForms.js.
@@ -74,6 +91,41 @@ function targets(ids) {
   return out;
 }
 
+// Resize whatever plain artwork is present into public/sprites/thumb/.
+// Skips anything already made, like the downloader above it, so re-running is
+// cheap. A sprite that failed to download simply has no thumbnail, and the app
+// falls back to the full image for it.
+async function makeThumbs(ids) {
+  await mkdir(THUMBS, { recursive: true });
+
+  const wanted = [
+    ...ids.map((id) => ({ src: `${id}.png`, out: `${id}.webp` })),
+    ...SEASON_SLUGS.map((slug) => ({ src: `home-${slug}.png`, out: `home-${slug}.webp` })),
+  ].filter((t) => existsSync(new URL(t.src, OUT)) && !existsSync(new URL(t.out, THUMBS)));
+
+  if (!wanted.length) {
+    console.log("thumbnails: already made");
+    return;
+  }
+
+  let made = 0;
+  let failed = 0;
+  for (const t of wanted) {
+    try {
+      await sharp(new URL(t.src, OUT).pathname.replace(/^\//, ""))
+        .resize(THUMB_PX, THUMB_PX, { fit: "inside", withoutEnlargement: true })
+        .webp({ quality: 82 })
+        .toFile(new URL(t.out, THUMBS).pathname.replace(/^\//, ""));
+      made += 1;
+    } catch {
+      // One unreadable source is not worth failing a build over; the app falls
+      // back to the full artwork wherever a thumbnail is missing.
+      failed += 1;
+    }
+  }
+  console.log(`thumbnails: ${made} made${failed ? `, ${failed} skipped` : ""}`);
+}
+
 async function run() {
   await mkdir(OUT, { recursive: true });
   let ids;
@@ -90,7 +142,10 @@ async function run() {
   const todo = all.filter((t) => !existsSync(new URL(t.file, OUT)));
 
   console.log(`${ids.length} specimens · ${all.length} images · ${todo.length} to download`);
-  if (!todo.length) return report(all.length);
+  if (!todo.length) {
+    await makeThumbs(ids);
+    return report(all.length);
+  }
 
   let done = 0;
   const missing = [];
@@ -113,6 +168,7 @@ async function run() {
   await Promise.all(Array.from({ length: CONCURRENCY }, worker));
 
   if (missing.length) console.log(`no artwork upstream for ${missing.length}: ${missing.slice(0, 6).join(", ")}${missing.length > 6 ? " …" : ""}`);
+  await makeThumbs(ids);
   await report(all.length - missing.length);
 }
 

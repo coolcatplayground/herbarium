@@ -15,7 +15,8 @@
     "harvest": "node scripts/harvest-manuscripts.mjs",
     "triage": "node scripts/triage-ui.mjs",
     "artifact": "node scripts/render-artifact.mjs",
-    "fact": "node scripts/find-fact.mjs"
+    "fact": "node scripts/find-fact.mjs",
+    "og": "node scripts/make-og-card.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
@@ -27,6 +28,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
     "oxlint": "^1.71.0",
+    "sharp": "^0.35.4",
     "vite": "^8.1.1",
     "vitest": "^4.1.11"
   }

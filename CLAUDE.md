@@ -37,10 +37,11 @@ git config --local user.email "chacuttayapongwiluk@gmail.com"
 | | |
 |---|---|
 | `npm run dev` | Vite dev server |
-| `npm test` | Vitest, 475 tests, ~0.5s |
+| `npm test` | Vitest, 510 tests, ~0.5s |
 | `npm run build` | fetches sprites, then builds |
 | `npm run lint` | oxlint |
-| `npm run sprites` | refetch sprites (skips existing) |
+| `npm run sprites` | refetch sprites and rebuild thumbnails (skips existing) |
+| `npm run og` | rebuild the social preview card |
 | `npm run roster:refresh` | regenerate the test roster fixture after PokéAPI gains new Grass-types |
 | `npm run artifact` | rebuild the phone triage page from the queue |
 | `npm run fact -- <term>` | search every field of every block before writing a fact into a note |
@@ -201,6 +202,15 @@ Storing letters makes the privacy note in MILESTONE §9 a requirement rather tha
 a tidy-up.
 
 ## Rules that are easy to break
+
+**List views use `thumbUrl`, the specimen sheet uses `spriteUrl`.** The official
+artwork is 475×475 and averages 127 KB; a gallery card paints it at about 162
+CSS pixels and the Grafting Bench at 22. The thumbnails are 320px WebP at ~16 KB
+— 87% lighter across the gallery — and `npm run sprites` generates them from the
+artwork it just downloaded. If a new list view shows a sprite, it wants the
+thumbnail; only the specimen sheet, where the artwork is the point and the shiny
+toggle lives, wants the full file.
+
 
 **A `<legend>` mounts itself on nothing.** The browser positions it straddling
 the fieldset's top border, punching a gap in the card's edge — so over a painted

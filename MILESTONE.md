@@ -40,7 +40,8 @@ state library, no CSS framework.
 | Reading Room papers | 16 |
 | Grafting Bench case files | 3 |
 | Propagation Bench concepts | 3 |
-| Bundle | ~374 KB JS (115 KB gzip), 3.5 KB CSS |
+| Bundle | ~423 KB JS (133 KB gzip), 23 KB CSS |
+| Gallery image weight | **2.4 MB across 151 specimens** — 18.7 MB before thumbnails |
 
 ### Routes
 
@@ -790,8 +791,8 @@ silent failure of §6.1.
   4.09:1 on paper, 4.58:1 and 3.34:1 read through a frosted placard over the
   busiest room. `--ink` was always fine at 8.19:1. Nothing else has been
   measured; the tokens above are what body copy actually uses.
-- Consider `.gitattributes` with `*.txt text eol=lf`; the parsers normalise
-  already, so this is belt-and-braces.
+- ~~Consider `.gitattributes`~~ — added. Everything was already stored as LF in
+  the index, so it caused no churn; it only fixes what future checkouts do.
 - Roughly 23 MB of source PNGs sit in the history of the commits that predate
   the glob-based ignore rules. Harmless, and only worth rewriting if the repo
   size ever matters.

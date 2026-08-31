@@ -5,6 +5,31 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="CC Herbarium — a greenhouse field guide to Grass-type Pokémon, annotated with real plant biology and genetics, with a determination key and case files built on published research." />
+
+    <!-- The card people see when this link is pasted into a chat, a post or a
+         message. Without these it arrives as a bare URL with no title and no
+         picture, which for something meant to be shared is most of the first
+         impression anyone gets of it.
+
+         The image is the exhibition hall, cropped top-anchored so the painted
+         CC-HERBARIUM signage survives the crop. Nothing is overlaid on it: the
+         artwork already carries the name, and every platform prints og:title
+         beside the image anyway. Regenerate with `npm run og`.
+
+         og:url and og:image must be ABSOLUTE — crawlers do not resolve a
+         relative path — so both name the deployed origin. Change them together
+         if the site ever moves. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="CC Herbarium" />
+    <meta property="og:title" content="CC Herbarium — A Grass-Type Greenhouse" />
+    <meta property="og:description" content="Every Grass-type Pokémon as a herbarium specimen, annotated with the real plant biology its design echoes — with illustrated habitat rooms, an identification key, and case files built on published research." />
+    <meta property="og:url" content="https://coolcatplayground.github.io/herbarium/" />
+    <meta property="og:image" content="https://coolcatplayground.github.io/herbarium/og-card.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A vast glasshouse seen from above, its floor laid out as habitats — woodland, wetland, snowfield and lava — beneath a sign reading CC-Herbarium." />
+    <meta name="twitter:card" content="summary_large_image" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">

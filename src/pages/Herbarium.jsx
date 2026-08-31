@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchGrassRoster, fetchRosterTypes, spriteUrl } from "../api/pokeapi";
+import { fetchGrassRoster, fetchRosterTypes, thumbUrl } from "../api/pokeapi";
 import { getSpecimenNote } from "../data/specimenNote";
 import { loadFieldNotes } from "../data/fieldNotesLoader";
 import { getHabitat } from "../data/habitatMap";
@@ -237,7 +237,7 @@ export default function Herbarium() {
             key={s.id}
             id={s.id}
             name={s.name}
-            sprite={spriteUrl(s.id)}
+            sprite={thumbUrl(s.id)}
             note={s.note}
             types={s.secondaryType ? ["grass", s.secondaryType] : ["grass"]}
             habitat={s.habitat}

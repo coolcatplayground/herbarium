@@ -1,0 +1,16 @@
+# The content files are edited in Notepad, which writes CRLF, and parsed by
+# code that normalises line endings anyway. This is belt-and-braces: it keeps
+# what is committed consistent regardless of the editor, so a diff never shows
+# a whole file changed because someone opened it somewhere else.
+*.txt text eol=lf
+*.md text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.css text eol=lf
+*.json text eol=lf
+
+# Binary, never touched.
+*.png binary
+*.jpg binary
+*.webp binary
+*.svg text eol=lf

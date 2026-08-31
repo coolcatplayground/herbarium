@@ -16,6 +16,19 @@ export function spriteUrl(id, shiny = false) {
   return `${import.meta.env.BASE_URL}sprites/${id}${shiny ? "-shiny" : ""}.png`;
 }
 
+// The small copy, for anywhere a sprite is painted at list size. The full
+// artwork is 475x475 and averages 125 KB; a gallery card paints it at about
+// 162 CSS pixels and the Grafting Bench at 22, so every list view was pulling
+// roughly ten times the pixels it could show. These are 320px WebP at about 8%
+// of the file — see the note in scripts/fetch-sprites.mjs.
+//
+// The specimen sheet deliberately does NOT use this: it is the one place the
+// artwork is the point, and it also carries the shiny toggle, which has no
+// thumbnail.
+export function thumbUrl(id) {
+  return `${import.meta.env.BASE_URL}sprites/thumb/${id}.webp`;
+}
+
 export function remoteSpriteUrl(id, shiny = false) {
   return `${SPRITE_REMOTE}/${shiny ? "shiny/" : ""}${id}.png`;
 }
@@ -26,6 +39,21 @@ export function remoteSpriteUrl(id, shiny = false) {
 // Guarded so a genuinely dead image cannot loop between the two.
 export function onSpriteError(event) {
   const img = event.currentTarget;
+
+  // A missing thumbnail steps down to the full local artwork first, not
+  // straight to the network — on a fresh clone that file is usually there,
+  // since the thumbnails are generated from it.
+  //
+  // Its own flag, deliberately. Sharing `spriteFallback` would let the
+  // thumbnail step consume the single fallback anyone gets, and the local
+  // artwork would never have its turn.
+  const thumb = img.src.match(/sprites\/thumb\/([\w-]+)\.webp$/);
+  if (thumb && !img.dataset.thumbFallback) {
+    img.dataset.thumbFallback = "1";
+    img.src = `${import.meta.env.BASE_URL}sprites/${thumb[1]}.png`;
+    return;
+  }
+
   if (img.dataset.spriteFallback) return;
   img.dataset.spriteFallback = "1";
   // Seasonal forms are stored as home-<slug>[-shiny].png and come from a
