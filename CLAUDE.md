@@ -37,7 +37,7 @@ git config --local user.email "chacuttayapongwiluk@gmail.com"
 | | |
 |---|---|
 | `npm run dev` | Vite dev server |
-| `npm test` | Vitest, 510 tests, ~0.5s |
+| `npm test` | Vitest, 511 tests, ~0.5s |
 | `npm run build` | fetches sprites, then builds |
 | `npm run lint` | oxlint |
 | `npm run sprites` | refetch sprites and rebuild thumbnails (skips existing) |
@@ -156,26 +156,19 @@ is the point. Add a room there when you paint one, then point a
 plain text for the curator to receive. Papers and letter-building live in
 `src/data/curatorMail.js`.
 
-The papers are **the real stationery**. Each is two assets keyed on the PokéAPI
-item name: `public/mail/<id>.png` (the 256×192 canvas, committed, from the
-Bulbagarden archives) and `public/sprites/<id>.png` (the 24×24 bag icon, fetched
-by `fetch-sprites.mjs`, which reads its list off `MAIL_PAPERS`).
+The papers are **drawn, not borrowed**. Each is a tint, an accent, a rule
+colour and a Unicode glyph in `MAIL_PAPERS`, plus an inline-SVG mark in
+`MailMotif.jsx`. No file, no fetch, nothing from the games.
 
-Adding a paper is one entry in that array — but three of its fields are
-measurements, not preferences, and getting them by eye will ship unreadable mail:
+That is deliberate and it is the second time round: an earlier pass used the
+real Generation IV mail canvases and the real PokéAPI bag icons, and both were
+official artwork redistributed from this repository on a site meant to be shown
+to the company that owns it. See DEVLOG §61.
 
-- **`panel`** is the rect that artwork reserves for writing, as fractions of the
-  card. Read it off the art.
-- **`veil`** is the opacity that panel needs for body ink to clear AA, measured
-  against the pixels *inside that rect*. Move `panel` and `veil` stops being
-  true. Only three of the twelve Gen IV designs carry text unaided; four cannot
-  carry it at any opacity.
-- **`accent`** must clear 4.6:1 against `--paper-light`, the label chip it sits on.
-
-Stay in **Generation IV** unless you are redoing all six: Gen III mail is
-240×160 against Gen IV's 256×192, and mixed aspect ratios look broken. And
-**render it before believing it** — the veil that measured fine on Bloom Mail
-looked like a sticker, which is why that one uses an opaque card instead.
+Adding a paper is one entry in that array and one case in `MailMotif`. The one
+measured field is **`accent`**: it carries the 13px paper name and must clear
+4.6:1 against the tint's *darkest* gradient stop. Two of the first six failed
+that when they were picked by eye.
 
 ### Turning the desk on
 

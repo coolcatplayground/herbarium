@@ -2196,6 +2196,41 @@ so adding it churned nothing — it only settles what future checkouts do.
 
 ---
 
+### 61. The stationery goes back to being drawn
+
+The curator is preparing to submit this site to The Pokémon Company, and was
+advised that a public repository redistributing official artwork reads two ways
+to a hiring manager there — enthusiasm, or a candidate who does not think about
+IP boundaries — and that the author does not get to choose which. That is right,
+and the mail desk was the worst of it: §58 committed six unmodified Generation IV
+mail canvases from the Bulbagarden archives straight into this repository, and
+§57 had already added the official bag icons.
+
+Both are gone. The desk is back to the six drawn papers of §56 — a CSS tint, an
+inline-SVG mark, a Unicode glyph — with no file fetched and no game asset
+involved. `public/mail/` is deleted, the fetcher no longer downloads item
+sprites, and a test now asserts that no paper's definition mentions an image path
+at all, so the next person to add one cannot quietly reintroduce the problem.
+
+**What was worth keeping, and was kept.** The accents are still the measured
+ones: each clears 4.6:1 against its own sheet's darkest gradient stop, which is
+what the 13px paper name needs, and two of the original six failed that when
+chosen by eye. The delivery layer, the letter builder, the sr-only legend, the
+signature placement and the copy that is generated from `collectsLetters()` all
+survive untouched.
+
+**What went with the artwork, correctly.** The panel rect, the per-canvas veil
+and the mobile opaque-card rule existed for one reason: to put readable text on
+top of a picture. With no picture there is no problem to solve, and the sheet
+goes back to growing with its content. That is measurably better on a phone —
+**eight visible lines against the canvas layout's five** — which is a fair
+reminder that the fixed-aspect artwork was costing something real the whole time.
+
+The round trip cost three commits and taught the thing that matters: the
+question was never whether the assets looked good, it was who the site is for.
+
+---
+
 ## Planned
 
 ### Habitat pages — an exhibition wing

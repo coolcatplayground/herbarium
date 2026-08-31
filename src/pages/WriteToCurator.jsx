@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import RoomBackdrop from "../components/RoomBackdrop";
+import MailMotif from "../components/MailMotif";
 import {
   CURATOR_ADDRESS,
   MAIL_ENDPOINT,
@@ -28,32 +29,6 @@ import {
 // plainly — see `curatorMail.js` for why the clipboard is not the small print.
 
 const DRAFT_KEY = "cc-herbarium-mail-draft";
-
-// The item's own sprite, served from our own origin like every other image
-// here — never hotlinked, for the reason set out at the top of
-// scripts/fetch-sprites.mjs.
-//
-// 24x24 pixel art drawn at an exact multiple of itself, with `pixelated` so
-// the browser does not smooth it. Bilinear upscaling is what makes sprite art
-// look like a mistake rather than a choice.
-//
-// It removes itself if the file is missing, which happens on a fresh clone
-// before `npm run sprites` has been run. The sheet still reads correctly
-// without it: the paper's name is written beside it, never carried by it.
-function MailIcon({ id, size = 48 }) {
-  const [missing, setMissing] = useState(false);
-  if (missing) return null;
-  return (
-    <img
-      className="mail-icon"
-      src={`${import.meta.env.BASE_URL}sprites/${id}.png`}
-      alt=""
-      width={size}
-      height={size}
-      onError={() => setMissing(true)}
-    />
-  );
-}
 
 // A letter someone has spent ten minutes composing should survive a stray
 // reload. Wrapped because storage throws outright in a locked-down browser
@@ -168,15 +143,9 @@ export default function WriteToCurator() {
   }
 
   const paperStyle = {
+    "--sheet-tint": paper.tint,
     "--sheet-accent": paper.accent,
-    // The measured opacity this particular artwork needs under body text. Not
-    // a style choice — see MAIL_PAPERS.
-    "--sheet-veil": paper.veil,
-    // The artwork's own writing area, as CSS insets.
-    "--panel-left": `${paper.panel[0] * 100}%`,
-    "--panel-top": `${paper.panel[1] * 100}%`,
-    "--panel-right": `${(1 - paper.panel[2]) * 100}%`,
-    "--panel-bottom": `${(1 - paper.panel[3]) * 100}%`,
+    "--sheet-rule": paper.rule,
   };
 
   return (
@@ -219,7 +188,10 @@ export default function WriteToCurator() {
                   <label
                     key={sheet.id}
                     className={`mail-swatch${checked ? " is-chosen" : ""}`}
-                    style={{ "--sheet-accent": sheet.accent }}
+                    style={{
+                      "--sheet-tint": sheet.tint,
+                      "--sheet-accent": sheet.accent,
+                    }}
                   >
                     <input
                       type="radio"
@@ -229,13 +201,9 @@ export default function WriteToCurator() {
                       onChange={() => setPaperId(sheet.id)}
                       className="sr-only"
                     />
-                    <img
-                      className="mail-swatch__art"
-                      src={`${import.meta.env.BASE_URL}mail/${sheet.id}.png`}
-                      alt=""
-                      width={256}
-                      height={192}
-                    />
+                    <span className="mail-swatch__motif" aria-hidden="true">
+                      <MailMotif paper={sheet.id} size={30} />
+                    </span>
                     <span className="mail-swatch__name">{sheet.name}</span>
                     <span className="mail-swatch__blurb">{sheet.blurb}</span>
                   </label>
@@ -244,66 +212,59 @@ export default function WriteToCurator() {
             </div>
           </fieldset>
 
-          <figure className="mail-sheet" style={paperStyle}>
-            <div className="mail-sheet__canvas">
-              <img
-                className="mail-sheet__art"
-                src={`${import.meta.env.BASE_URL}mail/${paper.id}.png`}
-                alt=""
-                width={256}
-                height={192}
-              />
-              <div className="mail-sheet__panel">
-                <input
-                  type="text"
-                  value={from}
-                  maxLength={NAME_MAX}
-                  onChange={(e) => setFrom(e.target.value)}
-                  placeholder="a name to sign it with"
-                  className="mail-sheet__from"
-                  aria-label="Your name"
-                />
-                <textarea
-                  value={message}
-                  maxLength={MESSAGE_MAX}
-                  onChange={(e) => setMessage(e.target.value)}
-                  className="mail-sheet__body"
-                  placeholder="Write here."
-                  aria-label="Your letter"
-                />
-                {/* Off-screen rather than display:none — some bots skip
-                    anything hidden, and this one is meant to be found and
-                    filled. tabIndex -1 and aria-hidden keep it away from
-                    anyone using a keyboard or a screen reader. */}
-                <input
-                  className="sr-only"
-                  type="text"
-                  tabIndex={-1}
-                  aria-hidden="true"
-                  autoComplete="off"
-                  value={trap}
-                  onChange={(e) => setTrap(e.target.value)}
-                />
-              </div>
-              {/* Sits on the stationery, bottom right, on its own mounted chip.
-                  It used to hang under the sheet with nothing behind it, which
-                  over a painted room made it unreadable — the same mistake as
-                  the fieldset legend. Anything laid on the artwork needs a
-                  ground of its own. */}
-              <p
-                className={`mail-sheet__count mono${
-                  message.length > MESSAGE_MAX - 60 ? " is-near" : ""
-                }`}
-                aria-live="polite"
-              >
-                {message.length} of {MESSAGE_MAX}
-              </p>
+          <div className="mail-sheet" style={paperStyle}>
+            <div className="mail-sheet__head">
+              <span className="mail-sheet__motif" aria-hidden="true">
+                <MailMotif paper={paper.id} size={28} />
+              </span>
+              <span className="mail-sheet__title">{paper.name}</span>
             </div>
-            <figcaption className="mail-sheet__label">
-              <MailIcon id={paper.id} size={24} />
-              {paper.name}
-            </figcaption>
-          </figure>
+
+            <label className="mail-field">
+              <span className="mail-field__label">From</span>
+              <input
+                type="text"
+                value={from}
+                maxLength={NAME_MAX}
+                onChange={(e) => setFrom(e.target.value)}
+                placeholder="a name to sign it with"
+                className="mail-sheet__from"
+              />
+            </label>
+
+            <label className="mail-field mail-field--body">
+              <span className="mail-field__label">Your letter</span>
+              <textarea
+                value={message}
+                maxLength={MESSAGE_MAX}
+                onChange={(e) => setMessage(e.target.value)}
+                rows={8}
+                className="mail-sheet__body"
+                placeholder="Write here."
+              />
+            </label>
+
+            {/* Never shown, never focusable, never announced. A person cannot
+                fill it in; a bot filling every field it finds will. */}
+            <input
+              className="sr-only"
+              type="text"
+              tabIndex={-1}
+              aria-hidden="true"
+              autoComplete="off"
+              value={trap}
+              onChange={(e) => setTrap(e.target.value)}
+            />
+
+            <p
+              className={`mail-sheet__count mono${
+                message.length > MESSAGE_MAX - 60 ? " is-near" : ""
+              }`}
+              aria-live="polite"
+            >
+              {message.length} of {MESSAGE_MAX}
+            </p>
+          </div>
 
           <div className="mail-meta">
             {collectsLetters() && (
@@ -350,33 +311,24 @@ export default function WriteToCurator() {
 
       {sealed && (
         <>
-          <figure
+          <div
             className="mail-sheet mail-sheet--sealed"
             style={paperStyle}
             ref={sealedRef}
             tabIndex={-1}
             aria-label={`Your ${paper.name}, sealed and ready to send`}
           >
-            <div className="mail-sheet__canvas">
-              <img
-                className="mail-sheet__art"
-                src={`${import.meta.env.BASE_URL}mail/${paper.id}.png`}
-                alt=""
-                width={256}
-                height={192}
-              />
-              <div className="mail-sheet__panel">
-                <p className="mail-sheet__written">{message.trim()}</p>
-                <p className="mail-sheet__sign">
-                  from — {from.trim() || "a visitor who left no name"}
-                </p>
-              </div>
+            <div className="mail-sheet__head">
+              <span className="mail-sheet__motif" aria-hidden="true">
+                <MailMotif paper={paper.id} size={28} />
+              </span>
+              <span className="mail-sheet__title">{paper.name}</span>
             </div>
-            <figcaption className="mail-sheet__label">
-              <MailIcon id={paper.id} size={24} />
-              {paper.name}
-            </figcaption>
-          </figure>
+            <p className="mail-sheet__written">{message.trim()}</p>
+            <p className="mail-sheet__sign">
+              from — {from.trim() || "a visitor who left no name"}
+            </p>
+          </div>
 
           <div className="mail-actions">
             {collectsLetters() && (

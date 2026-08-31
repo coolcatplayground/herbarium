@@ -74,8 +74,8 @@ describe("onSpriteError", () => {
   });
 
   it("leaves anything it does not recognise alone rather than guessing", () => {
-    const e = fakeImg("http://x/mail/grass-mail.png");
+    const e = fakeImg("http://x/rooms/curator-room.jpg");
     onSpriteError(e);
-    expect(e.currentTarget.src).toBe("http://x/mail/grass-mail.png");
+    expect(e.currentTarget.src).toBe("http://x/rooms/curator-room.jpg");
   });
 });

@@ -508,18 +508,25 @@ straight to a `mailto:`, which is a better invitation and also works for the
 large share of visitors who have no mail client wired to their browser at all —
 for them the old link did nothing visible whatsoever.
 
-**The papers are the real stationery.** Six of the twelve Generation IV mail
-designs, used as the sheet itself: Grass, Air, Bloom, Bubble, Snow and Flame.
-Generation IV specifically, because that whole set is 256×192 while Generation
-III's is 240×160, and a chooser holding two aspect ratios reads as a bug. Each
-of the six maps to a room the collection has.
+**The papers are drawn, not borrowed.** Six sheets, each a CSS tint with an
+inline-SVG mark and a Unicode glyph for the plain-text letter. Nothing is
+fetched and no game asset is involved.
 
-Two assets per paper, from two sources, which is why the README now states
-provenance: the 256×192 canvas comes from the Bulbagarden archives and is
-committed (`public/mail/`), while the 24×24 bag icon comes from PokéAPI's
-sprite repository like all the other artwork and is fetched at build. The
-fetcher reads its download list off `MAIL_PAPERS` so the two cannot drift.
-The canvases draw at exactly 2× with `image-rendering: pixelated`.
+This is the second time round, and the round trip is the point. The desk first
+shipped with six invented papers; then, on request, with the real Generation IV
+mail canvases from the Bulbagarden archives and the real bag icons from PokéAPI;
+and now back to drawn ones. What changed was not taste but audience — the site
+is a portfolio piece for a studio whose parent is among the most protective
+rights holders in the industry, and enthusiasm and carelessness about IP look
+identical from outside. See §6.0b and DEVLOG §61.
+
+The measured work survived the round trip: each accent still clears 4.6:1
+against its own sheet's darkest stop, which is what the 13px paper name needs.
+What went with the artwork was the machinery that existed only to put text on it
+— the panel rect, the per-canvas veil, and the mobile card that rescued a
+writing area too small to use. Without artwork the sheet simply grows with its
+content, which is why the phone now gets eight visible lines where the canvas
+allowed five.
 
 **The letter is not written on the art.** Measured across the twelve designs,
 body ink clears AA unaided on three of them; `steel`, `space`, `brick` and

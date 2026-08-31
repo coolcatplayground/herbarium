@@ -21,25 +21,22 @@ import {
 describe("papers", () => {
   it("gives every paper the fields the sheet and the letter both need", () => {
     for (const paper of MAIL_PAPERS) {
-      // The id is the PokéAPI item name, which is also the sprite filename —
-      // so it has to stay in that shape or the icon 404s.
-      expect(paper.id).toMatch(/^[a-z]+-mail$/);
+      expect(paper.id).toMatch(/^[a-z]+$/);
       expect(paper.name).toBeTruthy();
       expect(paper.glyph).toHaveLength(1);
-      expect(paper.veil).toBeGreaterThanOrEqual(0);
-      expect(paper.veil).toBeLessThanOrEqual(1);
-      // The panel rect has to be a sane box inside the card, because the veil
-      // that keeps text legible was measured against the pixels inside it.
-      const [x0, y0, x1, y1] = paper.panel;
-      expect(x1).toBeGreaterThan(x0);
-      expect(y1).toBeGreaterThan(y0);
-      expect(x0).toBeGreaterThanOrEqual(0);
-      expect(y0).toBeGreaterThanOrEqual(0);
-      expect(x1).toBeLessThanOrEqual(1);
-      expect(y1).toBeLessThanOrEqual(1);
-      // A panel smaller than a fifth of the card is not a writing area.
-      expect((x1 - x0) * (y1 - y0)).toBeGreaterThan(0.2);
+      expect(paper.tint).toContain("gradient");
+      expect(paper.rule).toContain("rgba");
       expect(paper.accent).toMatch(/^#[0-9a-f]{6}$/);
+    }
+  });
+
+  it("references no artwork from the games — the marks are drawn, the tints ours", () => {
+    // The reason this set exists. An earlier pass used the real mail canvases
+    // and the real bag icons; both were official assets redistributed from this
+    // repository, on a site meant to be handed to the studio that owns them.
+    for (const paper of MAIL_PAPERS) {
+      const serialised = JSON.stringify(paper);
+      expect(serialised).not.toMatch(/sprites\/|public\/mail|\.png|\.webp/);
     }
   });
 
@@ -84,13 +81,13 @@ describe("wrapText", () => {
 
 describe("buildLetter", () => {
   const letter = buildLetter({
-    paper: "grass-mail",
+    paper: "fern",
     from: "Chacu",
     message: "The Bulbasaur note says a corm has no layers.\n\nGladiolus corms have tunics.",
   });
 
   it("names the paper and signs the sender", () => {
-    expect(letter).toContain("GRASS MAIL");
+    expect(letter).toContain("FERN MAIL");
     expect(letter).toContain("❦");
     expect(letter).toContain("from — Chacu");
   });
@@ -114,7 +111,7 @@ describe("buildLetter", () => {
   });
 
   it("says so plainly when no name was given rather than leaving a dangling dash", () => {
-    const anon = buildLetter({ paper: "grass-mail", from: "", message: "hello" });
+    const anon = buildLetter({ paper: "fern", from: "", message: "hello" });
     expect(anon).toContain("from — a visitor who left no name");
   });
 
@@ -124,7 +121,7 @@ describe("buildLetter", () => {
     const override = "\u202E";
     const nul = "\u0000";
     const out = buildLetter({
-      paper: "grass-mail",
+      paper: "fern",
       from: `a${override}b`,
       message: `one${override}two${nul}\nthree`,
     });
@@ -138,38 +135,38 @@ describe("buildLetter", () => {
 
   it("enforces the caps the composer advertises", () => {
     const long = "x".repeat(MESSAGE_MAX + 200);
-    const letterText = buildLetter({ paper: "grass-mail", from: "y".repeat(NAME_MAX + 20), message: long });
+    const letterText = buildLetter({ paper: "fern", from: "y".repeat(NAME_MAX + 20), message: long });
     expect(letterText.match(/x/g).length).toBe(MESSAGE_MAX);
     expect(letterText.match(/y/g).length).toBe(NAME_MAX);
   });
 
   it("does not fall over on an unknown paper", () => {
-    expect(buildLetter({ paper: "nope", from: "a", message: "b" })).toContain("GRASS MAIL");
+    expect(buildLetter({ paper: "nope", from: "a", message: "b" })).toContain("BLOOM MAIL");
   });
 });
 
 describe("letterSubject", () => {
   it("names the paper and the sender", () => {
-    expect(letterSubject({ paper: "bubble-mail", from: "Chacu" })).toBe(
-      "Bubble Mail from Chacu — CC Herbarium",
+    expect(letterSubject({ paper: "tide", from: "Chacu" })).toBe(
+      "Tide Mail from Chacu — CC Herbarium",
     );
   });
 
   it("drops the sender clause rather than leaving it empty", () => {
-    expect(letterSubject({ paper: "bubble-mail", from: "  " })).toBe("Bubble Mail — CC Herbarium");
+    expect(letterSubject({ paper: "tide", from: "  " })).toBe("Tide Mail — CC Herbarium");
   });
 });
 
 describe("mailtoHref", () => {
   it("addresses the curator and encodes the letter", () => {
-    const href = mailtoHref({ paper: "grass-mail", from: "Chacu", message: "hello" });
+    const href = mailtoHref({ paper: "fern", from: "Chacu", message: "hello" });
     expect(href.startsWith("mailto:")).toBe(true);
     expect(href).toContain("subject=");
-    expect(decodeURIComponent(href.split("&body=")[1])).toContain("GRASS MAIL");
+    expect(decodeURIComponent(href.split("&body=")[1])).toContain("FERN MAIL");
   });
 
   it("encodes newlines rather than emitting a raw line break into a URL", () => {
-    const href = mailtoHref({ paper: "grass-mail", from: "a", message: "one\ntwo" });
+    const href = mailtoHref({ paper: "fern", from: "a", message: "one\ntwo" });
     expect(href).not.toContain("\n");
     expect(href).toContain("%0A");
   });
@@ -178,7 +175,7 @@ describe("mailtoHref", () => {
   // with the longest name the composer will take, still has to hand off.
   it("hands off the longest Latin letter the composer will accept", () => {
     const href = mailtoHref({
-      paper: "flame-mail",
+      paper: "ember",
       from: "n".repeat(NAME_MAX),
       message: "word ".repeat(MESSAGE_MAX / 5),
     });
@@ -192,7 +189,7 @@ describe("mailtoHref", () => {
   // and must not be reported as one.
   it("declines the hand-off rather than truncating a letter in a non-Latin script", () => {
     const href = mailtoHref({
-      paper: "grass-mail",
+      paper: "fern",
       from: "Chacu",
       message: "ก".repeat(300),
     });
@@ -202,7 +199,7 @@ describe("mailtoHref", () => {
   it("returns null rather than a truncated letter when anything else is over the ceiling", () => {
     const href = mailtoHref({
       address: "a".repeat(MAILTO_MAX),
-      paper: "grass-mail",
+      paper: "fern",
       from: "a",
       message: "b",
     });
@@ -226,14 +223,14 @@ describe("delivery", () => {
 
   it("sends the text and the drawn letter, never a picture", () => {
     const sub = buildSubmission({
-      paper: "grass-mail",
+      paper: "fern",
       from: "Chacu",
       replyTo: "a@b.co",
       message: "A corm is not a bulb.",
     });
-    expect(sub).toMatchObject({ paper: "grass-mail", paperName: "Grass Mail", from: "Chacu", replyTo: "a@b.co" });
+    expect(sub).toMatchObject({ paper: "fern", paperName: "Fern Mail", from: "Chacu", replyTo: "a@b.co" });
     expect(sub.message).toBe("A corm is not a bulb.");
-    expect(sub.letter).toContain("GRASS MAIL");
+    expect(sub.letter).toContain("FERN MAIL");
     expect(Date.parse(sub.sentAt)).not.toBeNaN();
     // Nothing image-shaped goes over the wire — see the note on buildSubmission.
     expect(JSON.stringify(sub)).not.toMatch(/data:image|base64/);
@@ -241,7 +238,7 @@ describe("delivery", () => {
 
   it("applies the same caps and stripping to the submission as to the letter", () => {
     const sub = buildSubmission({
-      paper: "grass-mail",
+      paper: "fern",
       from: "y".repeat(NAME_MAX + 20),
       replyTo: `a${"\u202E"}@b.co`,
       message: "x".repeat(MESSAGE_MAX + 200),
@@ -252,7 +249,7 @@ describe("delivery", () => {
   });
 
   it("survives a letter with no name and no address", () => {
-    const sub = buildSubmission({ paper: "air-mail", from: "", replyTo: "", message: "hello" });
+    const sub = buildSubmission({ paper: "moss", from: "", replyTo: "", message: "hello" });
     expect(sub.from).toBe("");
     expect(sub.replyTo).toBe("");
     expect(sub.letter).toContain("a visitor who left no name");
