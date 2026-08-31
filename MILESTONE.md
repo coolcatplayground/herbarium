@@ -579,6 +579,45 @@ Logic lives in `src/data/curatorMail.js` and is covered by 22 tests, because the
 letter is the one part nobody can inspect after the fact — by the time it is
 wrong it is already in somebody's inbox.
 
+## 5e. Specimen plates, and why the artwork is leaving
+
+The site is being submitted to The Pokémon Company, which changes what
+redistributing their artwork costs. To a hiring manager there, a public repo
+serving official sprites reads either as enthusiasm or as a candidate who does
+not think about IP boundaries, and the author does not get to pick which. §61
+removed the mail stationery; the specimen artwork is the larger half, and it
+leaves by being replaced rather than deleted.
+
+**The replacement is not a redraw.** Each plate illustrates the *botanical part*
+a specimen is built on — the bulb, the pitcher, the seed head — rather than the
+creature. That is a better picture for this site independently of copyright: the
+project's entire argument is that these designs echo real plant biology, and a
+drawing of a corm is that argument, where a drawing of Bulbasaur is only a
+drawing of Bulbasaur. It also suits the conceit better than the sprites ever
+did, since a herbarium sheet shows a pressed fragment rather than a living
+animal.
+
+**It arrives one drawing at a time.** `public/plates/<slug>.<ext>` is indexed
+into `src/data/plates.json` by `npm run plates`, which `npm run build` chains.
+Where a plate exists the gallery, habitat rooms and specimen sheet use it; where
+one does not, the sprite stands in. So the collection is never half-broken while
+147 drawings are made, and each one improves the site the day it lands.
+
+The manifest is the non-obvious part. Trying the file and catching the failure
+would cost a request and a console error for every undrawn specimen on every
+gallery scroll — 147 of them on day one. The app only asks for plates it knows
+exist.
+
+**The drawing list already existed.** `curation/PLATES.md` is generated from the
+`plant_analogue` field of every block, written weeks earlier for a different
+purpose and turning out to be an illustration brief: "Corms & bulbs (e.g.
+Crocus, Gladiolus)", "Pitcher plant seedling stage". Grouped by organ it comes
+to 12 families over 147 specimens, with evolution lines sharing an organ across
+stages — so the real count of subjects is far below the specimen count. 24 name
+no organ at all, and those want deciding before a pencil: a possessed lawnmower
+and a machine have no botanical part, though Rotom-Mow's own note points at one
+(the lawn, and why grass survives being cut).
+
 ## 6. Bugs found and fixed — the ones worth remembering
 
 ### 6.0 The mail artwork was invisible in production and perfect in dev

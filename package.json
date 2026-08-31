@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run sprites && vite build",
+    "build": "npm run sprites && npm run plates && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
@@ -16,7 +16,9 @@
     "triage": "node scripts/triage-ui.mjs",
     "artifact": "node scripts/render-artifact.mjs",
     "fact": "node scripts/find-fact.mjs",
-    "og": "node scripts/make-og-card.mjs"
+    "og": "node scripts/make-og-card.mjs",
+    "plates:brief": "node scripts/plates-brief.mjs",
+    "plates": "node scripts/index-plates.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",

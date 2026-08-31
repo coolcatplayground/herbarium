@@ -25,6 +25,7 @@ import GrowthLineage from "../components/GrowthLineage";
 import graftingCases from "../data/graftingCases";
 import { getSizeGroup, SIZE_FORM_PARENT, HIDDEN_SIZE_FORMS } from "../data/sizeForms";
 import { getSeasonGroup, seasonSpriteUrl } from "../data/seasonForms";
+import { plateUrl } from "../data/plates";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import RoomBackdrop from "../components/RoomBackdrop";
 
@@ -162,7 +163,9 @@ export default function Specimen() {
   // The API response is consulted only for whether a shiny exists; the images
   // themselves are served locally so the site is not hotlinking GitHub raw for
   // every visitor. See scripts/fetch-sprites.mjs.
-  const sprite = spriteUrl(pokemon.id);
+  // A plate where one is drawn. Only the plain view: there is no shiny
+  // variant of an illustration, so the toggle keeps working off the sprite.
+  const sprite = plateUrl(pokemon.name) ?? spriteUrl(pokemon.id);
   const shinySprite = pokemon.sprites.other?.["official-artwork"]?.front_shiny
     ? spriteUrl(pokemon.id, true)
     : null;

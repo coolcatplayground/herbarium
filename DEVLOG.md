@@ -2231,6 +2231,40 @@ question was never whether the assets looked good, it was who the site is for.
 
 ---
 
+### 62. A layer for the curator's own plates
+
+§61 took the game's stationery out of the mail desk. The specimen artwork is the
+bigger half of the same problem, and it cannot be deleted the same way — 145
+gallery cards cannot simply go blank while 147 illustrations are drawn.
+
+So it leaves by replacement, incrementally. `public/plates/<slug>.<ext>` is
+indexed into a manifest by `npm run plates`, chained into `npm run build`. Where
+a plate exists the gallery, the habitat rooms and the specimen sheet show it;
+where one does not, the sprite stands in. Verified by dropping one stand-in plate
+in and loading the built site: 145 specimen images, one on the plate, 144 on
+thumbnails, nothing broken.
+
+**Why a manifest rather than try-and-catch.** Asking for a plate that does not
+exist costs a failed request and a console error per card per scroll, which on
+day one is 147 of them. The manifest is imported rather than fetched, so the
+answer is synchronous and an undrawn specimen never costs anything.
+
+**The subject is the part, not the creature** — the curator's idea, and the
+reason this is worth doing beyond the copyright. A drawing of Bulbasaur is a
+drawing of Bulbasaur. A drawing of the bulb is a drawing of a corm, which is
+exactly what the field note argues it is, so the illustration becomes the
+evidence rather than decoration beside it. It is also closer to what a herbarium
+sheet is: a pressed fragment, not a living animal.
+
+**The brief turned out to be already written.** `curation/PLATES.md` is generated
+from the `plant_analogue` field of all 147 blocks — written weeks ago to caption
+a field note, and functioning perfectly as an illustration list. Grouped by organ
+it collapses to 12 families, and evolution lines share an organ across stages, so
+the number of distinct subjects is far below 147. Twenty-four name no organ at
+all and are flagged as needing a decision rather than a drawing.
+
+---
+
 ## Planned
 
 ### Habitat pages — an exhibition wing
