@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import RoomBackdrop from "../components/RoomBackdrop";
 
@@ -126,20 +125,32 @@ export default function About() {
             this collection has left open, the curator would rather hear it than not.
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-            {/* The button goes to the mail desk rather than straight to a
-                mailto:, because a bare mail client is a worse invitation than
-                a sheet of paper — and because a great many visitors have no
-                mail client wired to the browser at all, for whom the old link
-                did nothing visible whatsoever. The address is still written
-                out plainly at the desk for anyone who would rather just use
-                it. */}
+            {/* The link and the address, side by side rather than one or the
+                other.
+
+                This used to be a button through to a mail desk — six papers, a
+                composer, a sealed preview — which was removed. What that desk
+                solved still needs solving, though: a bare mailto: does nothing
+                visible for the many visitors whose browser has no mail client
+                wired to it, and they are given no clue why. So the address is
+                printed as selectable text beside the link. The link is a
+                convenience for people it works for, never the only way
+                through. */}
             {CURATOR.email ? (
-              <Link to="/write" className="mail-button mail-button--primary">
-                Write to the curator
-              </Link>
+              <>
+                <a
+                  href={`mailto:${CURATOR.email}`}
+                  className="contact-button contact-button--primary"
+                >
+                  Write to the curator
+                </a>
+                <span className="mono" style={{ fontSize: "0.8rem", color: "var(--ink)" }}>
+                  {CURATOR.email}
+                </span>
+              </>
             ) : (
               <span
-                className="mail-button"
+                className="contact-button"
                 aria-disabled="true"
                 style={{ color: "var(--ink-soft)", cursor: "default" }}
               >

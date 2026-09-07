@@ -37,9 +37,6 @@ const sizeForms = {
   },
 };
 
-// The entry that keeps the gallery panel for each group.
-export const SIZE_GROUP_CANONICAL = Object.keys(sizeForms);
-
 // Every non-canonical size, so the gallery can drop them and the specimen face
 // can redirect them to the canonical entry rather than serving a duplicate.
 export const HIDDEN_SIZE_FORMS = new Set(

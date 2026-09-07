@@ -227,50 +227,6 @@ button, input, select {
 }
 
 
-.evo-node-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.evo-trigger {
-  font-size: 0.6rem;
-  color: var(--ink-soft);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-
-.evo-node {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  text-decoration: none;
-  color: var(--ink);
-  padding: 8px;
-  border: 1px solid var(--paper-line);
-  border-radius: 12px;
-  background: var(--paper-light);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.evo-node:hover {
-  transform: translateY(-2px);
-  box-shadow: 2px 3px 0 var(--paper-shadow);
-}
-
-.evo-node.current {
-  border-color: var(--specimen-red);
-  background: var(--paper);
-}
-
-.evo-name {
-  font-size: 0.68rem;
-  text-transform: capitalize;
-}
-
 
 /* --- Cacnea's drought console (SucculenceConsole) ---
    Everything below is driven by one inherited custom property, `--parched`,
@@ -410,19 +366,6 @@ button, input, select {
   animation: dstoma-night 16s ease-in-out infinite;
 }
 
-/* Log entries. `--kind` is set per entry from the entry's own `kind`, so one
-   rule tints the bar and the wash together and the two can never drift. */
-.dlog-entry {
-  border-left: 3px solid var(--kind);
-  background: color-mix(in srgb, var(--kind) 10%, transparent);
-  animation: dlog-in 300ms ease-out;
-}
-
-@keyframes dlog-in {
-  from { opacity: 0; transform: translateY(-7px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
 /* The global reduced-motion rule already collapses durations, but this case
    leans on ambient motion harder than anything else in the collection, so it
    says so explicitly rather than relying on a blanket override. */
@@ -431,8 +374,7 @@ button, input, select {
   .dsky-rail--idle,
   .dsky-night--idle,
   .dstoma-pore--idle-day,
-  .dstoma-pore--idle-night,
-  .dlog-entry {
+  .dstoma-pore--idle-night {
     animation: none !important;
   }
 
@@ -824,6 +766,45 @@ button, input, select {
    sweep clean — no text element without an opaque ground. If that ever stops
    being true, mount the new block rather than putting the scrim back. */
 
+/* The footer's plinth.
+
+   This was got wrong once, and the way it was got wrong is the useful part.
+   The disclaimer was hard to read, so it was measured — --ink-soft against the
+   page's bottom gradient stop, 5.04:1, passing AA — and the conclusion drawn
+   was that the ratio was fine and the type was too small. It grew from 0.72rem
+   to 0.8rem and darkened to --ink at a nominal 7.36:1, and it was still
+   unreadable, because the measurement was taken against the wrong thing.
+
+   The footer does not sit on the page's gradient. It sits over .room, the
+   painted backdrop, which is fixed to the viewport and therefore behind the
+   footer as much as anything else — light, busy and photographic, with the
+   left half of the line falling across the brightest part of a tiled floor.
+   No single ratio describes text on a photograph, and enlarging it only makes
+   a bigger illegible thing.
+
+   The rule two comments down has said the answer since it was written: mount
+   the block rather than dimming the room. The footer was the one text element
+   on the site that never got mounted, because it lives in App.jsx rather than
+   in any page, and every sweep was done page by page.
+
+   So it is a plinth: opaque paper across the full width, the hairline it
+   already had as its top edge, and the line printed on that rather than on
+   the floor of the hall. Museums put the small print on the baseboard for the
+   same reason. --ink on this band measures 8.19:1 at its top edge and 7.92:1 at its
+   bottom, and unlike the last number, those are against what the text is
+   actually printed on. */
+.site-footer {
+  border-top: 1px solid var(--paper-line);
+  background: linear-gradient(180deg, var(--paper-light), #faf7ee);
+  padding: 18px 0 20px;
+  margin-top: 40px;
+}
+
+.site-footer__line {
+  font-size: 0.8rem;
+  color: var(--ink);
+}
+
 /* A mounted placard: any block of text that has to sit over a painted room.
    Measured over the hall at full strength, the heading and intro come out at
    1.0-1.6:1 — the text is the same tone as the shelving and simply disappears.
@@ -1051,25 +1032,8 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
 }
 
 
-/* ─────────────────────────────────────────────────────────────────────────
-   The mail desk.
-
-   Everything here stands in the curator's room, so the rule from §5a applies
-   throughout: nothing is read against the painting. The sheets carry their own
-   shadow, the swatches sit inside a plate frame, and every note around them is
-   on a placard.
-
-   The chosen paper sets custom properties inline: --sheet-accent (its colour,
-   for the label), --sheet-veil (the measured opacity the writing panel needs
-   over that particular artwork) and the four --panel-* insets. The artwork
-   itself is NOT among them — it is an <img>, for the reason set out at
-   .mail-sheet__art below, and putting it back into a url() would reintroduce a
-   bug that is invisible in dev.
-   ───────────────────────────────────────────────────────────────────────── */
-
-/* Genuinely hidden from sight and genuinely present for a screen reader. The
-   radio inputs behind the paper swatches need this: a card that cannot be
-   tabbed to or announced is not a choice, it is a picture of one. */
+/* Genuinely hidden from sight and genuinely present for a screen reader.
+   A general utility: anything that has to be announced without being drawn. */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -1083,243 +1047,14 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   border: 0;
 }
 
-/* The page's title block, once its two explanatory paragraphs were removed.
+/* The Curator's Note's mail link.
 
-   A .placard is padded for a card with prose in it — 22px over, 24px under —
-   which around a lone eyebrow and heading leaves a slab of empty card, and then
-   the placard's own bottom margin leaves a second gap before the sheets. This
-   trims both: enough room to sit the heading properly, and a single considered
-   distance down to "Choose a sheet". */
-.placard--title {
-  padding: 16px 26px 18px;
-  margin-bottom: 14px;
-}
-
-.placard--title .eyebrow {
-  display: block;
-  margin: 0 0 2px;
-}
-
-.mail-papers {
-  margin: 0 0 22px;
-  /* The gap above is owned by .placard--title, not split between the two. */
-  margin-top: 0;
-  /* Even top and bottom now that no legend sits in the top border. */
-  padding: 18px;
-  border-width: 2px;
-}
-
-.mail-papers__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
-/* A swatch shows the artwork itself, because the artwork is the thing being
-   chosen. The card underneath is the site's own paper, so the label reads on
-   a known ground rather than on whichever pixels the thumbnail ends with. */
-.mail-swatch {
-  display: grid;
-  grid-template-rows: auto auto 1fr;
-  gap: 4px;
-  padding: 8px 8px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  background: var(--paper-light);
-  box-shadow:
-    0 0 0 1px rgba(46, 38, 28, 0.16),
-    0 1px 3px rgba(38, 30, 20, 0.10);
-  transition: box-shadow 160ms ease, transform 160ms ease;
-}
-
-.mail-swatch:hover { transform: translateY(-1px); }
-
-/* The chosen sheet is marked twice over — a heavier ring in the paper's own
-   accent AND a lift — because colour alone is not a state anyone can rely on
-   seeing. The radio underneath carries the real answer for assistive tech. */
-.mail-swatch.is-chosen {
-  box-shadow:
-    0 0 0 2px var(--sheet-accent),
-    0 2px 4px rgba(38, 30, 20, 0.14),
-    0 10px 18px -10px rgba(38, 30, 20, 0.35);
-  transform: translateY(-1px);
-}
-
-.mail-swatch:focus-within {
-  outline: 2px solid var(--botanical-green-deep);
-  outline-offset: 3px;
-}
-
-.mail-swatch__motif { color: var(--sheet-accent); line-height: 0; }
-
-.mail-swatch__name {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.92rem;
-  color: var(--ink);
-  margin-top: 2px;
-}
-
-.mail-swatch__blurb {
-  font-size: 0.74rem;
-  line-height: 1.35;
-  color: var(--ink-soft);
-}
-
-/* The sheet itself. */
-.mail-sheet {
-  position: relative;
-  background: var(--sheet-tint);
-  border-radius: 4px 14px 4px 4px;
-  padding: 20px 22px 16px;
-  color: var(--ink);
-  box-shadow:
-    0 0 0 1px rgba(46, 38, 28, 0.28),
-    0 1px 2px rgba(38, 30, 20, 0.12),
-    0 12px 24px -10px rgba(38, 30, 20, 0.30),
-    0 34px 60px -26px rgba(26, 20, 12, 0.42);
-}
-
-/* No fake torn corner. It was drawn and then removed: the trick needs the
-   page background painted over the sheet corner, and this sheet stands on a
-   painted room rather than on the page, so the triangle read as a stray
-   rectangle instead of as a tear. The asymmetric radius above is the whole of
-   the flourish now. */
-
-.mail-sheet__head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-bottom: 10px;
-  margin-bottom: 12px;
-  border-bottom: 2px solid var(--sheet-rule);
-  color: var(--sheet-accent);
-}
-
-.mail-sheet__title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-size: 0.82rem;
-}
-
-.mail-field { display: block; margin-bottom: 12px; }
-.mail-field--body { margin-bottom: 6px; }
-
-.mail-field__label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  margin-bottom: 3px;
-}
-
-.mail-sheet__from,
-.mail-sheet__body {
-  display: block;
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: var(--ink);
-  font-family: var(--font-structural);
-  padding: 0;
-}
-
-.mail-sheet__from {
-  font-size: 1.3rem;
-  line-height: 1.6;
-  border-bottom: 1px solid var(--sheet-rule);
-}
-
-/* The ruled writing area. The rules are painted as a repeating gradient and
-   the text sits on them, which only works while the line height and the
-   gradient period are the same number — 30px, in both places below. Change one
-   and the writing lifts off the lines. */
-.mail-sheet__body {
-  font-size: 1.3rem;
-  line-height: 30px;
-  resize: vertical;
-  min-height: 150px;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 29px,
-    var(--sheet-rule) 29px,
-    var(--sheet-rule) 30px
-  );
-}
-
-.mail-sheet__from::placeholder,
-.mail-sheet__body::placeholder {
-  color: var(--ink-soft);
-  opacity: 0.75;
-}
-
-.mail-sheet__from:focus-visible,
-.mail-sheet__body:focus-visible {
-  outline: 2px solid var(--botanical-green-deep);
-  outline-offset: 3px;
-  border-radius: 3px;
-}
-
-/* Bottom right of the sheet, bold. It wore an opaque pill while it sat on
-   the mail artwork and needed a ground of its own; on a tinted sheet the card
-   already provides one, so the pill would be fussy. */
-.mail-sheet__count {
-  margin: 6px 0 0;
-  text-align: right;
-  font-size: 0.7rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-soft);
-}
-
-/* Not --specimen-red: it reads 4.09:1 here, which clears the 3:1 it needs as a
-   22px eyebrow and fails the 4.5:1 this needs at 11px bold. */
-.mail-sheet__count.is-near { color: #ab5170; }
-
-/* The sealed reading. Same paper, no inputs — what the letter looks like once
-   it is written rather than while it is being written. */
-.mail-sheet--sealed { padding-bottom: 20px; }
-.mail-sheet--sealed:focus-visible { outline: 2px solid var(--botanical-green-deep); outline-offset: 4px; }
-
-.mail-sheet__written {
-  font-family: var(--font-structural);
-  font-size: 1.3rem;
-  line-height: 30px;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  margin: 0 0 18px;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 29px,
-    var(--sheet-rule) 29px,
-    var(--sheet-rule) 30px
-  );
-}
-
-.mail-sheet__sign {
-  margin: 0;
-  padding-top: 10px;
-  border-top: 2px solid var(--sheet-rule);
-  font-family: var(--font-structural);
-  font-size: 1.15rem;
-  text-align: right;
-  color: var(--ink);
-}
-
-.mail-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 18px 0 0;
-}
-
-.mail-button {
+   Named for what it is rather than for where it used to live: it carried a
+   "mail-" prefix and belonged to a mail desk — six papers, a composer, a
+   sealed preview — that no longer exists. Kept because a bare underlined <a>
+   is a poor invitation for the one thing on this site that asks a stranger to
+   get in touch. */
+.contact-button {
   display: inline-block;
   padding: 10px 18px;
   border-radius: 999px;
@@ -1335,65 +1070,13 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   box-shadow: 0 1px 2px rgba(38, 30, 20, 0.12), 0 8px 18px -10px rgba(38, 30, 20, 0.4);
 }
 
-.mail-button--primary {
+.contact-button--primary {
   background: var(--botanical-green-deep);
   border-color: var(--botanical-green-deep);
   color: var(--paper-light);
 }
 
-.mail-button:disabled {
-  cursor: default;
-  opacity: 0.55;
-  box-shadow: none;
-}
-
-.mail-button:focus-visible {
+.contact-button:focus-visible {
   outline: 2px solid var(--botanical-green-deep);
   outline-offset: 3px;
-}
-
-.mail-hint { margin-top: 14px; }
-
-/* An address that is also a copy button. Styled as the link it looks like
-   rather than as a control, since that is what it behaves like. */
-.mail-inline {
-  border: none;
-  background: none;
-  padding: 0;
-  font: inherit;
-  color: var(--specimen-red);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.mail-summary { cursor: pointer; font-size: 0.72rem; color: var(--ink-soft); }
-
-/* The plain-text letter, shown in the font the recipient may not see it in.
-   Scrolls inside itself rather than pushing the page sideways. */
-.mail-plain {
-  margin: 12px 0 0;
-  padding: 12px 14px;
-  border-radius: 8px;
-  background: var(--paper);
-  border: 1px solid var(--paper-line);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  line-height: 1.5;
-  color: var(--ink);
-  overflow-x: auto;
-  white-space: pre;
-}
-
-@media (max-width: 700px) {
-  .mail-papers__grid { grid-template-columns: repeat(2, 1fr); }
-  .mail-sheet { padding: 16px 16px 14px; }
-  .mail-actions .mail-button { flex: 1 1 auto; text-align: center; }
-}
-
-@media (max-width: 380px) {
-  .mail-papers__grid { grid-template-columns: 1fr; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mail-swatch, .mail-swatch:hover, .mail-swatch.is-chosen { transition: none; transform: none; }
 }

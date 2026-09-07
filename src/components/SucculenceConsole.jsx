@@ -698,7 +698,14 @@ export default function SucculenceConsole({ spriteIds = {} }) {
   const started = sim.day > 0;
 
   return (
-    <div className="plate-frame" style={{ padding: "24px 26px" }}>
+    <div
+      className="plate-frame"
+      // 0 at a full tank, 1 at an empty one — the ramp every drought-tinted
+      // rule in tokens.css is built against. It is set here, on the panel,
+      // because it has to inherit down to the specimen's own SVG strokes as
+      // well as the chrome; a value set on the figure could not reach both.
+      style={{ padding: "24px 26px", "--parched": Math.min(1, Math.max(0, 1 - pct / 100)) }}
+    >
       <p className="eyebrow" style={{ marginBottom: "4px" }}>Run the Drought</p>
       <p style={{ color: "var(--ink-soft)", marginTop: 0, marginBottom: "20px" }}>
         A real succulent doesn&rsquo;t adjust itself to survive a dry season &mdash; it arrives at the

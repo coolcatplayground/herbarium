@@ -152,44 +152,17 @@ keyed `none`, so its art is `habitat-none.png`. The encoder aliases
 is the point. Add a room there when you paint one, then point a
 `<RoomBackdrop image="rooms/<name>.jpg" />` at it from the page.
 
-## The mail desk
+## Correspondence
 
-`/write` — six sheets of stationery, a ruled writing area, and a letter drawn in
-plain text for the curator to receive. Papers and letter-building live in
-`src/data/curatorMail.js`.
+The Curator's Note carries a mailto: link and the address printed beside it
+as selectable text. Both, not one — a bare mailto: does nothing visible for a
+visitor whose browser has no mail client wired to it, and gives them no clue
+why.
 
-The papers are **drawn, not borrowed**. Each is a tint, an accent, a rule
-colour and a Unicode glyph in `MAIL_PAPERS`, plus an inline-SVG mark in
-`MailMotif.jsx`. No file, no fetch, nothing from the games.
-
-That is deliberate and it is the second time round: an earlier pass used the
-real Generation IV mail canvases and the real PokéAPI bag icons, and both were
-official artwork redistributed from this repository on a site meant to be shown
-to the company that owns it. See DEVLOG §61.
-
-Adding a paper is one entry in that array and one case in `MailMotif`. The one
-measured field is **`accent`**: it carries the 13px paper name and must clear
-4.6:1 against the tint's *darkest* gradient stop. Two of the first six failed
-that when they were picked by eye.
-
-### The desk does not collect anything, and that is load-bearing
-
-The letter leaves by the visitor's own mail client (`mailtoHref`) or by their
-clipboard. There is no endpoint, no spreadsheet, no stored copy. An Apps Script
-desk was built and removed — see DEVLOG §63 for why the alternatives were worse
-than they sound.
-
-**The sealed sheet says so in prose: "nothing is sent from this page and nothing
-is kept here."** That sentence is a promise made to a stranger about their own
-message, and it is the reason any future collecting route is a two-file change
-rather than a one-file one. `curatorMail.test.js` fails if `MAIL_ENDPOINT`,
-`collectsLetters` or `buildSubmission` come back, which is the reminder to
-rewrite the copy in the same commit — not a ban on ever collecting letters.
-
-The clipboard route is not a fallback. `mailtoHref` returns `null` above
-`MAILTO_MAX`, which an ordinary-length letter in Thai reaches easily, because
-every character costs nine once percent-encoded. Treat both routes as primary.
-
+There was a mail desk at `/write` — six sheets of invented stationery, a ruled
+writing area, a sealed preview, a letter drawn in plain text. It was removed
+whole: the page, its route, `curatorMail.js`, `MailMotif.jsx` and every
+`.mail-`rule. Nothing on this site sends or stores anything. See DEVLOG §67.
 ## Specimen plates
 
 The illustrated set that replaces the official artwork, one drawing at a time.

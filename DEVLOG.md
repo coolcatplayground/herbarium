@@ -2340,6 +2340,154 @@ at **7.36:1**. An outline would have made it worse: a stroke lifts text off a
 busy backdrop, and this sits on flat paper, where it only thickens small glyphs
 into mud.
 
+> **This paragraph is wrong.** The footer does not sit on flat paper, the
+> measurement was taken against the wrong background, and the change it
+> describes did not fix anything. See §66.
+
+---
+
+### 65. A tidy-up that found an invisible cactus
+
+The job was to delete what nothing uses any more. Three of the four things it
+found were what it went looking for. The fourth was a specimen that had not
+been on screen for as long as its console has existed.
+
+**Cacnea's drawing was never drawn.** `.dsvg-body` is a `<path fill="none">` and
+`.dsvg-rib` are `<line>`s, so a stroke is the only thing that makes either
+visible. Both take that stroke from
+`color-mix(in srgb, var(--ink-soft) calc(var(--parched) * 50%), …)`, and
+`--parched` was set nowhere. An unset variable makes the `calc()` invalid, which
+makes the `color-mix()` invalid, which drops the whole declaration — and SVG's
+default stroke is `none`. Measured on the built site: `stroke: "none"` on the
+body path and all six ribs. The console drew its sky, its ground, its water
+line and its stomata around an empty space where the cactus goes.
+
+Nothing reported it because nothing could. There is no error, no warning and no
+network request — CSS discards an invalid declaration in silence, which is the
+whole point of the cascade. `git log -S` settles what happened: `--parched` has
+never appeared in any `.jsx` file in the project's history. The commit that
+wrote these rules, `c9842c8` "Rebuild the Cacnea drought console as an
+instrument", wrote the ramp and never wired it up.
+
+The fix is one property on the panel — `1 - pct / 100`, clamped, which is
+exactly what the CSS comment always said it wanted: *0 at a full tank, 1 at an
+empty one*. It goes on the panel rather than the figure because it has to
+inherit down to the SVG strokes and the chrome both. Verified by running the
+drought: `--parched` ramps 0 → 0.62 → 0.82 → 0.90 as the reserve drains, and
+the tissue moves off `--botanical-green-deep` toward the drab.
+
+One measurement trap worth recording, because it nearly produced a false
+report. Reading the stroke at five `--parched` values inside a single frame
+returns the *same* colour five times — `stroke` carries a 0.35s transition, and
+all five reads land inside it. The colours only separate when each is read on a
+fresh element with no transition in flight. The ramp was fine; the instrument
+was wrong.
+
+**And the three genuinely dead things.** `.evo-node` and its four siblings were
+applied in JSX until `4047e63` dropped the markup and left the rules;
+GrowthLineage replaced that UI and styles itself entirely inline. `.dlog-entry`
+and `@keyframes dlog-in` describe a `--kind` custom property that no element
+ever set — the console's log renders with `className="mono"` and an inline
+colour instead. `SIZE_GROUP_CANONICAL` was an `Object.keys()` nobody read, which
+unlike a surplus `export` keyword actually ran and allocated on every import.
+Together, 900 bytes off the stylesheet.
+
+**What was deliberately not cleaned.** Four exports flagged as unused —
+`parseFutureSpecies`, `parseHabitatOverrides`, `formatVersion`, `TYPE_COLORS` —
+are used inside their own modules and exported for a reason. All four loaders
+expose `parseX` beside `loadX` so parsing can be tested without a network, and
+`parseFieldNotes` is imported by two test files on exactly that basis.
+De-exporting the two quiet ones would break a uniform convention across four
+files to remove a keyword that Vite tree-shakes anyway. An unused export is not
+dead code.
+
+`public/concepts/ant-fungi.jpg` was flagged too and is not unused: it is named
+by `public/future-species.txt`, which the audit did not scan. Content files
+reference assets, so any future sweep has to read them.
+
+---
+
+### 66. The footer was never on paper
+
+§64 measured the footer disclaimer at 5.04:1, called the contrast adequate,
+blamed the 11.5px type, grew it to 12.8px and darkened it to `--ink` for a
+nominal 7.36:1. Shipped. The curator's reply was a screenshot of the line
+dissolving into a sunlit tiled floor, and the question "do you think this is
+readable?"
+
+No. And the reason is that the measurement was against a background the text is
+not on.
+
+**`.room` is `position: fixed; inset: 0`.** The painted backdrop covers the
+whole viewport, which includes the strip the footer occupies. So the disclaimer
+was never being read against the page's cream gradient — it was printed
+directly onto a photograph of a room, with the left half of the line falling
+across the brightest part of the floor. No single contrast ratio describes text
+on a photograph. The number was real and measured and about the wrong pair of
+colours, which is worse than not measuring, because it carried the authority of
+a measurement.
+
+Growing the type made a larger illegible thing.
+
+**The project had already written the answer down.** In `tokens.css`, directly
+above `.placard`: *"Both pages sweep clean — no text element without an opaque
+ground. If that ever stops being true, mount the new block rather than putting
+the scrim back."* The rule was there, the mechanism was there, and the footer
+was the one text element on the site that had never been swept — because it
+lives in `App.jsx` rather than in any page, and every audit was done page by
+page. A rule enforced by reading each page cannot see the chrome around them.
+
+So the footer is a plinth now: an opaque paper band across the full width,
+carrying the hairline it already had as its top edge, with the line printed on
+that instead of on the floor of the hall. `--ink` on the band measures 8.19:1
+at its top edge and 7.92:1 at its bottom — and this time against what the text
+is actually printed on. Museums put the small print on the baseboard for the
+same reason.
+
+**Two things worth keeping from this.** A contrast figure is only as good as the
+claim about what is behind the text, and "what is behind the text" is a layout
+question, not a colour question — `position: fixed` on a decorative layer means
+it is behind *everything*, including the parts of the page that are not in any
+page. And a sweep organised around pages will always miss the header and the
+footer; they need auditing as their own surface.
+
+---
+
+### 67. The mail desk goes, and the address stands on its own
+
+§63 removed the desk's collecting half and kept the composer, on the reading
+that "back to our first approach — only the mail to curator, then mailto:"
+meant the mailto: composer stayed. That was wrong, and it took two rounds of
+the curator pointing at a live page to establish it. The page itself was the
+thing meant to go.
+
+So it is gone whole: `/write` and its route, `WriteToCurator.jsx`,
+`curatorMail.js` and its tests, `MailMotif.jsx`, and every `.mail-` rule in the
+stylesheet. 11 kB off the JavaScript and 4 kB off the CSS — the desk was a
+tenth of the site's stylesheet for one page.
+
+**Two things were lifted out of the block before it was deleted**, because they
+were only living there by accident. `.sr-only` is a general utility used across
+the site and would have taken every visually-hidden label with it. And the
+button is still needed — it is now `.contact-button`, renamed because a
+`mail-` prefix pointing at a mail desk that does not exist is how the next
+reader wastes ten minutes. A guard in the removal script rejected the edit
+until no `.mail-` selector survived, which caught the rename mid-way: the
+prose in my own replacement comment named the old class and tripped it.
+
+**The Curator's Note now carries the link and the address side by side.** Not
+one or the other. The deleted comment on that button made a real argument —
+that a bare `mailto:` does nothing visible for the many visitors whose browser
+has no mail client wired to it, and tells them nothing about why — and deleting
+the desk does not answer it. Printing the address as selectable text beside the
+link does: the link is a convenience for the people it works for, and never the
+only way through.
+
+**`/write` is now an unknown route, and unknown routes render an empty main.**
+There is no catch-all in this app and never has been, so a stale bookmark
+behaves exactly like a typo. That is consistent rather than good; a redirect is
+one line if the deleted URL turns out to have been shared.
+
 ---
 
 ## Planned
