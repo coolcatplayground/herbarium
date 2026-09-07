@@ -5,9 +5,6 @@ import RoomBackdrop from "../components/RoomBackdrop";
 import MailMotif from "../components/MailMotif";
 import {
   CURATOR_ADDRESS,
-  MAIL_ENDPOINT,
-  buildSubmission,
-  collectsLetters,
   DEFAULT_PAPER,
   MAIL_PAPERS,
   MESSAGE_MAX,
@@ -67,24 +64,14 @@ export default function WriteToCurator() {
   // because at that moment it stops being a curiosity and becomes the only way
   // the letter gets out.
   const [showPlain, setShowPlain] = useState(false);
-  // Optional, and only ever used to reply. Asked for because a correction you
-  // cannot answer is half a conversation — but never required, because plenty
-  // of people will rightly not want to hand over an address to say that a
-  // placard has a date wrong.
-  const [replyTo, setReplyTo] = useState(draft?.replyTo ?? "");
-  // The honeypot. Never shown, never focusable, never announced. A person
-  // cannot fill it in; a bot filling every field it finds will.
-  const [trap, setTrap] = useState("");
-  // idle · sending · delivered · failed
-  const [delivery, setDelivery] = useState("idle");
 
   const sealedRef = useRef(null);
   const paper = getPaper(paperId);
   const written = message.trim().length > 0;
 
   useEffect(() => {
-    saveDraft({ paper: paperId, from, replyTo, message });
-  }, [paperId, from, replyTo, message]);
+    saveDraft({ paper: paperId, from, message });
+  }, [paperId, from, message]);
 
   // Moving focus to the sealed letter rather than leaving it at the button that
   // is no longer on screen. Without this a screen reader is told nothing
@@ -111,34 +98,6 @@ export default function WriteToCurator() {
       // Saying so is more use than a button that silently does nothing.
       setCopied("failed");
       setShowPlain(true);
-    }
-  }
-
-  // Posting the letter to the curator's desk, when there is a desk to post to.
-  //
-  // The response is read rather than fired blind: Apps Script's /exec redirects
-  // to a googleusercontent URL that does send CORS headers, so a normal fetch
-  // usually can read the reply — but "usually" is not "always", and a letter
-  // that vanished must never be reported as delivered. So a throw is treated as
-  // an unknown outcome, not a success, and the page says exactly that and keeps
-  // the other two routes open.
-  async function send() {
-    setDelivery("sending");
-    try {
-      const res = await fetch(MAIL_ENDPOINT, {
-        method: "POST",
-        // text/plain keeps this a "simple" request, so the browser sends it
-        // without a preflight — which Apps Script does not answer.
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({
-          ...buildSubmission({ paper: paperId, from, replyTo, message }),
-          hp: trap,
-        }),
-      });
-      const body = await res.json();
-      setDelivery(body && body.ok ? "delivered" : "failed");
-    } catch {
-      setDelivery("failed");
     }
   }
 
@@ -244,18 +203,6 @@ export default function WriteToCurator() {
               />
             </label>
 
-            {/* Never shown, never focusable, never announced. A person cannot
-                fill it in; a bot filling every field it finds will. */}
-            <input
-              className="sr-only"
-              type="text"
-              tabIndex={-1}
-              aria-hidden="true"
-              autoComplete="off"
-              value={trap}
-              onChange={(e) => setTrap(e.target.value)}
-            />
-
             <p
               className={`mail-sheet__count mono${
                 message.length > MESSAGE_MAX - 60 ? " is-near" : ""
@@ -264,25 +211,6 @@ export default function WriteToCurator() {
             >
               {message.length} of {MESSAGE_MAX}
             </p>
-          </div>
-
-          <div className="mail-meta">
-            {collectsLetters() && (
-              <label className="mail-reply">
-                <span className="mail-reply__label mono">
-                  Your address — optional, only used to reply
-                </span>
-                <input
-                  type="email"
-                  inputMode="email"
-                  autoComplete="email"
-                  maxLength={254}
-                  value={replyTo}
-                  onChange={(e) => setReplyTo(e.target.value)}
-                  placeholder="leave blank if you would rather not"
-                />
-              </label>
-            )}
           </div>
 
           <div className="mail-actions">
@@ -331,25 +259,8 @@ export default function WriteToCurator() {
           </div>
 
           <div className="mail-actions">
-            {collectsLetters() && (
-              <button
-                type="button"
-                className="mail-button mail-button--primary"
-                onClick={send}
-                disabled={delivery === "sending" || delivery === "delivered"}
-              >
-                {delivery === "sending"
-                  ? "Sending…"
-                  : delivery === "delivered"
-                    ? "Delivered"
-                    : "Send it to the curator"}
-              </button>
-            )}
             {href ? (
-              <a
-                className={`mail-button${collectsLetters() ? "" : " mail-button--primary"}`}
-                href={href}
-              >
+              <a className="mail-button mail-button--primary" href={href}>
                 Open it in your mail app
               </a>
             ) : (
@@ -373,17 +284,6 @@ export default function WriteToCurator() {
           </div>
 
           <div className="placard placard--quiet mail-hint" aria-live="polite">
-            {delivery === "delivered" && (
-              <p style={{ margin: "0 0 8px" }}>
-                Delivered to the desk. It will be read — and if you left an address, answered.
-              </p>
-            )}
-            {delivery === "failed" && (
-              <p style={{ margin: "0 0 8px" }}>
-                The desk did not confirm it, so treat this letter as unsent rather than
-                lost — the two routes below both still work.
-              </p>
-            )}
             {copied === "letter" && (
               <p style={{ margin: "0 0 8px" }}>
                 Copied. Paste it into a mail to{" "}
@@ -413,12 +313,17 @@ export default function WriteToCurator() {
             {/* The disclosure that used to sit in the page's preamble. It reads
                 better here and it is fairer here: you are told what becomes of
                 your letter at the moment you are deciding to send it, not in a
-                paragraph above a blank sheet. Still generated from
-                collectsLetters(), so it cannot outlive the behaviour. */}
+                paragraph above a blank sheet.
+
+                It was a conditional once, generated from a collectsLetters()
+                that reported whether a Google Sheet was wired up. There is no
+                longer anything for it to be conditional on, and a sentence with
+                one branch is a sentence — but the pairing is the thing to keep:
+                if a desk ever collects letters, this line changes in the same
+                commit. See the guard in curatorMail.test.js. */}
             <p style={{ margin: "0 0 8px" }}>
-              {collectsLetters()
-                ? "Sending delivers this letter to the curator's desk, where it is kept until it has been read. An address is optional, used only to reply, and shown to nobody else."
-                : "Nothing is sent from this page and nothing is kept here — the letter leaves by your own mail app or your clipboard."}
+              Nothing is sent from this page and nothing is kept here — the letter leaves
+              by your own mail app or your clipboard.
             </p>
             <p style={{ margin: 0 }}>
               The curator reads at{" "}

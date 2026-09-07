@@ -2265,6 +2265,83 @@ all and are flagged as needing a decision rather than a drawing.
 
 ---
 
+### 63. The desk stops collecting, and the letter goes back out by hand
+
+The mail desk had a second route built and switched off: post the letter to a
+Google Apps Script endpoint, which appends it to a private spreadsheet. `MAIL_ENDPOINT`
+held `null`, so the site had never used it, and the page's privacy copy was
+generated from a `collectsLetters()` that read that constant.
+
+The question that killed it was whether the desk could email the letter straight
+to the curator as a picture, and skip the spreadsheet. Worth writing down, because
+the answer is not the obvious one.
+
+**A browser cannot send email, and `mailto:` cannot carry an attachment.** There
+is no attachment parameter in the scheme and no browser will invent one, so the
+image can never travel the route the site actually uses. What *can* send mail is
+Apps Script, running as the curator — which means "skip the backend and go
+straight to email" is exactly backwards. The script is the emailer; the
+spreadsheet is the incidental half.
+
+**And the image is the wrong payload anyway.** The plan downstream of this is a
+curator's column: pick a letter, answer it, publish both. Every one of those
+steps wants the text — selecting a line to quote, searching an inbox for a
+specimen name, copying a DOI. A picture of a letter makes all three retyping. An
+HTML email would have given the stationery *and* kept the text, which is the
+version that would have been built if any of it were built.
+
+None of it was, because the honest cost is a second service to deploy, keep
+alive and re-version, plus an open endpoint that puts strangers' mail in the
+curator's inbox rather than in rows that can be ignored — all so a static site
+with two working routes could have a third.
+
+**So it is gone**: `MAIL_ENDPOINT`, `collectsLetters`, `buildSubmission`, the
+`fetch`, the delivery states, the honeypot and the optional reply-address field,
+and `scripts/apps-script/mail-desk.gs`. The honeypot and the address went with
+it rather than surviving on their own — a honeypot guards an endpoint, and the
+address existed so a stored letter could be answered. With no endpoint the
+visitor's own mail client supplies the return address by being the thing that
+sent it.
+
+**The removal has a hostage, so it has a test.** The sealed sheet tells a
+stranger, in prose, "nothing is sent from this page and nothing is kept here."
+That sentence used to be generated from `collectsLetters()` precisely so it
+could not outlive the behaviour, and deleting the function deletes that
+guarantee. `curatorMail.test.js` now fails if any of the three names come back,
+which is not a ban on ever collecting letters — it is the reminder to rewrite
+the promise in the same commit as the route.
+
+---
+
+### 64. Two paragraphs that were captions on clear pictures
+
+The Propagation Bench had a caveat under the projector — not a real Pokémon, not
+a prediction, the science is real and the leap is ours — and an aside under the
+drawer explaining that the empty slots were deliberate.
+
+Both went. The drawer one is the clearer case: the drawer renders six mounts,
+five of them visibly empty, indexed and labelled *unfilled*. The note on
+`DRAWER_SLOTS` had already made the argument — "a drawer with visible room in it
+says that better than a sentence promising more later" — and then a sentence
+promising more later sat directly underneath it. The projector's caveat was
+answering a question the room does not raise: it is called a bench of *concepts*,
+each framed as a reading of a real paper, and nothing there reads as a claim
+about forthcoming games. Both were also the flattest prose on their page, which
+is a poor last thing to leave a reader with.
+
+The footer disclaimer is the opposite problem and got the opposite treatment.
+It is the one line on the site not in the curator's voice and the one that has
+to be legible to somebody not enjoying themselves, and it was hard to read. The
+instinct was to outline it. Measuring first said otherwise: `--ink-soft` on the
+page's bottom gradient stop is **5.04:1**, which passes AA. The ratio was never
+the problem — `0.72rem` is 11.5px, in a mono face, where thin strokes and a
+small x-height leave nothing to spare. So it grew to `0.8rem` and took `--ink`
+at **7.36:1**. An outline would have made it worse: a stroke lifts text off a
+busy backdrop, and this sits on flat paper, where it only thickens small glyphs
+into mud.
+
+---
+
 ## Planned
 
 ### Habitat pages — an exhibition wing

@@ -32,8 +32,20 @@ export default function App() {
           <Route path="/write" element={<WriteToCurator />} />
         </Routes>
       </main>
-      <footer style={{ borderTop: "1px solid var(--paper-line)", padding: "20px 0", marginTop: "40px" }}>
-        <div className="container mono" style={{ fontSize: "0.72rem", color: "var(--ink-soft)" }}>
+      {/* The one line on this site that is not in the curator's voice, and the
+          one that has to be legible to someone who is not enjoying themselves.
+          It was 0.72rem of --ink-soft, which measures 5.04:1 against the page's
+          bottom gradient stop — passing AA, and still hard to read, because the
+          ratio was never the problem. 0.72rem is 11.5px, and this is a mono
+          face: thin strokes and a small x-height at a size where neither can
+          spare anything.
+
+          So it grows to 0.8rem and takes --ink at 7.36:1. An outline was the
+          other idea and is the wrong tool — a stroke exists to lift text off a
+          busy backdrop, and this sits on flat paper, where it would only thicken
+          small glyphs into mud. */}
+      <footer style={{ borderTop: "1px solid var(--paper-line)", padding: "22px 0", marginTop: "40px" }}>
+        <div className="container mono" style={{ fontSize: "0.8rem", color: "var(--ink)" }}>
           CC Herbarium &mdash; a fan-made field guide. Not affiliated with Nintendo, Game Freak, or Creatures Inc.
         </div>
       </footer>

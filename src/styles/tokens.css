@@ -775,15 +775,6 @@ button, input, select {
 .proj__cite a { color: var(--beam); }
 .proj__cite-tail { color: rgba(219, 233, 238, .55); }
 
-.proj__footnote {
-  margin: 14px 2px 0; font-size: .76rem; line-height: 1.65; color: var(--ink-soft);
-}
-.bench__aside {
-  margin: 26px 2px 0; max-width: 62ch;
-  font-size: .84rem; line-height: 1.7; color: var(--ink-soft);
-  padding-left: 14px; border-left: 2px solid var(--paper-shadow);
-}
-
 @media (max-width: 760px) {
   .proj__grid { grid-template-columns: 1fr; gap: 20px; }
   .proj__stage { padding: 20px 18px; }

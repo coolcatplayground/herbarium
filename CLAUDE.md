@@ -172,29 +172,23 @@ measured field is **`accent`**: it carries the 13px paper name and must clear
 4.6:1 against the tint's *darkest* gradient stop. Two of the first six failed
 that when they were picked by eye.
 
-### Turning the desk on
+### The desk does not collect anything, and that is load-bearing
 
-The desk posts letters to a Google Sheet **only when `MAIL_ENDPOINT` in
-`src/data/curatorMail.js` holds an Apps Script /exec URL.** Until then it sends
-nothing and stores nothing.
+The letter leaves by the visitor's own mail client (`mailtoHref`) or by their
+clipboard. There is no endpoint, no spreadsheet, no stored copy. An Apps Script
+desk was built and removed — see DEVLOG §63 for why the alternatives were worse
+than they sound.
 
-1. New Google Sheet → Extensions → Apps Script.
-2. Paste `scripts/apps-script/mail-desk.gs` over Code.gs, save.
-3. Deploy → New deployment → Web app, *execute as me*, *access: anyone*.
-4. Paste the /exec URL into `MAIL_ENDPOINT`.
+**The sealed sheet says so in prose: "nothing is sent from this page and nothing
+is kept here."** That sentence is a promise made to a stranger about their own
+message, and it is the reason any future collecting route is a two-file change
+rather than a one-file one. `curatorMail.test.js` fails if `MAIL_ENDPOINT`,
+`collectsLetters` or `buildSubmission` come back, which is the reminder to
+rewrite the copy in the same commit — not a ban on ever collecting letters.
 
-**The privacy copy on the page is generated from `collectsLetters()`, not
-written by hand.** With no endpoint the page says nothing is kept; with one it
-says letters are delivered and an address is optional. Never hard-code either
-sentence — the whole point is that the promise cannot outlive the behaviour.
-
-Re-deploy the Apps Script as a **new version** after editing it, or the old code
-keeps serving. And the endpoint is public by necessity: a honeypot field and a
-daily cap are what stand between it and a spreadsheet with a million rows in it.
-Apps Script cannot see caller IPs, so there is no per-sender limiting.
-
-Storing letters makes the privacy note in MILESTONE §9 a requirement rather than
-a tidy-up.
+The clipboard route is not a fallback. `mailtoHref` returns `null` above
+`MAILTO_MAX`, which an ordinary-length letter in Thai reaches easily, because
+every character costs nine once percent-encoded. Treat both routes as primary.
 
 ## Specimen plates
 

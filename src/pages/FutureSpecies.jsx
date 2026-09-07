@@ -119,12 +119,6 @@ export default function FutureSpecies() {
               }
             />
           </div>
-
-          <p className="bench__aside placard placard--quiet">
-            The drawer has room in it on purpose. A concept gets added when a real finding gives
-            it something to stand on &mdash; a newly described species, or a relationship somebody
-            has just worked out &mdash; rather than whenever an idea turns up.
-          </p>
         </>
       )}
     </div>
