@@ -56,3 +56,8 @@ habitat-*.png
 
 # Sprites are fetched at build time, not committed (scripts/fetch-sprites.mjs)
 public/sprites/
+
+# Working notes kept locally, not published
+CLAUDE.md
+DEVLOG.md
+MILESTONE.md
