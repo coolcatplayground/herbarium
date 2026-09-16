@@ -2,9 +2,7 @@ import useDocumentTitle from "../hooks/useDocumentTitle";
 import RoomBackdrop from "../components/RoomBackdrop";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// The portrait and the address are real. The three `bio` paragraphs are still
-// the scaffold and read like it — everything inside CURATOR is plain text and
-// safe to rewrite by hand.
+// Everything inside CURATOR is plain text and safe to rewrite by hand.
 // ─────────────────────────────────────────────────────────────────────────────
 const CURATOR = {
   name: "The Curator",
@@ -20,10 +18,32 @@ const CURATOR = {
   // Where to reach the curator. Rendered as a mailto: link; set it back to null
   // and the section says plainly that there is no address yet.
   email: "coolcatruby128@gmail.com",
+  // Each entry is one placard paragraph. `lead` (optional) renders in bold
+  // ahead of the text.
   bio: [
-    "A placeholder, for now. This is where the person behind the collection introduces themselves — who they are, what they do when they are not writing about plants, and what brought them to a Pokédex and a plant-biology textbook at the same time.",
-    "The short version of why this exists: the designs kept echoing real botany, and once that is noticed it is difficult to stop noticing. A Pokémon with a bulb on its back is a storage organ. A tumbleweed that rolls is a plant executing its last instruction. Somebody had to write it all down, and it turned out to be me.",
-    "What I bring to it is a plant-genetics background and a long-standing Pokédex habit, which is a narrow enough overlap that the collection had to be built rather than found.",
+    {
+      text: "Welcome to the herbarium. I’m the curator, which means I write the labels, dust the glass cases and settle arguments about taxonomy. Please don’t tap on the glass. The Bellsprout startle easily.",
+    },
+    {
+      lead: "On the founding of the collection.",
+      text: "The first field expedition was conducted in Pokémon Red, in Japanese, a language the curator could not read at the time. Field methods were therefore primitive. To reach the seventh gym, every statue in the abandoned mansion was investigated by pressing A at it until something clicked. The archive records this as “thorough.”",
+    },
+    {
+      lead: "Specimen No. 001: Oddish.",
+      text: "Collected ahead of the fourth gym, where Erica uses Poison Powder with the unshakeable confidence of someone who has never met a Poison type. The specimen, at level 14, could not be poisoned, and Absorbed her entire team. It later matured into a Vileplume of about level 80 and completed the Elite Four on Struggle alone, having run out of PP. It remains the founding specimen of this herbarium and is not available for loan.",
+    },
+    {
+      lead: "Curatorial qualifications.",
+      text: "Field assistant on expeditions from coastline to mountain to wetland, mostly after aquatic mosses and carnivorous plants. This was followed by a doctorate in plant genome editing, a discipline in which nothing funny happens because everything follows protocol. A lasting side effect is that the curator now sees plants that look like creatures everywhere. The institution does not consider this a problem.",
+    },
+    {
+      lead: "Construction.",
+      text: "The herbarium stood unbuilt for years for lack of carpenters. It was finally raised with the help of Mr. AI Carpenter. The curator supplied the botany, the labels and the stubbornness, and Mr. AI Carpenter did the carpentry.",
+    },
+    {
+      lead: "Staff and facilities.",
+      text: "One cat, head of security, usually asleep on duty. Refreshments are Thai tea, as seen in the official portrait. After hours, the curator can be found battling on Showdown or exploring uncharted regions.",
+    },
   ],
 };
 
@@ -108,8 +128,9 @@ export default function About() {
               {CURATOR.role}
             </p>
             {CURATOR.bio.map((para) => (
-              <p key={para.slice(0, 32)} style={{ margin: "0 0 10px", fontSize: "0.95rem" }}>
-                {para}
+              <p key={para.text.slice(0, 32)} style={{ margin: "0 0 10px", fontSize: "0.95rem" }}>
+                {para.lead && <strong>{para.lead} </strong>}
+                {para.text}
               </p>
             ))}
           </div>
