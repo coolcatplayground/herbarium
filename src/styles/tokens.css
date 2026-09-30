@@ -1251,15 +1251,19 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
    the part standing on its ground line. Set down on the lower part of the
    figure, the way a mounted specimen sits on its sheet, and shaded like the
    cards so it lies on the paper instead of floating over it. */
-.film__plate {
-  display: block;
+.film__grow {
   width: 100%;
   height: 92%;
   margin-top: auto;
+  overflow: hidden;
+}
+.film__plate {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   object-position: 50% 100%;
   filter: drop-shadow(0 6px 8px rgba(58, 46, 34, 0.18));
-  will-change: clip-path;
 }
 
 .film__label {

@@ -87,11 +87,23 @@ function buildTracks(reduce) {
       [coveredAt, { opacity: 1 }, "step-end"],
       [coveredAt + 0.01, { opacity: 0 }],
     ]);
-    // The plate grows up from its ground line, the way the plant would.
+    // The plate grows up from its ground line, the way the plant would: a
+    // window rises from the ground while the plate inside it moves down by
+    // exactly as much, so the plate stays put and is uncovered from the
+    // bottom up. It is two opposed slides rather than an animated clip-path
+    // because a browser can only hand transforms and opacity to the GPU. A
+    // clip-path animation is redrawn on the main thread every frame, and
+    // eighteen of them running the length of the film held it to nine frames
+    // a second.
     const lead = first ? 0.45 : 0.2;
+    const ease = "cubic-bezier(.3,.6,.35,1)";
+    T[`grow-${s.id}`] = track([
+      [s.at + lead, { transform: "translateY(100%)" }, ease],
+      [s.at + lead + 0.75, { transform: "translateY(0%)" }],
+    ]);
     T[`plate-${s.id}`] = track([
-      [s.at + lead, { clipPath: "inset(100% 0% 0% 0%)" }, "cubic-bezier(.3,.6,.35,1)"],
-      [s.at + lead + 0.75, { clipPath: "inset(0% 0% 0% 0%)" }],
+      [s.at + lead, { transform: "translateY(-100%)" }, ease],
+      [s.at + lead + 0.75, { transform: "translateY(0%)" }],
     ]);
     const t = s.at + (first ? 0.6 : 0.3);
     T[`label-${s.id}`] = appear(t, null, 8, 0.35);
@@ -246,13 +258,15 @@ export default function IntroFilm() {
           {SHEETS.map((s, i) => (
             <div key={s.id} className="film__sheet" data-track={`sheet-${s.id}`}>
               <div className="film__figure">
-                <img
-                  className="film__plate"
-                  data-track={`plate-${s.id}`}
-                  src={plateUrl(s.slug)}
-                  alt=""
-                  decoding="async"
-                />
+                <div className="film__grow" data-track={`grow-${s.id}`}>
+                  <img
+                    className="film__plate"
+                    data-track={`plate-${s.id}`}
+                    src={plateUrl(s.slug)}
+                    alt=""
+                    decoding="async"
+                  />
+                </div>
               </div>
               <div className="film__label" data-track={`label-${s.id}`}>
                 <p className="film__label-head">
