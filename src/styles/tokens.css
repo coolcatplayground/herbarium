@@ -1218,9 +1218,9 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   /* minmax(0, …): without it a plate — sized from its height, square — tells
      the grid its minimum width is its height, and the grid obliges by
      squeezing the label column until the label line wraps. */
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
   align-items: center;
-  column-gap: 3%;
+  column-gap: 2.5%;
   padding: 3% 5% 4%;
   /* paper: a fine grain, a slow cloudiness, and light from the upper left */
   background:
@@ -1244,16 +1244,22 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   min-height: 0;
   min-width: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-end;
 }
-.film__figure > .plate,
-.film__figure > .film__tumble {
-  position: relative;
-  height: 100%;
-  width: auto;
-  max-width: 100%;
-  aspect-ratio: 1;
+/* The specimen's own plate, as the Gallery serves it: a transparent WebP with
+   the part standing on its ground line. Set down on the lower part of the
+   figure, the way a mounted specimen sits on its sheet, and shaded like the
+   cards so it lies on the paper instead of floating over it. */
+.film__plate {
+  display: block;
+  width: 100%;
+  height: 92%;
+  margin-top: auto;
+  object-fit: contain;
+  object-position: 50% 100%;
+  filter: drop-shadow(0 6px 8px rgba(58, 46, 34, 0.18));
+  will-change: clip-path;
 }
 
 .film__label {
@@ -1304,90 +1310,6 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   font-style: italic;
   font-size: clamp(0.8rem, 1.75cqi, 1.02rem);
   color: var(--ink-soft);
-}
-
-/* The plates. Stroke widths are in the drawing's own units, so they scale
-   with it: a hairline on a desktop frame is still a hairline on a phone. */
-.plate {
-  position: relative;
-}
-/* The three layers of a plate — see Plate.jsx for why they are separate. */
-.plate__layer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  overflow: visible;
-}
-.plate__ink {
-  fill: none;
-  stroke: #4a3b2d;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-/* One dash the length of the whole line (pathLength="1"), then a gap a hair
-   longer, so a dash offset of 1 hides the line completely — round caps
-   included — and 0 shows all of it. */
-.plate--drawn .plate__ink,
-.film__ground {
-  stroke-dasharray: 1 1.02;
-}
-.plate__fine {
-  fill: none;
-  stroke: #4a3b2d;
-  stroke-opacity: 0.6;
-  stroke-width: 0.8;
-  stroke-linecap: round;
-}
-.plate__back {
-  fill: none;
-  stroke: #4a3b2d;
-  stroke-opacity: 0.3;
-  stroke-width: 0.85;
-  stroke-linecap: round;
-}
-.plate__dots {
-  fill: #4a3b2d;
-  fill-opacity: 0.7;
-}
-.plate__dots--speckle {
-  fill: #9e4763;
-  fill-opacity: 0.42;
-}
-.plate__shade {
-  fill: #3a2e22;
-  fill-opacity: 0.62;
-}
-.plate__fig {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 12px;
-  fill: #4a3b2d;
-  fill-opacity: 0.82;
-}
-
-/* The tumbleweed's sheet lets it roll in from past the paper's own edge and
-   under the label, rather than appearing at the edge of its box. */
-.film__sheet--tumbleweed {
-  overflow: hidden;
-}
-.film__tw-shadow,
-.film__tw-roll {
-  position: absolute;
-  inset: 0;
-}
-.film__tw-roll {
-  will-change: transform;
-}
-.film__tw-roll > .plate {
-  width: 100%;
-  height: 100%;
-}
-.film__seed {
-  fill: #6b5236;
-  transform-box: fill-box;
-  transform-origin: center;
 }
 
 /* The title, on a placard in front of the crest. */

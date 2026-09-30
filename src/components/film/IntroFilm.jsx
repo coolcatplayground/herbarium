@@ -1,24 +1,18 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import Plate from "./Plate";
-import { TUMBLE } from "./drawings";
+import { plateUrl } from "../../data/plates";
 import {
   CAPTIONS,
   DURATION,
   SHEETS,
+  SHEET_SLIDE,
   SHOTS,
   TITLE,
   TRANSCRIPT,
   appear,
   formatNo,
-  rollStops,
-  rollTimeAt,
+  formatRoom,
   track,
 } from "../../data/introFilm";
-
-// Where the seed lands, in the plate's units, and how far behind the plant's
-// centre it falls.
-const SEEDS = [380, 322, 272];
-const SEED_LAG = 40;
 
 // The introduction at the top of the Gallery.
 //
@@ -75,65 +69,35 @@ function buildTracks(reduce) {
 
   for (const c of CAPTIONS) T[`cap-${c.id}`] = appear(c.in, c.out);
 
+  // One sheet per room, each sliding over the last. A sheet is only shown
+  // from the moment it starts to move until the next has covered it. Waiting
+  // off the edge of the frame they were still casting their shadows onto it,
+  // seventeen deep, which laid a dark band down the right-hand side; and
+  // eighteen stacked sheets of paper, each with a plate and a shadow, are
+  // eighteen layers for the compositor to keep when only the top one is seen.
   SHEETS.forEach((s, i) => {
-    const from = i === 0 ? "translateY(102%)" : "translateX(102%)";
+    const first = i === 0;
+    const from = first ? "translateY(102%)" : "translateX(102%)";
+    const slide = first ? 0.85 : SHEET_SLIDE;
+    const coveredAt = i < SHEETS.length - 1 ? SHEETS[i + 1].at + SHEET_SLIDE + 0.05 : TITLE.at + 1.4;
     T[`sheet-${s.id}`] = track([
-      [s.at, { transform: from, opacity: 1 }, "cubic-bezier(.2,.75,.25,1)"],
-      [s.at + 0.85, { transform: "translate(0, 0)" }],
+      [s.at - 0.02, { transform: from, opacity: 0 }, "step-end"],
+      [s.at, { opacity: 1 }, "cubic-bezier(.2,.75,.25,1)"],
+      [s.at + slide, { transform: "translate(0, 0)" }],
+      [coveredAt, { opacity: 1 }, "step-end"],
+      [coveredAt + 0.01, { opacity: 0 }],
     ]);
-    T[`label-${s.id}`] = appear(s.at + 1.5, null, 12);
-    T[`line-${s.id}`] = appear(s.at + 1.85, null, 6);
-    const typed = Math.max(0.9, s.organ.length * 0.035);
-    T[`organ-${s.id}`] = track([
-      [s.at + 2.5, { clipPath: "inset(0 100% 0 0)" }, `steps(${s.organ.length}, end)`],
-      [s.at + 2.5 + typed, { clipPath: "inset(0 0% 0 0)" }],
+    // The plate grows up from its ground line, the way the plant would.
+    const lead = first ? 0.45 : 0.2;
+    T[`plate-${s.id}`] = track([
+      [s.at + lead, { clipPath: "inset(100% 0% 0% 0%)" }, "cubic-bezier(.3,.6,.35,1)"],
+      [s.at + lead + 0.75, { clipPath: "inset(0% 0% 0% 0%)" }],
     ]);
-    T[`cf-${s.id}`] = appear(s.at + 2.7 + typed, null, 4);
-    T[`wash-${s.id}`] = track([
-      [s.at + 2.8, { opacity: 0 }, "ease-in-out"],
-      [s.at + 3.9, { opacity: 1 }],
-    ]);
-    T[`fine-${s.id}`] = track([
-      [s.at + 2.3, { opacity: 0 }, "ease-in-out"],
-      [s.at + 3.3, { opacity: 1 }],
-    ]);
-  });
-
-  // The tumbleweed rolls in finished, rather than being drawn: it is the one
-  // specimen whose whole point is that it moves.
-  const tw = SHEETS.find((s) => s.id === "tumbleweed");
-  const rollAt = tw.at + 1.0;
-  // The ground is down before anything lands on it.
-  T["tw-ground"] = track([
-    [tw.at + 0.35, { strokeDashoffset: "1" }, "ease-out"],
-    [tw.at + 0.95, { strokeDashoffset: "0" }],
-  ]);
-  if (still) {
-    T["tw-roll"] = track([
-      [rollAt, { opacity: 0, transform: "translate(0%, 0%) rotate(0deg)" }],
-      [rollAt + 1.2, { opacity: 1 }],
-    ]);
-    T["tw-shadow"] = track([
-      [rollAt, { opacity: 0, transform: "translate(0%, 0%)" }],
-      [rollAt + 1.2, { opacity: 1 }],
-    ]);
-  } else {
-    const roll = rollStops(rollAt, TUMBLE.r);
-    T["tw-roll"] = track(roll.map(([t, p, e]) => [t, { ...p, opacity: 1 }, e]));
-    T["tw-shadow"] = track(
-      // the shadow keeps to the ground: same x, no hop, no spin
-      roll.map(([t, p, e]) => [t, { transform: p.transform.replace(/,\s*-?[\d.]+%\)/, ", 0%)").replace(/ rotate\([^)]*\)/, ""), opacity: 1 }, e]),
-    );
-  }
-  // Seed, dropped just behind it as it passes — a tumbleweed is a seed drill.
-  // Timed from the roll itself: each seed falls as the plant's centre passes
-  // SEED_LAG units beyond it.
-  SEEDS.forEach((sx, k) => {
-    const t = rollAt + rollTimeAt(sx + SEED_LAG - TUMBLE.cx);
-    T[`seed-${k}`] = track([
-      [t, { opacity: 0, transform: "translateY(-10px) scale(.4)" }, "ease-in"],
-      [t + 0.3, { opacity: 1, transform: "translateY(0px) scale(1)" }],
-    ]);
+    const t = s.at + (first ? 0.6 : 0.3);
+    T[`label-${s.id}`] = appear(t, null, 8, 0.35);
+    T[`line-${s.id}`] = appear(t + 0.12, null, 5, 0.35);
+    T[`organ-${s.id}`] = appear(t + 0.3, null, 4, 0.35);
+    T[`cf-${s.id}`] = appear(t + 0.42, null, 4, 0.35);
   });
 
   // The title, in front of the crest.
@@ -157,75 +121,6 @@ function buildTracks(reduce) {
     [DURATION, { transform: "scaleX(1)" }],
   ]);
   return T;
-}
-
-// Each contour line of a drawn plate draws itself on in turn.
-function inkTracks(root) {
-  const out = [];
-  for (const s of SHEETS) {
-    const lines = root.querySelectorAll(`[data-sheet="${s.id}"] [data-ink]`);
-    const n = lines.length;
-    lines.forEach((el, i) => {
-      const start = s.at + 0.8 + (i / Math.max(1, n)) * 1.7;
-      out.push([
-        el,
-        track([
-          [start, { strokeDashoffset: "1", opacity: 0 }, "linear"],
-          [start + 0.02, { opacity: 1 }, "ease-in-out"],
-          [start + 0.9, { strokeDashoffset: "0" }],
-        ]),
-      ]);
-    });
-  }
-  return out;
-}
-
-// The tumbleweed's sheet. The ground, the grass and the seed are one static
-// SVG; the plant and its shadow are HTML layers on top of it.
-//
-// That split is for smoothness. Rolled inside the SVG, as it first was, every
-// frame repainted the whole drawing — some two hundred and fifty twigs — on
-// the main thread, which is exactly where a frame gets dropped. As its own
-// layer, the plant is painted once and the compositor moves and turns the
-// finished picture, which is the one kind of animation a browser can promise
-// to keep at the screen's own frame rate.
-function TumbleScene() {
-  const { cx, cy, ground } = TUMBLE;
-  return (
-    <div className="film__tumble" aria-hidden="true">
-      <svg className="plate__layer" viewBox="0 0 400 400" focusable="false">
-        <path
-          className="plate__ink film__ground"
-          data-track="tw-ground"
-          pathLength="1"
-          // Out to 960, past where a desktop sheet ends (~827): the tumbleweed
-          // arrives from the right and must never touch down on bare paper.
-          d={`M-60,${ground + 1} C180,${ground - 1} 560,${ground + 2} 960,${ground}`}
-          style={{ strokeWidth: 1.2 }}
-        />
-        {[-10, 26, 58, 330, 360, 540, 620, 700, 790].map((x, i) => (
-          <path key={i} className="plate__fine" d={`M${x},${ground} l2,-6 M${x + 5},${ground} l-1,-8 M${x + 9},${ground} l3,-5`} />
-        ))}
-        {SEEDS.map((x, k) => (
-          // The group takes the animation; the seed inside keeps its own tilt.
-          // A CSS transform on the ellipse itself would replace that rotate().
-          <g key={k} className="film__seed" data-track={`seed-${k}`}>
-            <ellipse cx={x} cy={ground - 1.5} rx={2.6} ry={1.6} transform={`rotate(${k * 40 - 30} ${x} ${ground - 1.5})`} />
-          </g>
-        ))}
-      </svg>
-      <div
-        className="film__tw-shadow"
-        data-track="tw-shadow"
-        style={{
-          background: `radial-gradient(ellipse 20% 2.4% at ${cx / 4}% ${(ground + 2) / 4}%, rgba(58, 46, 34, 0.34), rgba(58, 46, 34, 0.12) 55%, rgba(58, 46, 34, 0) 100%)`,
-        }}
-      />
-      <div className="film__tw-roll" data-track="tw-roll" style={{ transformOrigin: `${cx / 4}% ${cy / 4}%` }}>
-        <Plate id="tumbleweed" />
-      </div>
-    </div>
-  );
 }
 
 export default function IntroFilm() {
@@ -284,11 +179,6 @@ export default function IntroFilm() {
       anims.push(a);
       if (el.dataset.track === "progress") masterRef.current = a;
     });
-    for (const [el, kf] of inkTracks(root)) {
-      const a = el.animate(kf, opts);
-      a.pause();
-      anims.push(a);
-    }
     animsRef.current = anims;
 
     masterRef.current.onfinish = () => setMode("ended");
@@ -353,21 +243,27 @@ export default function IntroFilm() {
             </p>
           ))}
 
-          {SHEETS.map((s) => (
-            <div key={s.id} className={`film__sheet film__sheet--${s.id}`} data-track={`sheet-${s.id}`} data-sheet={s.id}>
+          {SHEETS.map((s, i) => (
+            <div key={s.id} className="film__sheet" data-track={`sheet-${s.id}`}>
               <div className="film__figure">
-                {s.id === "tumbleweed" ? <TumbleScene /> : <Plate id={s.id} drawn />}
+                <img
+                  className="film__plate"
+                  data-track={`plate-${s.id}`}
+                  src={plateUrl(s.slug)}
+                  alt=""
+                  decoding="async"
+                />
               </div>
               <div className="film__label" data-track={`label-${s.id}`}>
                 <p className="film__label-head">
-                  <span>CC Herbarium</span>
+                  <span>{formatRoom(i)}</span>
                   <span>{formatNo(s.no)}</span>
                 </p>
                 <p className="film__label-line" data-track={`line-${s.id}`}>
-                  {s.line}
+                  {s.room}
                 </p>
                 <p className="film__label-organ" data-track={`organ-${s.id}`}>
-                  {s.organ}
+                  the {s.part}
                 </p>
                 <p className="film__label-cf" data-track={`cf-${s.id}`}>
                   {s.cf}
