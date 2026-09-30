@@ -1352,12 +1352,16 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   line-height: 1.45;
   color: var(--ink-soft);
 }
-/* The margin is for the tilt: rotated, the stamp's right end rises by
-   about a third of its height, and at phone width that carried it into the
-   last line of the subtitle. */
+/* Stamped across the placard's top right corner, the way a clerk hits the
+   corner of a card, clear of every line of text. Under the subtitle, tilted
+   down to the left, it sat crooked against the text and crowded the bottom
+   edge. The paper behind it keeps the placard's edge from striking through
+   the lettering. */
 .film__stamp {
-  display: inline-block;
-  margin-top: 1.25em;
+  position: absolute;
+  top: -0.95em;
+  right: 1.1em;
+  background: var(--paper-light);
   padding: 0.32em 0.65em 0.28em;
   font-family: var(--font-mono);
   font-weight: 500;
@@ -1367,7 +1371,7 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   color: #9e4763;
   border: 2px solid #9e4763;
   border-radius: 4px;
-  transform-origin: 30% 60%;
+  transform-origin: 50% 50%;
   opacity: 0;
 }
 
@@ -1441,6 +1445,12 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
     right: 5%;
     bottom: 6%;
     max-width: none;
+  }
+  /* The desktop floor of 1.9rem broke the name over two lines on a 360px
+     phone, "CC" alone above "Herbarium". Sized to the frame instead, it
+     stays on one line down to the narrowest phones. */
+  .film__title-name {
+    font-size: clamp(1.5rem, 9.5cqi, 2.4rem);
   }
   .film__controls {
     top: 2.5%;

@@ -82,20 +82,25 @@ export const SHEETS = PICKS.map(([slug, no, habitat, part, cf, genus], i) => ({
 
 const TITLE_AT = +(SHEETS.at(-1).at + 1.75).toFixed(2);
 
+// Every line is in the curator's voice, the one on the Curator's Note: deadpan,
+// formal, and slightly too honest. The second caption carries the collection's
+// rule for its plates — one part, never a face — as its joke.
 export const CAPTIONS = [
-  { id: "wild", text: "Out in the wild grow plants nobody planted.", in: 1.0, out: 4.4 },
-  { id: "drawn", text: "Somebody drew them — from real ones.", in: 4.8, out: 7.9 },
-  { id: "notice", text: "Once you notice it, you can’t stop noticing.", in: TITLE_AT + 0.7, out: TITLE_AT + 4.0 },
+  { id: "wild", text: "In the tall grass, some plants look back.", in: 0.9, out: 4.4 },
+  { id: "drawn", text: "The curator drew them anyway, minus the faces.", in: 4.7, out: 7.95 },
+  { id: "notice", text: "Side effects may include seeing them everywhere.", in: TITLE_AT + 0.7, out: TITLE_AT + 4.0 },
 ];
 
 export const TITLE = {
   at: TITLE_AT,
   // Not "Welcome to": the Gallery's own placard says that directly underneath,
-  // and two welcomes in a row read as a stammer. This is the README's phrase.
+  // and two welcomes in a row read as a stammer.
   eyebrow: "Open daily",
   name: "CC Herbarium",
-  sub: "Every Grass-type on record, pressed and filed beside the plant it echoes.",
-  stamp: "Please don’t tap on the glass",
+  // The Curator's Note lists the staff: one cat, head of security, usually
+  // asleep on duty. The stamp is its sign-off.
+  sub: "Every Grass-type on record, pressed and filed beside the real plant it was clearly copied from.",
+  stamp: "Approved by security (a cat)",
   placardAt: TITLE_AT + 4.0,
   stampAt: TITLE_AT + 5.0,
 };

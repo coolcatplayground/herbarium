@@ -123,9 +123,9 @@ function buildTracks(reduce) {
   ]);
   T["title"] = appear(TITLE.placardAt, null, 14);
   T["stamp"] = track([
-    [TITLE.stampAt, { opacity: 0, transform: "scale(1.7) rotate(-14deg)" }, "cubic-bezier(.55,0,.8,.4)"],
-    [TITLE.stampAt + 0.24, { opacity: 1, transform: "scale(.94) rotate(-7deg)" }, "ease-out"],
-    [TITLE.stampAt + 0.45, { transform: "scale(1) rotate(-7deg)" }],
+    [TITLE.stampAt, { opacity: 0, transform: "scale(1.7) rotate(14deg)" }, "cubic-bezier(.55,0,.8,.4)"],
+    [TITLE.stampAt + 0.24, { opacity: 1, transform: "scale(.94) rotate(6deg)" }, "ease-out"],
+    [TITLE.stampAt + 0.45, { transform: "scale(1) rotate(6deg)" }],
   ]);
 
   T["progress"] = track([
@@ -154,6 +154,11 @@ export default function IntroFilm() {
       setMode("loading");
       await Promise.race([img.decode().catch(() => {}), new Promise((r) => setTimeout(r, 3000))]);
     }
+    // Everything else is asked for now and not waited on: the eighteen plates
+    // and the title shot have seconds to get ready before they are needed,
+    // and a picture decoded ahead of its entrance does not cost a dropped
+    // frame on the way in.
+    rootRef.current?.querySelectorAll("img").forEach((i) => i !== img && i.decode?.().catch(() => {}));
     markSeen();
     autoPausedRef.current = false;
     anims.forEach((a) => a.play());
