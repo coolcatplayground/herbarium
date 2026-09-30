@@ -18,7 +18,8 @@
     "fact": "node scripts/find-fact.mjs",
     "og": "node scripts/make-og-card.mjs",
     "plates:brief": "node scripts/plates-brief.mjs",
-    "plates": "node scripts/index-plates.mjs"
+    "plates": "node scripts/index-plates.mjs",
+    "plates:draw": "node scripts/render-plates.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",

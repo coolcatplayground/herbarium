@@ -1080,3 +1080,448 @@ body.room-only::before { opacity: 0; transition: opacity 420ms ease; }
   outline: 2px solid var(--botanical-green-deep);
   outline-offset: 3px;
 }
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   The introduction (src/components/film/).
+
+   A framed film at the top of the Gallery. Everything that is read in it is
+   mounted, as everywhere else on the site: captions and the title sit on
+   placards over the paintings, and the specimen labels sit on paper sheets.
+   Nothing is printed on a picture, so nothing needs the picture dimmed.
+
+   Type inside the frame is sized in cqi — container-inline units — so it
+   scales with the film rather than the window: the same caption has to fit a
+   980px frame on a desktop and a 340px one on a phone.
+
+   Measured, on the grounds they actually sit on:
+     caption            --ink on --paper-light           8.19:1
+     label line         --botanical-green-deep on label  6.06:1
+     label organ        --ink on label                   8.34:1
+     label cf.          --ink-soft on label              5.70:1
+     title name         --botanical-green-deep on plate  5.76:1
+     stamp              #9e4763 on placard               5.55:1
+   The stamp is not --specimen-red: that measures 3.95:1 against the placard,
+   which fails for text this small.
+   ───────────────────────────────────────────────────────────────────────── */
+/* The film hangs in a frame. It opens on the same hall the page is painted
+   with, so unframed it sank into the wall behind it; a walnut moulding, a
+   cream mat and a gilt lip round the picture set it apart as an exhibit, the
+   way the room's own framed pieces are. The moulding is the wrap's padding,
+   the mat a layer inset inside it, and the gilt a ring on the film itself. */
+.film-wrap {
+  --frame-wood: 14px;
+  --frame-mat: 12px;
+  position: relative;
+  max-width: 980px;
+  margin: 0 auto 40px;
+  padding: calc(var(--frame-wood) + var(--frame-mat));
+  border-radius: 5px;
+  background: linear-gradient(150deg, #6a4c2e 0%, #4a3320 38%, #33230f 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 228, 176, 0.16),
+    inset 0 2px 0 rgba(255, 234, 196, 0.24),
+    inset 0 -3px 5px rgba(0, 0, 0, 0.35),
+    0 2px 4px rgba(20, 14, 8, 0.35),
+    0 30px 60px -22px rgba(20, 14, 8, 0.75);
+}
+
+.film-wrap::before {
+  content: "";
+  position: absolute;
+  inset: var(--frame-wood);
+  border-radius: 2px;
+  background: var(--paper-light);
+  /* the moulding's shadow falling onto the mat along its top and left */
+  box-shadow:
+    inset 2px 3px 6px rgba(40, 28, 16, 0.38),
+    0 0 0 1px rgba(20, 14, 8, 0.5);
+}
+
+.film {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 2px;
+  /* The lamp is off until the first picture arrives. */
+  background: #1d1914;
+  box-shadow:
+    0 0 0 2px #b8914a,
+    0 0 0 3px rgba(60, 42, 20, 0.55);
+  isolation: isolate;
+  container-type: inline-size;
+}
+
+.film__stage {
+  position: absolute;
+  inset: 0;
+}
+
+/* A shot is a frame and a picture: the frame fades, the picture drifts inside
+   it, and a vignette on the frame stays put while the painting moves under
+   it — which is what makes the drift read as a camera rather than a slide.
+   The vignette is for depth only; nothing is ever read against a painting. */
+.film__shot {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+.film__shot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+.film__shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(130% 100% at 50% 42%, rgba(20, 14, 8, 0) 52%, rgba(20, 14, 8, 0.4) 100%);
+}
+.film__shot--title img {
+  object-position: 50% 30%;
+  transform-origin: 50% 30%;
+}
+
+.film__caption {
+  position: absolute;
+  left: 4%;
+  bottom: 7%;
+  z-index: 2;
+  max-width: min(78%, 30em);
+  margin: 0;
+  padding: 0.7em 1.05em 0.75em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1rem, 2.6cqi, 1.6rem);
+  line-height: 1.28;
+  color: var(--ink);
+  background: var(--paper-light);
+  border: 1px solid var(--paper-line);
+  border-radius: 4px 4px 10px 4px;
+  box-shadow:
+    0 1px 2px rgba(38, 30, 20, 0.22),
+    0 12px 26px -12px rgba(38, 30, 20, 0.55);
+  opacity: 0;
+}
+
+/* A herbarium sheet: paper, a ruled margin, the plate and the label. The
+   label sits bottom right, which is where it sits on a real sheet. */
+.film__sheet {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  /* minmax(0, …): without it a plate — sized from its height, square — tells
+     the grid its minimum width is its height, and the grid obliges by
+     squeezing the label column until the label line wraps. */
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  align-items: center;
+  column-gap: 3%;
+  padding: 3% 5% 4%;
+  /* paper: a fine grain, a slow cloudiness, and light from the upper left */
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .36 0 0 0 0 .29 0 0 0 0 .2 0 0 0 .12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.008' numOctaves='3' stitchTiles='stitch' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .45 0 0 0 0 .3 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E"),
+    radial-gradient(120% 95% at 28% 18%, #fdfaf1 0%, #f6efdd 68%, #eee3c8 100%);
+  box-shadow: -22px 0 34px -14px rgba(20, 14, 8, 0.45);
+  transform: translateY(102%);
+}
+.film__sheet::before {
+  content: "";
+  position: absolute;
+  inset: 2.4%;
+  border: 1px solid rgba(90, 74, 58, 0.16);
+  pointer-events: none;
+}
+
+.film__figure {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.film__figure > .plate,
+.film__figure > .film__tumble {
+  position: relative;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: 1;
+}
+
+.film__label {
+  position: relative;
+  z-index: 1;
+  align-self: end;
+  margin: 0 0 7%;
+  padding: 0.85em 1.05em 0.95em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .36 0 0 0 0 .29 0 0 0 0 .2 0 0 0 .12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"), #fffdf6;
+  border: 1.5px solid var(--ink);
+  box-shadow: 2px 3px 0 rgba(90, 74, 58, 0.14);
+  opacity: 0;
+}
+.film__label p {
+  margin: 0;
+}
+.film__label-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  margin-bottom: 0.6em !important;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid rgba(90, 74, 58, 0.35);
+  font-family: var(--font-mono);
+  font-size: clamp(0.62rem, 1.35cqi, 0.8rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.film__label-line {
+  margin-bottom: 0.45em !important;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.05rem, 2.7cqi, 1.65rem);
+  line-height: 1.2;
+  color: var(--botanical-green-deep);
+}
+.film__label-organ {
+  display: inline-block;
+  margin-bottom: 0.3em !important;
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 1.5cqi, 0.9rem);
+  white-space: nowrap;
+  color: var(--ink);
+}
+.film__label-cf {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(0.8rem, 1.75cqi, 1.02rem);
+  color: var(--ink-soft);
+}
+
+/* The plates. Stroke widths are in the drawing's own units, so they scale
+   with it: a hairline on a desktop frame is still a hairline on a phone. */
+.plate {
+  position: relative;
+}
+/* The three layers of a plate — see Plate.jsx for why they are separate. */
+.plate__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+.plate__ink {
+  fill: none;
+  stroke: #4a3b2d;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* One dash the length of the whole line (pathLength="1"), then a gap a hair
+   longer, so a dash offset of 1 hides the line completely — round caps
+   included — and 0 shows all of it. */
+.plate--drawn .plate__ink,
+.film__ground {
+  stroke-dasharray: 1 1.02;
+}
+.plate__fine {
+  fill: none;
+  stroke: #4a3b2d;
+  stroke-opacity: 0.6;
+  stroke-width: 0.8;
+  stroke-linecap: round;
+}
+.plate__back {
+  fill: none;
+  stroke: #4a3b2d;
+  stroke-opacity: 0.3;
+  stroke-width: 0.85;
+  stroke-linecap: round;
+}
+.plate__dots {
+  fill: #4a3b2d;
+  fill-opacity: 0.7;
+}
+.plate__dots--speckle {
+  fill: #9e4763;
+  fill-opacity: 0.42;
+}
+.plate__shade {
+  fill: #3a2e22;
+  fill-opacity: 0.62;
+}
+.plate__fig {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 12px;
+  fill: #4a3b2d;
+  fill-opacity: 0.82;
+}
+
+/* The tumbleweed's sheet lets it roll in from past the paper's own edge and
+   under the label, rather than appearing at the edge of its box. */
+.film__sheet--tumbleweed {
+  overflow: hidden;
+}
+.film__tw-shadow,
+.film__tw-roll {
+  position: absolute;
+  inset: 0;
+}
+.film__tw-roll {
+  will-change: transform;
+}
+.film__tw-roll > .plate {
+  width: 100%;
+  height: 100%;
+}
+.film__seed {
+  fill: #6b5236;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* The title, on a placard in front of the crest. */
+.film__title {
+  position: absolute;
+  left: 4%;
+  bottom: 7%;
+  z-index: 2;
+  max-width: min(60%, 27em);
+  padding: 0.9em 1.3em 1.1em;
+  background: linear-gradient(180deg, var(--paper-light), #faf7ee);
+  border: 1px solid var(--paper-line);
+  border-radius: 4px 4px 12px 4px;
+  box-shadow:
+    0 1px 2px rgba(38, 30, 20, 0.22),
+    0 16px 32px -14px rgba(38, 30, 20, 0.6);
+  opacity: 0;
+}
+.film__title p {
+  margin: 0;
+}
+.film__title .eyebrow {
+  font-size: clamp(1.2rem, 2.6cqi, 1.5rem);
+  line-height: 1;
+}
+.film__title-name {
+  margin: 0.08em 0 0.22em !important;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 5.6cqi, 3.3rem);
+  line-height: 1;
+  color: var(--botanical-green-deep);
+}
+.film__title-sub {
+  font-size: clamp(0.85rem, 1.85cqi, 1.05rem);
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+/* The margin is for the tilt: rotated, the stamp's right end rises by
+   about a third of its height, and at phone width that carried it into the
+   last line of the subtitle. */
+.film__stamp {
+  display: inline-block;
+  margin-top: 1.25em;
+  padding: 0.32em 0.65em 0.28em;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: clamp(0.62rem, 1.3cqi, 0.76rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9e4763;
+  border: 2px solid #9e4763;
+  border-radius: 4px;
+  transform-origin: 30% 60%;
+  opacity: 0;
+}
+
+.film__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  height: 3px;
+  background: var(--gold-line);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+.film[data-mode="ended"] .film__progress {
+  visibility: hidden;
+}
+
+.film__controls {
+  position: absolute;
+  top: 3.2%;
+  right: 2.4%;
+  z-index: 4;
+  display: flex;
+  gap: 8px;
+}
+.film__btn {
+  padding: 7px 13px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper-light);
+  border: 1px solid rgba(90, 74, 58, 0.3);
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(38, 30, 20, 0.2), 0 6px 14px -6px rgba(38, 30, 20, 0.45);
+}
+.film__btn:hover {
+  color: var(--botanical-green-deep);
+}
+.film__btn:focus-visible {
+  outline: 2px solid var(--gold-line);
+  outline-offset: 2px;
+}
+
+/* A phone gets a taller frame, and the sheet stacks: plate above, label
+   below. 16:9 at phone width leaves a strip too short to read a label in. */
+@media (max-width: 640px) {
+  .film-wrap {
+    --frame-wood: 8px;
+    --frame-mat: 7px;
+  }
+  .film {
+    aspect-ratio: 4 / 5;
+  }
+  .film__sheet {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+    row-gap: 3%;
+    padding: 6% 6% 7%;
+  }
+  .film__label {
+    align-self: stretch;
+    margin: 0;
+  }
+  .film__caption,
+  .film__title {
+    left: 5%;
+    right: 5%;
+    bottom: 6%;
+    max-width: none;
+  }
+  .film__controls {
+    top: 2.5%;
+    right: 3%;
+  }
+  .film__btn {
+    padding: 6px 11px;
+    font-size: 0.68rem;
+  }
+}
